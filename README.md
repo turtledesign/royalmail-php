@@ -1,6 +1,4 @@
-# SOAP API SDK for PHP
-
-[![Build Status](https://travis-ci.org/paypal/PayPal-PHP-SDK.png?branch=master)](https://travis-ci.org/paypal/PayPal-PHP-SDK) [![Coverage Status](https://img.shields.io/coveralls/paypal/PayPal-PHP-SDK.svg)](https://coveralls.io/r/paypal/PayPal-PHP-SDK?branch=master) [![Latest Stable Version](https://poser.pugx.org/paypal/rest-api-sdk-php/v/stable.png)](https://packagist.org/packages/paypal/rest-api-sdk-php) [![Total Downloads](https://poser.pugx.org/paypal/rest-api-sdk-php/downloads.png)](https://packagist.org/packages/paypal/rest-api-sdk-php)
+# Royal Mail API SDK for PHP
 
 This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping API](http://www.royalmail.com/corporate/services/shipping-api)
 
@@ -9,8 +7,8 @@ This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping
 
 ## Prerequisites
 
-   - PHP 5.4 or above
-   - [curl](http://php.net/manual/en/book.curl.php)  & [openssl](http://php.net/manual/en/book.openssl.php) extensions must be enabled
+   - PHP 5.something or above
+   - [soap](http://php.net/manual/en/book.soap.php) & [openssl](http://php.net/manual/en/book.openssl.php) extensions must be enabled
 
 ## Installation
 
@@ -24,7 +22,7 @@ You can download composer using instructions on [Composer Official Website.](htt
 
 #### Steps to Install :
 
-Currently, Paypal PHP Rest API SDK is available at [https://packagist.org](https://packagist.org/packages/turtledesign/royalmail-php). To use it in your project, you need to include it as a dependency in your project composer.json file. It can be done in two ways :
+Currently, the SDK is available at [https://packagist.org](https://packagist.org/packages/turtledesign/royalmail-php). To use it in your project, you need to include it as a dependency in your project composer.json file. It can be done in two ways :
 
 * Running `composer require turtledesign/royalmail-php:*` command on your project root location (where project composer.json is located.)
 
@@ -47,7 +45,7 @@ The resultant sample *composer.json* would look like this:
 
 ### - Direct Download (without using Composer)
 
-If you do not want to use composer, you can grab the SDK zip that contains Paypal PHP Rest API SDK with all its dependencies with it.
+If you do not want to use composer, you can grab the SDK zip that contains Royal Mail API SDK with all its dependencies with it.
 
 #### Steps to Install :
 - Download zip archive with desired version from our [Releases](https://github.com/turtledesign/royalmail-php/releases). Each release will have a `direct-download-*.zip` that contains PHP Rest API SDK and its dependencies.
@@ -57,7 +55,7 @@ If you do not want to use composer, you can grab the SDK zip that contains Paypa
 - If your application has a bootstrap/autoload file, you should add
 `include '<vendor directory location>/vendor/autoload.php'` in it. The location of the `<vendor directory>` should be replaced based on where you downloaded **vendor** directory in your application.
 
-- This *autoload.php* file registers a custom autoloader that can autoload the PayPal SDK files, that allows you to access PHP SDK system in your application.
+- This *autoload.php* file registers a custom autoloader that can autoload the Royal Mail SDK files, that allows you to access PHP SDK system in your application.
 
 
 
