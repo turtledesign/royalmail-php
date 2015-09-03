@@ -6,5 +6,4 @@ php:
 
 install: composer install
 
-before_script: wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
-script: ./bin/atoum -bf tests/Bootstrap.php -d tests/unit/
+script: ./vendor/bin/atoum -bf tests/Bootstrap.php -d tests/unit/
