@@ -5,13 +5,24 @@ namespace RoyalMail
 class RoyalMail {
 
 
+  protected $config = [
+    'cache_wsdl' => TRUE,
+    'timezone'   => 'UTC',
+    'username'   => NULL,
+    'password'   => NULL,
+    'connector'  => 'static',       
+  ];
+
 
   /**
    * Create New
-   * @param array $args This should contain the security details:
+   * 
+   * @param array $args This should contain security details and config default overrides.
    * 
    */
   function __construct($args) {
+
+    if (isset($args['config']) && is_array($args['config'])) $this->configure($args['config']);
 
   }
 
@@ -60,5 +71,24 @@ class RoyalMail {
 
   function updateShipment($args) {
 
+  }
+
+
+  /**
+   * Set up config values, these are merged with the defaults.
+   * 
+   * @param array 
+   * 
+   * @return RoyalMail\RoyalMail $this
+   */
+  function configure($config = []) {
+    $this->config = array_merge($this->config, $config);
+
+    return $this;
+  }
+
+
+  function getConfig() {
+    return $this->config;
   }
 } 

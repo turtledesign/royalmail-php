@@ -1,17 +1,14 @@
 <?php
 
-namespace RoyalMail\Connector
+namespace RoyalMail\Connector;
 
-class baseConnector {
+abstract class baseConnector {
 
-  use RoyalMail\Connector\Security;
-
-  /**
-   * Auth details provided here.
-   * 
-   */
-  function __construct($params) {
-
+  function request($params) {
+    return $this->doRequest($params);
   }
+
+
+  abstract protected function doRequest($config, $request_type, $params);
 
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace RoyalMail\Connector
+namespace RoyalMail\Connector;
 
 class onboardingConnector extends baseConnector {
 
-  const ENDPOINT = 'https://api.royalmail.com/shipping/onboarding';
-
   use remoteConnector;
+
+  function getEndpoint() { return 'https://api.royalmail.com/shipping/onboarding'; }
 }

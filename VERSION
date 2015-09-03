@@ -1,3 +1,4 @@
 
+0.0.3.0       03/09/2015 More work on the structure, started on connectors + switched to atoum and got first test running. [4.0]
 0.0.1.0       01/09/2015 Started stubbing out the basic structure. [1.1]
 0.0.0.0       31/08/2015 Created initial module structure. [1.1]

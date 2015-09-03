@@ -1,37 +1,38 @@
 {
-    "name": "turtledesign/royalmail-php",
-    "description": "PHP module for interfacing with the Royal Mail shipping api : http://www.royalmail.com/corporate/services/shipping-api ",
-    "license": "MIT",
-    "type": "library",
-    "keywords": [
-        "shipping",
-        "postage",
-        "royal-mail",
-        "post-office",
-        "barcodes"
-    ],
+  "name": "turtledesign/royalmail-php",
+  "description": "PHP module for interfacing with the Royal Mail shipping api : http://www.royalmail.com/corporate/services/shipping-api ",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "shipping",
+    "postage",
+    "royal-mail",
+    "post-office",
+    "barcodes"
+  ],
 
-    "autoload": {
-        "psr-4": {
-            "RoyalMail\\": "src/"
-        }
-    },
+  "autoload": {
+    "psr-4": {
+      "RoyalMail\\": "src/"
+    }
+  },
 
-    "authors": [
-        {
-            "name": "Stefan Nesbitt",
-            "email": "stefan@turtledesign.com"
-        }
-    ],
+  "authors": [
+    {
+      "name": "Stefan Nesbitt",
+      "email": "stefan@turtledesign.com"
+    }
+  ],
 
-    "require": {
-        "php": ">=5.4.0"
-    },
+  "require": {
+    "php": ">=5.3.9",
+    "symfony/validator": "~2.7|~3.0.0"
+  },
 
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*"
-    },
+  "require-dev": {
+    "atoum/atoum" : "dev-master"
+  },
 
-    "suggest": {
-    }  
+  "suggest": {
+  }  
 }
