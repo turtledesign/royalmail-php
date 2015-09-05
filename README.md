@@ -1,9 +1,11 @@
 # Royal Mail API SDK for PHP
 
+[![Build Status](https://travis-ci.org/turtledesign/royalmail-php.png?branch=master)](https://travis-ci.org/turtledesign/royalmail-php)
+
 This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping API](http://www.royalmail.com/corporate/services/shipping-api)
 
-> Currently development is just started - this readme is 0.5 inched from the PayPal SDK and should become more original as development progresses (PayPal Readme writers: if my usage angers thee drop me a line and I'll rewrite quicker!)
-> This is not an official SDK, we (turtledesign.com) are a 3rd party integrator releasing the module with an open source licence because why not.
+> Currently development is in progress -- THIS IS NOT A USABLE MODULE!! RUN AWAY!!
+> This is not an official SDK, we (http://www.turtledesign.com/) are a 3rd party integrator releasing the module with an open source licence because why not.
 
 ## Prerequisites
 
@@ -61,5 +63,6 @@ If you do not want to use composer, you can grab the SDK zip that contains Royal
 
 ## More help
 
-   * [API Reference](http://www.royalmail.com/sites/default/files/Shipping-API-Technical-User-Guide-v2_1-June-2015.pdf)
+   * [Royal Mail Shipping API Service Page](http://www.royalmail.com/corporate/services/shipping-api)
+   * [API Reference - PDF](http://www.royalmail.com/sites/default/files/Shipping-API-Technical-User-Guide-v2_1-June-2015.pdf)
    * [Reporting issues / feature requests](https://github.com/turtledesign/royalmail-php/issues)

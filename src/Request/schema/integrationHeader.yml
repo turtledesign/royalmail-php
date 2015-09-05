@@ -1,3 +1,6 @@
+defaults:
+  required: true
+  
 properties:
 
   version:            # The version of the API currently being used (currently 2).
@@ -9,7 +12,7 @@ properties:
   identification:
 
     applicationId:    # This is the ten digit Customer Account Number allocated by RM
-      validate: 
+      validate:
         - Regex: 
             pattern: '/^\d{10}$/'
             message: 'The Customer Account Number should be exactly 10 digits long.'

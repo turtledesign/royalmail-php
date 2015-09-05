@@ -31,14 +31,19 @@ class Builder extends atoum {
   }
 
 
-  function testIntegrationHeader() {
-    $schema = $this->getRequestSchema('integrationHeader');
+  function testValidRequests() {
+    $requests = ['integrationHeader', 'createShipment'];
 
-    $this
-      ->array(ReqBuilder::buildRequest('integrationHeader', $schema['request']))
-      ->isEqualTo($this->getExpectedResponse($schema));
+    foreach ($requests as $r) {
+      $schema = $this->getRequestSchema($r);
 
+      $this
+        ->array(ReqBuilder::buildRequest($r, $schema['request']))
+        ->isEqualTo($this->getExpectedResponse($schema));
+    }
   }
+
+
 
 
   function getRequestSchema($request_name, $type = 'valid') {

@@ -15,5 +15,9 @@ integrationHeader:
 
 createShipment:
   valid:
-    send:
+    request:
+      requestedShipment:
+        shipmentType:
+          code: 'Delivery'
+
     expect:

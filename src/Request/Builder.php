@@ -55,11 +55,12 @@ class Builder {
    * @return array values structured for API request.
    */
   static function processSchema($schema, $params) {
-    $built  = [];
-    $errors = [];
+    $built    = [];
+    $errors   = [];
+    $defaults = @$schema['defaults'] ?: [];
 
     try {
-      foreach ($schema['properties'] as $k => $v) $built[$k] = self::processProperty($v, @$params[$k]);
+      foreach ($schema['properties'] as $k => $v) $built[$k] = self::processProperty(array_merge($defaults, $v), @$params[$k]);
     
     } catch (\RoyalMail\Validator\ValidatorException $e) { 
       $errors[$k] = $k . ': ' . $e->getMessage(); 
@@ -87,9 +88,9 @@ class Builder {
 
     if (isset($schema['default']) && empty($val)) $val = $schema['default']; // CAVEAT: This will default all falsy values.
 
-    if (isset($schema['validate']))               $val = self::validate($val, $schema['validate']);
+    if (isset($schema['validate'])) $val = self::validate($val, $schema['validate']);
 
-    if ($nested = array_diff_key($schema, array_flip(['include', 'default', 'validate']))) {
+    if ($nested = array_diff_key($schema, array_flip(['include', 'default', 'validate', 'required']))) {
       $nest = [];
 
       foreach ($nested as $k => $v) $nest[$k] = self::processProperty($schema[$k], $val[$k]);

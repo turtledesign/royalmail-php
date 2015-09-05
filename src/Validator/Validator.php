@@ -19,7 +19,9 @@ trait Validator {
    * 
    * @return mixed $value - validated and cleaned.
    */
-  static function validate($value, $constraints) {
+  static function validate($value, $constraints, $required = FALSE) {
+    if ($required) array_unshift((array) $constraints, ['NotBlank' => NULL]);
+
     if (! empty($constraints)) foreach ($constraints as $c) { # The constraints are in a numeric array as the order matters.
       list($constraint, $params) = each($c);                  # Split to get the actual values here.
 
@@ -78,6 +80,13 @@ trait Validator {
 
   static function checkRegex($value, $params) {
     if (! preg_match($params['pattern'], $value)) self::fail($value, $params, ['message' => $params['pattern'] . ' regex not matched']);
+
+    return $value;
+  }
+
+
+  static function checkChoice($value, $params) {
+    if (! in_array($value, $params['choices'])) self::fail($value, $params, ['message' => 'accepted values are ' . implode(', ', $params['choices'])]);
 
     return $value;
   }

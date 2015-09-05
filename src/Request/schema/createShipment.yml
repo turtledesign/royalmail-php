@@ -1,4 +1,18 @@
+defaults:
+  required: true
+
 properties:
   requestedShipment:
+    shipmentType:
+      code: 
+        validate:
+          - Choice:
+              choices: [Delivery, Return]
 
+  serviceOccurence:
+    required: false
+    validate:
+      Range:
+        min: 0
+        max: 99
 
