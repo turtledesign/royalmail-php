@@ -1,0 +1,8 @@
+# This file contains summary data for the schema of all possible request data so we can scan through them for consistency.
+# More thorough testing will be done with actual request validation tests.
+# The values checked are: 
+# - size: the number of (root) request elements.
+# - last_key: the last property key of the schema (to verify all loaded OK).
+createShipment:
+  size: 1
+  last_key: one

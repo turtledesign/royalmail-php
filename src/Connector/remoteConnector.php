@@ -14,31 +14,66 @@ ini_set("soap.wsdl_cache_enabled","1"); # Save a bit of network traffic and dela
  */
 trait remoteConnector {
 
+  /**
+   * Send off the request to the Royal Mail API
+   * 
+   * @see baseConnector::doRequest()
+   * 
+   * @return \RoyalMail\Response\baseResponse Response class for the request sent.
+   */
   function doRequest($config, $request_type, $params) {
 
   }
 
 
-  protected function getSoapClient($config) {
+  /**
+   * Create the soap client for the endpoint given and add the WSSE header.
+   * 
+   * @param array $config
+   * 
+   * @return SoapClient
+   */
+  protected function getSecuredSoapClient($config) {
     return $this->addSecurityHeader(new \SoapClient($this->getEndpoint() . '?wsdl'));
   }
 
 
+  /**
+   * Add the WSSE security header { https://msdn.microsoft.com/en-gb/library/ms977327.aspx }
+   * 
+   * This is currently done by directly inserting the XML template given in the RM docs for simplicity.
+   * Other possibilities: 
+   *  - http://php.net/manual/en/soapclient.soapclient.php#97273 
+   *  - https://github.com/BeSimple/BeSimpleSoapClient 
+   *  - http://stackoverflow.com/questions/2987907/how-to-implement-ws-security-1-1-in-php5
+   * 
+   * @param SoapClient $soap_client
+   * @param array      $config
+   * 
+   * @return SoapClient 
+   */
   protected function addSecurityHeader($soap_client, $config) {
-
     $nonce = $this->getNonce();
     $ts    = $this->getTimestamp($config['timezone']);
-    $pass_digest  = $this->getPasswordDigest($nonce, $ts, $config['password']);
 
+    $header_xml = '
+<soapenv:Header>
+  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecuritysecext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+  <wsse:Username>' . $config['username'] . '</wsse:Username>
+  <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-tokenprofile-1.0#PasswordDigest">' . $this->getPasswordDigest($nonce, $ts, $config['password']) . '</wsse:Password>
+  <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-messagesecurity-1.0#Base64Binary">' . base64_encode($nonce) . '</wsse:Nonce>
+  <wsu:Created>' . $s . '</wsu:Created>
+  </wsse:UsernameToken>
+  </wsse:Security>
+</soapenv:Header>
+';
 
     return $soap_client;
   }
 
 
-
-
   protected function getNonce() {
-    return 1;
+    return mt_rand();
   }
 
 
@@ -52,6 +87,7 @@ trait remoteConnector {
   }
 
 
+
   /**
    * Make sure the response from the RM API seems kosher
    * 
@@ -62,6 +98,6 @@ trait remoteConnector {
   protected function verifyResponse($response) {
     // Verify WS security values.
 
-    return $this;
+    return $responses;
   }
 }
