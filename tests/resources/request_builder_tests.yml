@@ -1,3 +1,18 @@
+# Various request mockups.
+# Initially these will just be fully functioning versions, except where there is a request specific feature to test.
+# Can also add regression/bug tests here
+
+integrationHeader:
+  valid:
+    request:
+      identification:
+        applicationId: '0123456789' # If this isn't quoted it gets changed to 342391, not octal, not hex, just weird. TODO: find out why.
+        transactionId: 'order-123'
+    expect:
+      merge:
+        version: 2
+
+
 createShipment:
   valid:
     send:

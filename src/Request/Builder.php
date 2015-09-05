@@ -15,7 +15,7 @@ class Builder {
 
 
   /**
-   * Build the named request with the parameters given.
+   * Build the full named request with the parameters given and the integrationHeader element added.
    * 
    * @param string $request_name
    * @param array  $params
@@ -23,6 +23,23 @@ class Builder {
    * @return array structured, validated, and modified request.
    */
   static function build($request_name, $params = []) {
+    return array_merge(
+      self::buildRequest(self::getRequestSchema('integrationHeader'), $params['integrationHeader']),
+      self::buildRequest(self::getRequestSchema($request_name), $params[$request_name])
+    );
+  }
+
+
+
+  /**
+   * Build an individual request from schema and params.
+   * 
+   * @param string $request_name
+   * @param array  $params
+   * 
+   * @return array
+   */
+  static function buildRequest($request_name, $params) {
     return self::processSchema(self::getRequestSchema($request_name), $params);
   }
 
@@ -42,9 +59,13 @@ class Builder {
     $errors = [];
 
     try {
-      foreach ($schema as $k => $v) $built[$k] = self::processProperty($v, @$params[$k]);
-    } catch (Exception $e) {
+      foreach ($schema['properties'] as $k => $v) $built[$k] = self::processProperty($v, @$params[$k]);
+    
+    } catch (\RoyalMail\Validator\ValidatorException $e) { 
+      $errors[$k] = $k . ': ' . $e->getMessage(); 
 
+    } catch (\RoyalMail\Exception\RequestException $re) {
+      foreach ($re->getErrors() as $k_nested => $v) $errors[$k . ':' . $k_nested] = $v;
     }
 
     if (! empty($errors)) throw (new \RoyalMail\Exception\RequestException())->withErrors($errors);
@@ -62,9 +83,19 @@ class Builder {
    * @return mixed processed value or sub-structure.
    */
   static function processProperty($schema, $val) {
+    if (isset($schema['include'])) return self::build($schema['include'], $val);
+
     if (isset($schema['default']) && empty($val)) $val = $schema['default']; // CAVEAT: This will default all falsy values.
 
-    if (isset($schema['validate'])) self::validate($val, $schema['validate']);
+    if (isset($schema['validate']))               $val = self::validate($val, $schema['validate']);
+
+    if ($nested = array_diff_key($schema, array_flip(['include', 'default', 'validate']))) {
+      $nest = [];
+
+      foreach ($nested as $k => $v) $nest[$k] = self::processProperty($schema[$k], $val[$k]);
+
+      $val = $nest; // Can't have nested elements alongside scalar values.
+    }
 
     return $val;
   }

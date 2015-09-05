@@ -20,7 +20,11 @@ trait Validator {
    * @return mixed $value - validated and cleaned.
    */
   static function validate($value, $constraints) {
-    if (! empty($constraints)) foreach ($constraints as $constraint => $params) $value = self::constrain($value, $params);
+    if (! empty($constraints)) foreach ($constraints as $c) { # The constraints are in a numeric array as the order matters.
+      list($constraint, $params) = each($c);                  # Split to get the actual values here.
+
+      $value = self::constrain($value, $constraint, $params);
+    }
 
     return $value;
   }
@@ -39,7 +43,7 @@ trait Validator {
   static function constrain($value, $constraint, $params = []) {
     $constraint_method = get_called_class() . '::check' . $constraint;
 
-    if (! is_callable($constraint_method)) throw new InvalidArgumentException('Invalid constraint method ' . $constraint_method . ' called');
+    if (! is_callable($constraint_method)) throw new \InvalidArgumentException('Invalid constraint method ' . $constraint_method . ' called');
 
     return call_user_func_array($constraint_method, [$value, (array) $params]);
   }
@@ -51,11 +55,37 @@ trait Validator {
    *  
    */
   static function checkNotBlank($value, $params) {
-    if ($value !== FALSE && $value !== '' && $value !== NULL) return $value;
+    if  (! self::isBlank($value)) return $value;
 
     self::fail($value, $params, ['message' => 'can not be blank']);
   }
 
+
+
+  static function checkRange($value, $params) {
+    if (! is_numeric($value)) {
+      self::fail($value, $params, ['message' => 'numeric value required']);
+    }
+
+    if (isset($params['min']) && ($value < $params['min'])) {
+      self::fail($value, $params, ['message' => @$params['min_message'] ?: 'value should be over ' . $params['min']]);
+    }
+
+    return $value;
+  }
+
+
+
+  static function checkRegex($value, $params) {
+    if (! preg_match($params['pattern'], $value)) self::fail($value, $params, ['message' => $params['pattern'] . ' regex not matched']);
+
+    return $value;
+  }
+
+
+  static function isBlank($value) { 
+    return ($value === FALSE || $value === '' || $value === NULL); 
+  }
 
 
   /**

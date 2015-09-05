@@ -1,7 +1,8 @@
 <?php
 
-namespace RoyalMail\Exception
+namespace RoyalMail\Exception;
 
 class RequestException extends RoyalMailException {
+
 
 }

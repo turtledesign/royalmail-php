@@ -14,7 +14,7 @@ class Builder extends atoum {
    * 
    */
   function testGetRequestSchema() {
-    foreach (Yaml::parse(dirname(__FILE__) . '/../../resources/request_summaries.yml') as $request_name => $verify) {
+    foreach (Yaml::parse(RESOURCES_DIR . '/request_summaries.yml') as $request_name => $verify) {
 
       $this
         ->array(ReqBuilder::getRequestSchema($request_name)['properties'])
@@ -28,5 +28,27 @@ class Builder extends atoum {
   function testValueDefaulting() {
     $this->string(ReqBuilder::processProperty(['default' => 'foo'], @$not_defined))->isEqualTo('foo');
     $this->string(ReqBuilder::processProperty(['default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
+  }
+
+
+  function testIntegrationHeader() {
+    $schema = $this->getRequestSchema('integrationHeader');
+
+    $this
+      ->array(ReqBuilder::buildRequest('integrationHeader', $schema['request']))
+      ->isEqualTo($this->getExpectedResponse($schema));
+
+  }
+
+
+  function getRequestSchema($request_name, $type = 'valid') {
+    return Yaml::parse(RESOURCES_DIR . '/request_builder_tests.yml')[$request_name][$type];
+  }
+
+
+  function getExpectedResponse($schema) {
+    $merge = (isset($schema['expect']['merge'])) ? $schema['expect']['merge'] : [];
+
+    return array_merge($schema['request'], $merge);
   }
 }

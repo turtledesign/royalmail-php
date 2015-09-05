@@ -1,4 +1,5 @@
 
+0.0.7.0       05/09/2015 Working to the point where it can validate and structure the integrationHeader. [2]
 0.0.6.0       05/09/2015 Got basic validation functionality added via the Validator trait. [1.5]
 0.0.5.0       04/09/2015 Ditched multi-class request in favour of a single request builder utility (using the schema). [1.5]
 0.0.5.0       04/09/2015 Started on SOAP connector, but left till we get the auth details for testing. [1.9]
