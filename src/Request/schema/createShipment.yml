@@ -1,5 +1,4 @@
 defaults:
-  _required: true
   _trim: true
 
 properties:
@@ -7,10 +6,10 @@ properties:
     shipmentType:
       _key: ~/code
       _options: shipment_types
+      _required: true
       _validate: Choice
 
     serviceOccurence:
-      _required: false
       _validate:
         Range:
           min: 0
@@ -19,5 +18,34 @@ properties:
     serviceType:
       _key: ~/code
       _options: service_types
+      _required: true
       _validate: Choice
 
+    serviceOffering:
+      _key: ~/serviceOfferingCode/code
+      _options: service_offerings
+      _required: true
+      _validate: Choice
+
+    # serviceFormat:
+    #   _key: ~/serviceFormatCode/code
+    #   _options: service_formats
+    #   _validate: Choice
+
+    # bfpoFormat:
+    #   _key: ~/bFPOFormatCode/code
+    #   _options: bfpo_formats
+    #   _validate: Choice
+
+    # signature:
+    #   _pre_filter: Bool
+    #   _post_filter: Int
+
+    # shippingDate:
+    #   _validate:
+    #     Date:
+    #       format: 'Y-m-d'
+    #       min: +0D
+    #       max: +30D
+    #   _post_filter:
+    #     FormatDate: 'Y-m-d'

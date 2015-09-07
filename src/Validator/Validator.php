@@ -8,7 +8,8 @@ namespace RoyalMail\Validator;
  * Originally planned to use the Symfony validator component, but working with a slimline 
  * custom implementation using the same setup/name structure as the Symfony component for now.
  * 
- * PONDER: Should this be returning values or just checking and throwing exceptions?
+ * PONDER: Should this be returning values or just checking and throwing exceptions? (value returns are used in tests).
+ * TODO: could send failure type keys/code to self::fail, these could be linked to custom err messages on the fly.
  * 
  */
 trait Validator {
@@ -125,6 +126,29 @@ trait Validator {
     if (! in_array($value, $choices)) self::fail($value, $params, ['message' => 'accepted values are ' . implode(', ', $choices)]);
 
     return $value;
+  }
+
+
+
+  static function checkDate($value, $params, $helper) {
+    $original = $value;
+
+    if (! $value instanceof \DateTime) try {
+      $value = (empty($params['format'])) ? date_create($value) : date_create_from_format($params['format'], $value);
+    
+    } catch (Exception $e) {
+      self::fail($value, $params, ['message' => 'value not in a valid date format.']);
+    }
+    
+    if (isset($params['min']) && $value < date_create()->modify($params['min'])) { 
+      self::fail($value->format('Y-m-d'), $params, ['message' => 'date earlier than now ' . $params['min']]); // TODO: mebbe possible to display date in i18n format.
+    }
+
+    if (isset($params['max']) && $value > date_create()->modify($params['max'])) {
+      self::fail($value->format('Y-m-d'), $params, ['message' => 'date later than now ' . $params['max']]);
+    }
+
+    return $original;
   }
 
 

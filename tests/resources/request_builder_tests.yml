@@ -24,6 +24,7 @@ createShipment:
         shipmentType: 'Delivery'
         serviceOccurence: 1
         serviceType: T
+        serviceOffering: TRM
 
 
     expect:
@@ -33,8 +34,9 @@ createShipment:
         serviceOccurence: 1
         serviceType: 
           code: T
-        # serviceOffering:
-        #   serviceOfferingCode: TRM
+        serviceOffering:
+          serviceOfferingCode: 
+            code: TRM
         # serviceFormat:
         #   serviceFormatCode: null
 

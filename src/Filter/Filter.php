@@ -38,5 +38,22 @@ trait Filter {
   static function doDefault($val, $settings) {
     return empty($val) ? $settings['value'] : $val; // FIXME: replaces all falsy values, better to make that configurable
   }
+
+
+  static function doBool($val, $settings) {
+    if (is_string($val) && preg_match('/^(No|N|0|FALSE)$/i', $val)) return FALSE;
+
+    return (bool) $val;
+  }
+
+
+  static function doInt($val, $settings) { return (int) $val; }
+
+
+  static function doFormatDate($val, $settings) {
+    if (is_string($settings)) $settings = ['format' => $settings];
+    
+    if ($val instanceof DateTime) $val->format($settings['format']);
+  }
   
 }
