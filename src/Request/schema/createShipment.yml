@@ -3,21 +3,21 @@ defaults:
   _trim: true
 
 properties:
-  shipmentType:
-    _key: requestedShipment/shipmentType/code
-    _options_key: shipment_types
-    _validate: Choice
+  requestedShipment:
+    shipmentType:
+      _key: ~/code
+      _options: shipment_types
+      _validate: Choice
 
-  serviceOccurence:
-    _key: requestedShipment/serviceOccurence
-    _required: false
-    _validate:
-      Range:
-        min: 0
-        max: 99
+    serviceOccurence:
+      _required: false
+      _validate:
+        Range:
+          min: 0
+          max: 99
 
-  serviceType:
-    _key: serviceType/code 
-    _options_key: service_types
-    _validate: Choice
+    serviceType:
+      _key: ~/code
+      _options: service_types
+      _validate: Choice
 

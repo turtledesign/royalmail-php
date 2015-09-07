@@ -25,7 +25,7 @@ trait Validator {
     foreach (self::parseConstraints($schema) as $c) {  # The constraints are in a numeric array as the order matters.
       list($constraint, $params) = each($c);           # Split to get the actual values here.
 
-      $value = self::constrain($value, $constraint, $params);
+      $value = self::constrain($value, $constraint, self::parseParams($params, $schema), $helper);
     }
 
     return $value;
@@ -47,6 +47,24 @@ trait Validator {
 
 
   /**
+   * Adds extra settings values from the schema as they may be used by the validator as well as other things.
+   * 
+   * @param mixed $params
+   * @param array $schema
+   * 
+   * @return array
+   */
+  static function parseParams($params, $schema) {
+    $params = (array) $params;
+
+    foreach (array_diff_key($schema, ['_validate' => 1]) as $k => $v) if (preg_match('/^_/', $k)) $params[$k] = $v;
+
+    return $params;
+  }
+
+
+
+  /**
    * Apply the given constraints with the parameters given.
    * 
    * @param mixed  $value
@@ -55,12 +73,12 @@ trait Validator {
    * 
    * @return mixed
    */
-  static function constrain($value, $constraint, $params = []) {
+  static function constrain($value, $constraint, $params = [], $helper = NULL) {
     $constraint_method = get_called_class() . '::check' . $constraint;
 
     if (! is_callable($constraint_method)) throw new \InvalidArgumentException('Invalid constraint method ' . $constraint_method . ' called');
 
-    return call_user_func_array($constraint_method, [$value, (array) $params]);
+    return call_user_func_array($constraint_method, [$value, (array) $params, $helper]);
   }
 
 
@@ -69,7 +87,7 @@ trait Validator {
    * NotBlank
    *  
    */
-  static function checkNotBlank($value, $params) {
+  static function checkNotBlank($value, $params, $helper) {
     if  (! self::isBlank($value)) return $value;
 
     self::fail($value, $params, ['message' => 'can not be blank']);
@@ -77,7 +95,7 @@ trait Validator {
 
 
 
-  static function checkRange($value, $params) {
+  static function checkRange($value, $params, $helper) {
     if (! is_numeric($value)) {
       self::fail($value, $params, ['message' => 'numeric value required']);
     }
@@ -91,18 +109,24 @@ trait Validator {
 
 
 
-  static function checkRegex($value, $params) {
+  static function checkRegex($value, $params, $helper) {
     if (! preg_match($params['pattern'], $value)) self::fail($value, $params, ['message' => $params['pattern'] . ' regex not matched']);
 
     return $value;
   }
 
 
-  static function checkChoice($value, $params) {
-    if (! in_array($value, $params['choices'])) self::fail($value, $params, ['message' => 'accepted values are ' . implode(', ', $params['choices'])]);
+
+  static function checkChoice($value, $params, $helper) {
+    $choices = isset($params['choices']) ? $params['choices'] : $params['_options']; 
+
+    if (is_scalar($choices)) $choices = array_keys($helper[$choices]);
+
+    if (! in_array($value, $choices)) self::fail($value, $params, ['message' => 'accepted values are ' . implode(', ', $choices)]);
 
     return $value;
   }
+
 
 
   static function isBlank($value) { 

@@ -4,5 +4,5 @@
 # - size: the number of (root) request elements.
 # - last_key: the last property key of the schema (to verify all loaded OK).
 createShipment:
-  size: 3
-  last_key: serviceType 
+  size: 1
+  last_key: requestedShipment 

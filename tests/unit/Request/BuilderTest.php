@@ -4,7 +4,7 @@
 namespace RoyalMail\tests\unit\Request;
 
 use atoum;
-use \RoyalMail\Request\Builder    as ReqBuilder;
+use \RoyalMail\Request\Builder as ReqBuilder;
 use \Symfony\Component\Yaml\Yaml;
 
 class Builder extends atoum {
@@ -48,14 +48,15 @@ class Builder extends atoum {
 
 
   function testValidRequests() {
-    $requests = ['integrationHeader'];
+    $requests = ['integrationHeader', 'createShipment'];
+    $helper   = new \RoyalMail\Helper\Data();
 
     foreach ($requests as $r) {
       $schema = $this->getRequestSchema($r);
 
       $this
-        ->array(ReqBuilder::buildRequest($r, $schema['request']))
-        ->isEqualTo($this->getExpectedResponse($schema));
+        ->array(ReqBuilder::buildRequest($r, $schema['request'], $helper))
+        ->isEqualTo($schema['expect']);
     }
   }
 
@@ -66,10 +67,4 @@ class Builder extends atoum {
     return Yaml::parse(RESOURCES_DIR . '/request_builder_tests.yml')[$request_name][$type];
   }
 
-
-  function getExpectedResponse($schema) {
-    $merge = (isset($schema['expect']['merge'])) ? $schema['expect']['merge'] : [];
-
-    return array_merge($schema['request'], $merge);
-  }
 }

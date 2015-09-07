@@ -1,16 +1,17 @@
 <?php
 
-namespace RoyalMail\Helper
+namespace RoyalMail\Helper;
+
+use \Symfony\Component\Yaml\Yaml;
 
 /**
  * Helper to get value options &c.
  */
 class Data extends \ArrayObject {
 
-
   function __construct() {
     return parent::__construct([
-      'shipment_types' => ['Delivery', 'Return'],
+      'shipment_types' => ['Delivery' => 'Delivery', 'Return' => 'Return'],
     ]);
   }
 
@@ -24,7 +25,7 @@ class Data extends \ArrayObject {
 
 
   protected function loadData($key) {
-    $this->offsetSet($key, Yaml::parse(dirname(__FILE__) . '../data/' . $key . '.yml'));
+    $this->offsetSet($key, Yaml::parse(dirname(__FILE__) . '/../../data/' . $key . '.yml'));
 
     return $this;
   }

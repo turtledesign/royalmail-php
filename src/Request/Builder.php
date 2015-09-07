@@ -18,8 +18,9 @@ class Builder {
   /**
    * Build the full named request with the parameters given and the integrationHeader element added.
    * 
-   * @param string $request_name
-   * @param array  $params
+   * @param string       $request_name
+   * @param array        $params
+   * @param \ArrayObject $helper
    * 
    * @return array structured, validated, and modified request.
    */
@@ -42,7 +43,7 @@ class Builder {
    * @return array
    */
   static function buildRequest($request_name, $params, $helper = NULL) {
-    return self::processSchema(self::getRequestSchema($request_name), $params);
+    return self::processSchema(self::getRequestSchema($request_name), $params, $helper);
   }
 
 
@@ -59,12 +60,14 @@ class Builder {
   static function processSchema($schema, $params, $helper = NULL) {
     $built    = [];
     $errors   = [];
-    $defaults = @$schema['defaults'] ?: [];
 
     try {
-      foreach ($schema['properties'] as $k => $v) $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], $defaults, $helper);
+
+      foreach ($schema['properties'] as $k => $v) {
+        $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], @$schema['defaults'] ?: [], $helper);
+      }
     
-    } catch (\RoyalMail\Validator\ValidatorException $e) { 
+    } catch (\RoyalMail\Exception\ValidatorException $e) {
       $errors[$k] = $k . ': ' . $e->getMessage(); 
 
     } catch (\RoyalMail\Exception\RequestException $re) {
@@ -90,11 +93,12 @@ class Builder {
    * 
    * @return array
    */
-  static function addProperty($arr, $schema, $key, $value, $defaults = [], $helper = NULL) {
+  static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
     if (isset($schema['_key'])) {
       $top_ref = & $arr;
 
       foreach (explode('/', $schema['_key']) as $path) {   // If there is a _key: this/that path value it replaces the $key value entirely.
+        if ($path === '~') $path = $key;                   // Combine existing key.
         
         if (empty($top_ref[$path])) $top_ref[$path] = [];  // New elements can be added to existing paths, so only create what isn't there.
         
@@ -103,7 +107,7 @@ class Builder {
     
     } else $top_ref = & $arr[$key];
     
-    $top_ref = self::processProperty($schema, $value, $defaults, $helper);
+    $top_ref = self::processProperty($schema, $val, $defaults, $helper);
 
     return $arr;
   }
@@ -126,11 +130,13 @@ class Builder {
       foreach ($nested as $k => $v) $nest = self::addProperty($nest, $schema[$k], $k, @$val[$k], $defaults, $helper);
 
       return $nest;
-    } 
+    }
+
+    $schema = array_merge((array) $defaults, $schema);
     
     $val = self::filter($val, $schema, $type = 'pre', $helper);
 
-    self::validate($val, $schema, $helper);
+    self::validate($schema, $val, $helper);
       
     return self::filter($val, $schema, $type = 'post', $helper);
   }

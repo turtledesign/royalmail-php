@@ -1,5 +1,6 @@
 defaults:
   _required: true
+  _trim: true
 
 properties:
 
