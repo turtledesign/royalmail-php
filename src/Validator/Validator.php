@@ -8,6 +8,8 @@ namespace RoyalMail\Validator;
  * Originally planned to use the Symfony validator component, but working with a slimline 
  * custom implementation using the same setup/name structure as the Symfony component for now.
  * 
+ * PONDER: Should this be returning values or just checking and throwing exceptions?
+ * 
  */
 trait Validator {
 
@@ -19,16 +21,27 @@ trait Validator {
    * 
    * @return mixed $value - validated and cleaned.
    */
-  static function validate($value, $constraints, $required = FALSE) {
-    if ($required) array_unshift((array) $constraints, ['NotBlank' => NULL]);
-
-    if (! empty($constraints)) foreach ($constraints as $c) { # The constraints are in a numeric array as the order matters.
-      list($constraint, $params) = each($c);                  # Split to get the actual values here.
+  static function validate($schema, $value, $helper = NULL) {
+    foreach (self::parseConstraints($schema) as $c) {  # The constraints are in a numeric array as the order matters.
+      list($constraint, $params) = each($c);           # Split to get the actual values here.
 
       $value = self::constrain($value, $constraint, $params);
     }
 
     return $value;
+  }
+
+
+
+  static function parseConstraints($schema) {
+    $constraints = isset($schema['_validate']) ? $schema['_validate'] : [];
+
+    if (is_scalar($constraints))                         $constraints = [$constraints => []]; // Shorthand version for single named validator e.g. _validate: NotBlank
+    if (count($constraints) && ! isset($constraints[0])) $constraints = [$constraints];       // Shorthand version for single validator with options. e.g. _validate: { Length: 20 }
+
+    if (! empty($schema['_required'])) array_unshift($constraints, ['NotBlank' => TRUE]);     // Shorthand required values, always first test.
+
+    return $constraints;
   }
 
 
@@ -104,12 +117,12 @@ trait Validator {
    * @param array $params
    * @param array $defaults
    * 
-   * @throws \RoyalMail\Validator\ValidatorException
+   * @throws \RoyalMail\Exception\ValidatorException
    */
   static function fail($value, $params, $defaults = []) {
     $params   = array_merge(['message' => 'value is invalid'], $defaults, $params);
     $show_val = is_scalar($value) ? ' [' . $value . ']' : '';
 
-    throw new \RoyalMail\Validator\ValidatorException($params['message'] . $show_val);
+    throw new \RoyalMail\Exception\ValidatorException($params['message'] . $show_val);
   }
 }

@@ -1,18 +1,23 @@
 defaults:
-  required: true
+  _required: true
+  _trim: true
 
 properties:
-  requestedShipment:
-    shipmentType:
-      code: 
-        validate:
-          - Choice:
-              choices: [Delivery, Return]
+  shipmentType:
+    _key: requestedShipment/shipmentType/code
+    _options_key: shipment_types
+    _validate: Choice
 
   serviceOccurence:
-    required: false
-    validate:
+    _key: requestedShipment/serviceOccurence
+    _required: false
+    _validate:
       Range:
         min: 0
         max: 99
+
+  serviceType:
+    _key: serviceType/code 
+    _options_key: service_types
+    _validate: Choice
 

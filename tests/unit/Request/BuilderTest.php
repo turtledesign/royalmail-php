@@ -26,13 +26,29 @@ class Builder extends atoum {
 
 
   function testValueDefaulting() {
-    $this->string(ReqBuilder::processProperty(['default' => 'foo'], @$not_defined))->isEqualTo('foo');
-    $this->string(ReqBuilder::processProperty(['default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
+    $this->string(ReqBuilder::processProperty(['_default' => 'foo'], @$not_defined))->isEqualTo('foo');
+    $this->string(ReqBuilder::processProperty(['_default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
+  }
+
+
+  function testPathCreation() {
+    $this
+      ->array(ReqBuilder::addProperty(['us' => 'chickens'], ['_key' => 'foo/bar/baz'], 0, 'kaboom!'))
+      ->isEqualTo(['us' => 'chickens', 'foo' => ['bar' => ['baz' => 'kaboom!']]]);
+
+    $this
+      ->array(ReqBuilder::addProperty([], ['_key' => 'foo/bar/baz'], 0, 'kaboom!'))
+      ->isEqualTo(['foo' => ['bar' => ['baz' => 'kaboom!']]]);
+
+
+    $this
+      ->array(ReqBuilder::addProperty(['us' => 'chickens'], [], 'fizz', 'buzz'))
+      ->isEqualTo(['us' => 'chickens', 'fizz' => 'buzz']);
   }
 
 
   function testValidRequests() {
-    $requests = ['integrationHeader', 'createShipment'];
+    $requests = ['integrationHeader'];
 
     foreach ($requests as $r) {
       $schema = $this->getRequestSchema($r);

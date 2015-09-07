@@ -1,25 +1,25 @@
 defaults:
-  required: true
-  
+  _required: true
+
 properties:
 
   version:            # The version of the API currently being used (currently 2).
-    default: 2
-    validate: 
-      - Range:
+    _default: 2
+    _validate: 
+      Range:
         min: 2
   
   identification:
 
     applicationId:    # This is the ten digit Customer Account Number allocated by RM
-      validate:
-        - Regex: 
-            pattern: '/^\d{10}$/'
-            message: 'The Customer Account Number should be exactly 10 digits long.'
+      _validate:
+        Regex: 
+          pattern: '/^\d{10}$/'
+          message: 'The Customer Account Number should be exactly 10 digits long.'
 
     transactionId:    # Unique ID provided by client system
-      validate:
-        - Regex: 
-            pattern: '/^[a-zA-Z0-9\/-]+$/'
-            message: 'Your reference ID, should contain only the characters: ‘a-z’, ‘A-Z’, ‘0-9’, ‘/’ and ‘-‘'
+      _validate:
+        Regex: 
+          pattern: '/^[a-zA-Z0-9\/-]+$/'
+          message: 'Your reference ID, should contain only the characters: ‘a-z’, ‘A-Z’, ‘0-9’, ‘/’ and ‘-‘'
 

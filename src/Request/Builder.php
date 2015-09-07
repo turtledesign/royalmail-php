@@ -12,6 +12,7 @@ use \Symfony\Component\Yaml\Yaml;
 class Builder {
 
   use \RoyalMail\Validator\Validator;
+  use \RoyalMail\Filter\Filter;
 
 
   /**
@@ -22,7 +23,7 @@ class Builder {
    * 
    * @return array structured, validated, and modified request.
    */
-  static function build($request_name, $params = []) {
+  static function build($request_name, $params = [], $helper) {
     return array_merge(
       self::buildRequest(self::getRequestSchema('integrationHeader'), $params['integrationHeader']),
       self::buildRequest(self::getRequestSchema($request_name), $params[$request_name])
@@ -34,12 +35,13 @@ class Builder {
   /**
    * Build an individual request from schema and params.
    * 
-   * @param string $request_name
-   * @param array  $params
+   * @param string       $request_name
+   * @param array        $params
+   * @param \ArrayObject $helper
    * 
    * @return array
    */
-  static function buildRequest($request_name, $params) {
+  static function buildRequest($request_name, $params, $helper = NULL) {
     return self::processSchema(self::getRequestSchema($request_name), $params);
   }
 
@@ -54,13 +56,13 @@ class Builder {
    * 
    * @return array values structured for API request.
    */
-  static function processSchema($schema, $params) {
+  static function processSchema($schema, $params, $helper = NULL) {
     $built    = [];
     $errors   = [];
     $defaults = @$schema['defaults'] ?: [];
 
     try {
-      foreach ($schema['properties'] as $k => $v) $built[$k] = self::processProperty(array_merge($defaults, $v), @$params[$k]);
+      foreach ($schema['properties'] as $k => $v) $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], $defaults, $helper);
     
     } catch (\RoyalMail\Validator\ValidatorException $e) { 
       $errors[$k] = $k . ': ' . $e->getMessage(); 
@@ -75,36 +77,85 @@ class Builder {
   }
 
 
+
+  /**
+   * Add a property, processing as required and creating extra path elements.
+   * 
+   * @param array       $arr    The structure so far.
+   * @param array       $schema Build map
+   * @param string      $key    current key
+   * @param mixed       $value
+   * @param array       $defaults
+   * @param ArrayObject $helper
+   * 
+   * @return array
+   */
+  static function addProperty($arr, $schema, $key, $value, $defaults = [], $helper = NULL) {
+    if (isset($schema['_key'])) {
+      $top_ref = & $arr;
+
+      foreach (explode('/', $schema['_key']) as $path) {   // If there is a _key: this/that path value it replaces the $key value entirely.
+        
+        if (empty($top_ref[$path])) $top_ref[$path] = [];  // New elements can be added to existing paths, so only create what isn't there.
+        
+        $top_ref = & $top_ref[$path];
+      }
+    
+    } else $top_ref = & $arr[$key];
+    
+    $top_ref = self::processProperty($schema, $value, $defaults, $helper);
+
+    return $arr;
+  }
+
+
   /**
    * Process a single value to add to the structure: at this point just adding defaults and validating.
    * 
-   * @param array $schema instructions on how to process the value
-   * @param mixed $val    submitted value.
+   * @param array $schema     instructions on how to process the value
+   * @param mixed $val        submitted value.
+   * @param array $defaults   cascaded schema (not value) defaults e.g. required: true
+   * @param \ArrayObject      helper for get options.
    * 
    * @return mixed processed value or sub-structure.
    */
-  static function processProperty($schema, $val) {
-    if (isset($schema['include'])) return self::build($schema['include'], $val);
-
-    if (isset($schema['default']) && empty($val)) $val = $schema['default']; // CAVEAT: This will default all falsy values.
-
-    if (isset($schema['validate'])) $val = self::validate($val, $schema['validate']);
-
-    if ($nested = array_diff_key($schema, array_flip(['include', 'default', 'validate', 'required']))) {
+  static function processProperty($schema, $val, $defaults = [], $helper = NULL) {
+    if ($nested = self::getNested($schema)) {
       $nest = [];
 
-      foreach ($nested as $k => $v) $nest[$k] = self::processProperty($schema[$k], $val[$k]);
+      foreach ($nested as $k => $v) $nest = self::addProperty($nest, $schema[$k], $k, @$val[$k], $defaults, $helper);
 
-      $val = $nest; // Can't have nested elements alongside scalar values.
-    }
+      return $nest;
+    } 
+    
+    $val = self::filter($val, $schema, $type = 'pre', $helper);
 
-    return $val;
+    self::validate($val, $schema, $helper);
+      
+    return self::filter($val, $schema, $type = 'post', $helper);
+  }
+
+
+
+  /**
+   * parse out the instruction elements of the schema and just return sub-keys
+   * 
+   * @param array $schema
+   * 
+   * @return array
+   */
+  static function getNested($schema) {
+    $nested = [];
+
+    if (is_array($schema)) foreach ($schema as $k => $v) if (! preg_match('/^_/', $k)) $nested[$k] = $v;
+
+    return $nested;
   }
 
 
   /**
    * Request schemas are kept in YML files.   
-   * These have the validation and defaults.
+   * These have the structure, validation, and defaults.
    * 
    * @return array
    */
