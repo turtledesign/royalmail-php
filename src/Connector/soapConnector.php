@@ -12,7 +12,7 @@ ini_set("soap.wsdl_cache_enabled","1"); # Save a bit of network traffic and dela
  * Any class implementing it needs to have the getEndpoint() method implemented to return the API URL.
  * 
  */
-trait remoteConnector {
+trait soapConnector {
 
   /**
    * Send off the request to the Royal Mail API

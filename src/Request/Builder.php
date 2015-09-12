@@ -94,6 +94,12 @@ class Builder {
    * @return array
    */
   static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
+    try {
+      $val = self::processProperty($schema, $val, $defaults, $helper);
+
+    } catch (\RoyalMail\Exception\BuilderSkipFieldException $e) { return $arr; } // Exception is notification that rules exclude this field.
+     
+
     if (isset($schema['_key'])) {
       $top_ref = & $arr;
 
@@ -107,7 +113,7 @@ class Builder {
     
     } else $top_ref = & $arr[$key];
     
-    $top_ref = self::processProperty($schema, $val, $defaults, $helper);
+    $top_ref = $val;
 
     return $arr;
   }

@@ -152,6 +152,39 @@ trait Validator {
   }
 
 
+  static function checkLength($value, $params, $helper) {
+    $func = function_exists('mb_strlen') 
+      ? function ($str) { return mb_strlen($str); }
+      : function ($str) { return strlen($str); };
+
+    if (isset($params['min']) && $func($value) < $params['min']) {
+      self::fail($value, $params, ['message' => 'value should be at least ' . $params['min'] . ' characters long']);
+    }
+
+    if (isset($params['max']) && $func($value) > $params['max']) {
+      self::fail($value, $params, ['message' => 'value should be at least ' . $params['min'] . ' characters long']);
+    }
+
+    return $value;
+  }
+
+
+  static function checkNumeric($value, $params, $helper) {
+    if (! is_numeric($value)) {
+      self::fail($value, $params, ['message' => 'value contains non-numeric characters']);
+    }
+
+    return $value;
+  }
+
+
+  static function checkEmail($value, $params, $helper) {
+    if (filter_var($value, \FILTER_VALIDATE_EMAIL) === FALSE) {
+      self::fail($value, $params, ['message' => 'not a valid email']);
+    }
+  }
+
+
 
   static function isBlank($value) { 
     return ($value === FALSE || $value === '' || $value === NULL); 

@@ -25,31 +25,58 @@ createShipment:
         serviceOccurence: 1
         serviceType: T
         serviceOffering: TRM
+        serviceFormat: P.int
+        shippingDate: <<dateVector|+2 days>>
+        bfpoFormat: FAE
+        signature: true
+        customerReference: CustSuppRef1
+        senderReference: SenderReference1
+
+        recipientContact:
+          name: Mr Tom Smith
+          companyName: Department 98
+          phone: "07801 123 456"
+          email: tom.smith@royalmail.com
+
 
 
     expect:
       requestedShipment:
         shipmentType:
           code: 'Delivery'
+        
         serviceOccurence: 1
+        
         serviceType: 
           code: T
+        
         serviceOffering:
           serviceOfferingCode: 
             code: TRM
-        # serviceFormat:
-        #   serviceFormatCode: null
+        
+        serviceFormat:
+          serviceFormatCode: 
+            code: P
+        
+        shippingDate: <<dateVector|+2 days>>
+        
+        bfpoFormat:
+          bFPOFormatCode:
+            code: FAE
+        signature: 1
 
-        # shippingDate: 2016-02-09
+        customerReference: CustSuppRef1
+        senderReference: SenderReference1
 
-        # recipentContact:
-        #   name: Mr Tom Smith
-        #   complementaryName: Department 98
-        #   telephoneNumber:
-        #     countryCode: 0044
-        #     telephoneNumber: 07801123456
-        #   electronicAddress:
-        #     electronicAddress: tom.smith@royalmail.com
+
+        recipientContact:
+          name: Mr Tom Smith
+          complementaryName: Department 98
+          telephoneNumber:
+            countryCode: "0044"
+            telephoneNumber: "07801123456"
+          electronicAddress:
+            electronicAddress: tom.smith@royalmail.com
 
         # recipientAddress:
         #   addressLine1: 44-46 Morningside Road
@@ -79,5 +106,3 @@ createShipment:
         #           statusCode: null
         #         validFrom: 2015-02-09T09:52:06.000+02:00
 
-        # customerReference: CustSuppRef1
-        # senderReference: SenderReference1
