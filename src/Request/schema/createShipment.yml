@@ -1,51 +1,137 @@
 defaults:
   _trim: true
+  _skip_blank: true
 
 properties:
   requestedShipment:
     shipmentType:
+      _help: "Specifies whether the shipment being created is a standard delivery service or a returns service. Accepted values are ‘Delivery’ and ‘Return’."
       _key: ~/code
       _options: shipment_types
       _required: true
       _validate: Choice
 
     serviceOccurence:
+      _help: >
+        Part of the customer’s contract identifier. In conjunction with the Service Offering it identifies an agreement line on the customer’s account. 
+        If only one Service Reference exists then this is not required.
       _validate:
         Range:
           min: 0
           max: 99
 
     serviceType:
+      _help: "The system Service Type of the shipment."
       _key: ~/code
       _options: service_types
       _required: true
       _validate: Choice
 
     serviceOffering:
+      _help: "The Service Offering code for the mail item ordered."
       _key: ~/serviceOfferingCode/code
       _options: service_offerings
       _required: true
       _validate: Choice
 
-    # serviceFormat:
-    #   _key: ~/serviceFormatCode/code
-    #   _options: service_formats
-    #   _validate: Choice
+    serviceFormat:
+      _help: "The Service Format code for the shipment."
+      _key: ~/serviceFormatCode/code
+      _options: service_formats
+      _validate: Choice
+      _post_filter: { Truncate: 1 } # The formats are duplicated for inland and international (as per data file), but use the same single char codes in the request.
+      
+    bfpoFormat:
+      _help: "For HM Forces (BFPO) Service Type only when the Service Format is not International Flat, International Letter or International Packet."
+      _key: ~/bFPOFormatCode/code
+      _options: bfpo_formats
+      _validate: Choice
 
-    # bfpoFormat:
-    #   _key: ~/bFPOFormatCode/code
-    #   _options: bfpo_formats
-    #   _validate: Choice
+    signature:
+      _help: "For RM Tracked items only, this element specifies whether a signature is required on delivery. If this element is not included then it defaults to false."
+      _pre_filter: Bool
+      _post_filter: Int
 
-    # signature:
-    #   _pre_filter: Bool
-    #   _post_filter: Int
+    shippingDate:
+      _help: >
+        This is the date that the item will be physically sent (in the format YYYY-MM-DD). This may be up to 30 days in the future. 
+        Please note that the Tracked Returns service does not require a Shipping date.
+      _validate:
+        Date:
+          format: 'Y-m-d'
+          min: +0 days
+          max: +30 days
+      _post_filter: { FormatDate: 'Y-m-d' }
 
-    # shippingDate:
-    #   _validate:
-    #     Date:
-    #       format: 'Y-m-d'
-    #       min: +0D
-    #       max: +30D
-    #   _post_filter:
-    #     FormatDate: 'Y-m-d'
+    departmentReference:
+      _help: "This is the department reference code that customers can define in OBA. This is visible in the system departmental references GUI."
+      _validate:
+        Length: { max: 10 }
+
+    customerReference:
+      _help: >
+        This field allows customers to supply a reference that applies to multiple shipments and is included to mirror the functionality offered by the Customer Reference field in OBA, 
+        whereby a reference can be associated to a group of items. For references that apply to a single shipment, the senderReference field should be used. 
+        **Warning: Misuse of this field may result in incorrect billing.**
+      _validate: 
+        Length: { max: 12 }
+
+    senderReference:
+      _help: "This field allows the user to supply their own reference number. Where supported (e.g. Tracked Returns) this number will appear on the label."
+      _validate: 
+        Length: { max: 20 }
+
+
+    # serviceEnhancements:
+    #   enhancementType:
+    #     _help: "If serviceEnhancement is included then enhancementType is Mandatory. There can never be more than one enhancementType specified from each Service Enhancement Group."
+    #     _multiple: true
+    #     _key: ~/serviceEnhancement/code
+    #     _options: service_enhancements
+    #     _validate: Choice 
+    #     _required: true
+
+    
+
+    recipientContact:
+      name:
+        _help: "Contact Name."
+        _required: true
+        _validate:
+          Length: { max: 80 }
+
+      companyName:
+        _key: complementaryName
+        _help: "Business Name."
+        _validate:
+          Length: { max: 64 }
+
+      phone:
+        _help: "UK mobile phone number. Required if an SMS service enhancement is selected."
+        _key: telephoneNumber/telephoneNumber
+        _pre_filter:
+          CleanUKPhone: { stripCountryCode: true, stripBlanks: true }
+        _validate:
+          Numeric: ~
+          Length: 12
+          RequiredIf:
+            field: requestedShipment.serviceEnhancements.enhancementType
+            isAny: [13, 15] # 13: SMS Notification, 15: SMS & Email
+
+      phoneCountry:
+        _help: "Country code - always 0044"
+        _key: telephoneNumber/countryCode
+        _hidden: true
+        _default: '0044'
+        _pre_filter:
+          SkipIf:
+            field: requestedShipment.recipientContact.phone
+            isEmpty: true
+
+      email:
+        _help: "Email address to be used for notifications. Required if Email enhancement is selected"
+        _key: electronicAddress/electronicAddress
+        _validate:
+          Email: ~
+          Length: 60
+

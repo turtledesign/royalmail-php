@@ -9,6 +9,8 @@ use \Symfony\Component\Yaml\Yaml;
 
 class Builder extends atoum {
 
+  use \RoyalMail\tests\TestDataLoader;
+
   /**
    * Verify all the request schema files load and match with their summary data.
    * 
@@ -28,6 +30,7 @@ class Builder extends atoum {
   function testValueDefaulting() {
     $this->string(ReqBuilder::processProperty(['_default' => 'foo'], @$not_defined))->isEqualTo('foo');
     $this->string(ReqBuilder::processProperty(['_default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
+    $this->string(ReqBuilder::processProperty(['_default' => '0044'], NULL))->isEqualTo('0044');
   }
 
 
@@ -51,20 +54,16 @@ class Builder extends atoum {
     $requests = ['integrationHeader', 'createShipment'];
     $helper   = new \RoyalMail\Helper\Data();
 
-    foreach ($requests as $r) {
-      $schema = $this->getRequestSchema($r);
+    $test_schema = $this->getTestSchema('request_builder');
+
+    foreach ($test_schema as $r => $s) {
+      $valid = $s['valid'];
 
       $this
-        ->array(ReqBuilder::buildRequest($r, $schema['request'], $helper))
-        ->isEqualTo($schema['expect']);
+        ->array(ReqBuilder::buildRequest($r, $valid['request'], $helper))
+        ->isEqualTo($valid['expect']);
     }
   }
 
-
-
-
-  function getRequestSchema($request_name, $type = 'valid') {
-    return Yaml::parse(RESOURCES_DIR . '/request_builder_tests.yml')[$request_name][$type];
-  }
 
 }
