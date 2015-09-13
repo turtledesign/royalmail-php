@@ -193,6 +193,23 @@ trait Validates {
   }
 
 
+  /**
+   * Check field exists based on the value of another field.
+   * 
+   * NB: Valitron's equals method checks against a field val, not a string, so 'in' is used for strings and arrays.
+   */
+  static function checkThisRequiredWhenThat($value, $params, $helper) {
+    list($where, $path) = explode(':', $params['that']);
+
+    if (self::is($helper[$where], ['required' => $path, 'in' => [[$path, (array) $params['is']]]])) {
+      $params = array_merge(['message' => 'required when ' . $path . ' in ' . implode(', ', (array) $params['is'])], $params);
+      
+      return self::checkNotBlank($value, $params, $helper);
+    }
+
+    return $value;
+  }
+
 
   static function isBlank($value) { 
     return ($value === FALSE || $value === '' || $value === NULL); 
@@ -209,6 +226,8 @@ trait Validates {
    *  -- Field => [Validation settings, /...]
    * layout to
    *  -- Validation Rule => [[Field, Settings], [], ... ]
+   * 
+   * Need to add custom rules for checks not covered by the default Valitron rules (i.e. ThisRequiredWhenThat()).
    */
   static function buildValitronRules($schema) {
     return [];

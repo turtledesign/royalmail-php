@@ -112,11 +112,11 @@ properties:
         _pre_filter:
           CleanUKPhone: { stripCountryCode: true, stripBlanks: true }
         _validate:
-          Numeric: ~
-          Length: 12
-          RequiredIf:
-            field: requestedShipment.serviceEnhancements.enhancementType
-            isAny: [13, 15] # 13: SMS Notification, 15: SMS & Email
+          - Numeric: ~
+          - Length: { max: 12 }
+          - ThisRequiredWhenThat:
+              that: input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code
+              is: ['13', '15'] # 13: SMS Notification, 15: SMS & Email
 
       phoneCountry:
         _help: "Country code - always 0044"
@@ -130,6 +130,10 @@ properties:
         _help: "Email address to be used for notifications. Required if Email enhancement is selected"
         _key: electronicAddress/electronicAddress
         _validate:
-          Email: ~
-          Length: 60
+          - Email: ~
+          - Length: { max: 60 }
+          - ThisRequiredWhenThat:
+              that: input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code
+              is: ['14', '15'] # 14: Email notification, 15: Email & SMS
+
 

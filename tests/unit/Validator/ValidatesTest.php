@@ -72,4 +72,28 @@ class Validates extends atoum {
     $this->boolean(self::is(['foo' => 'bar'], ['required' => 'foo']))->isTrue();
     $this->boolean(self::is(['foo' => ['bar' => 'baz']], ['required' => 'foo.bar']))->isTrue();
   }
+
+
+  function testThisRequiredWhenThat() {
+    $this // Required, and set (array).
+      ->string(self::constrain('foo', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => ['baz', 'kaboom']], ['input' => ['bar' => 'kaboom']]))
+      ->isEqualTo('foo');
+
+    $this // Required, and set (string).
+      ->string(self::constrain('foo', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => 'kaboom'], ['input' => ['bar' => 'kaboom']]))
+      ->isEqualTo('foo');
+
+    $this // Required, and empty.
+      ->exception(function () { 
+        self::constrain('', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => ['baz', 'kaboom']], ['input' => ['bar' => 'kaboom']]);
+      })->message->contains('required when');
+
+    $this // Not Required, and not set.
+      ->string(self::constrain('', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => ['baz', 'kaboom']], ['input' => ['bar' => 'boing']]))
+      ->isEqualTo('');
+
+    $this // Not Required, and set (currently no option to skip if not required).
+      ->string(self::constrain('foo', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => ['baz', 'kaboom']], ['input' => ['bar' => 'boing']]))
+      ->isEqualTo('foo');
+  }
 }
