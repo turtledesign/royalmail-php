@@ -25,14 +25,12 @@
   ],
 
   "require": {
-    "php":          ">=5.4.0",
-    "symfony/yaml": "~2.7|~3.0.0"
+    "php":             ">=5.4.0",
+    "symfony/yaml":    "~2.7|~3.0.0",
+    "vlucas/valitron": "~1.2"
   },
 
   "require-dev": {
     "atoum/atoum" : "dev-master"
-  },
-
-  "suggest": {
-  }  
+  }
 }

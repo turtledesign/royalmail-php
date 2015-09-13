@@ -2,17 +2,21 @@
 
 namespace RoyalMail\Validator;
 
+
+use \Valitron\Validator;
+
 /**
  * Trait to provice YML schema based validation for requests (and possibly responses).
  * 
  * Originally planned to use the Symfony validator component, but working with a slimline 
  * custom implementation using the same setup/name structure as the Symfony component for now.
+ * 12/11/2015 - Switching over to https://github.com/vlucas/valitron
  * 
  * PONDER: Should this be returning values or just checking and throwing exceptions? (value returns are used in tests).
  * TODO: could send failure type keys/code to self::fail, these could be linked to custom err messages on the fly.
  * 
  */
-trait Validator {
+trait Validates {
 
   /**
    * Validate the given values against the constraints given.
@@ -23,8 +27,10 @@ trait Validator {
    * @return mixed $value - validated and cleaned.
    */
   static function validate($schema, $value, $helper = NULL) {
-    foreach (self::parseConstraints($schema) as $c) {  # The constraints are in a numeric array as the order matters.
-      list($constraint, $params) = each($c);           # Split to get the actual values here.
+    foreach (self::parseConstraints($schema) as $c) {  // The constraints are in a numeric array as the order matters.
+      list($constraint, $params) = each($c);           // Split to get the actual values here.
+
+      if (self::isBlank($value) && ! preg_match('/require/i', $constraint)) continue; // Only *require* validators should check blank values.
 
       $value = self::constrain($value, $constraint, self::parseParams($params, $schema), $helper);
     }
@@ -182,12 +188,50 @@ trait Validator {
     if (filter_var($value, \FILTER_VALIDATE_EMAIL) === FALSE) {
       self::fail($value, $params, ['message' => 'not a valid email']);
     }
+
+    return $value;
   }
 
 
 
   static function isBlank($value) { 
     return ($value === FALSE || $value === '' || $value === NULL); 
+  }
+
+
+  static function hasValue($arr, $field) {
+    return self::is($arr, ['required' => $field]);
+  }
+
+
+  /**
+   * Convert the validation from the schema with has a 
+   *  -- Field => [Validation settings, /...]
+   * layout to
+   *  -- Validation Rule => [[Field, Settings], [], ... ]
+   */
+  static function buildValitronRules($schema) {
+    return [];
+  }
+
+
+
+  static function is($arr, $rules) {
+    return ! is_array(self::callValitron($arr, $rules, $throw = FALSE));
+  }
+
+
+  static function callValitron($arr, $rules, $throw = TRUE) {
+    $v = new Validator($arr);
+
+    $v->rules($rules);
+
+    if (! $v->validate()) {
+      if ($throw) throw (new \RoyalMail\Exception\RequestException())->withErrors($v->errors());
+
+      return $v->errors();
+    
+    } else return TRUE;
   }
 
 

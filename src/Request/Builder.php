@@ -11,8 +11,8 @@ use \Symfony\Component\Yaml\Yaml;
  */
 class Builder {
 
-  use \RoyalMail\Validator\Validator;
-  use \RoyalMail\Filter\Filter;
+  use \RoyalMail\Validator\Validates;
+  use \RoyalMail\Filter\Filters;
 
 
   /**
@@ -61,8 +61,10 @@ class Builder {
     $built    = [];
     $errors   = [];
 
-    try {
+    (is_null($helper)) ? $helper = ['input' => $params] : $helper['input'] = $params;
 
+
+    try {
       foreach ($schema['properties'] as $k => $v) {
         $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], @$schema['defaults'] ?: [], $helper);
       }

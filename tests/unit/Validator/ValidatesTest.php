@@ -4,8 +4,8 @@ namespace RoyalMail\tests\unit\Validator;
 
 use atoum;
 
-class Validator extends atoum {
-  use \RoyalMail\Validator\Validator;
+class Validates extends atoum {
+  use \RoyalMail\Validator\Validates;
 
 
 
@@ -53,9 +53,23 @@ class Validator extends atoum {
   }
 
 
+  function testEmail() {
+    $this
+      ->exception(function () { self::constrain('not.valid.email', 'Email', []); })
+      ->message
+      ->contains('not a valid email');
+  }
+
+
   function testCustomValidationException() {
     $this->exception(function () { self::constrain(NULL, 'NotBlank'); })->hasMessage('can not be blank'); // Default NotBlank message NULL != scalar.
     $this->exception(function () { self::constrain('', 'NotBlank'); })->hasMessage('can not be blank []');
     $this->exception(function () { self::constrain('', 'NotBlank', ['message' => 'foo']); })->hasMessage('foo []');
+  }
+
+
+  function testHasValue() {
+    $this->boolean(self::is(['foo' => 'bar'], ['required' => 'foo']))->isTrue();
+    $this->boolean(self::is(['foo' => ['bar' => 'baz']], ['required' => 'foo.bar']))->isTrue();
   }
 }

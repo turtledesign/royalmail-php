@@ -124,9 +124,7 @@ properties:
         _hidden: true
         _default: '0044'
         _pre_filter:
-          SkipIf:
-            field: requestedShipment.recipientContact.phone
-            isEmpty: true
+          SkipThisIfThatEmpty: input:requestedShipment.recipientContact.phone
 
       email:
         _help: "Email address to be used for notifications. Required if Email enhancement is selected"
