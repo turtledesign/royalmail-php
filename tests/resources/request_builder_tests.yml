@@ -38,6 +38,12 @@ createShipment:
           phone: "07801 123 456"
           email: tom.smith@royalmail.com
 
+        recipientAddress:
+          addressLine1: 44-46 Morningside Road
+          postTown: Edinburgh
+          postcode: Eh10 4Bf
+          country: GB
+
 
 
     expect:
@@ -78,13 +84,13 @@ createShipment:
           electronicAddress:
             electronicAddress: tom.smith@royalmail.com
 
-        # recipientAddress:
-        #   addressLine1: 44-46 Morningside Road
-        #   postTown: Edinburgh
-        #   postcode: EH10 4BF
-        #   country:
-        #     countryCode:
-        #       code: GB
+        recipientAddress:
+          addressLine1: 44-46 Morningside Road
+          postTown: Edinburgh
+          postcode: EH10 4BF
+          country:
+            countryCode:
+              code: GB
 
         # items:
         #   item:

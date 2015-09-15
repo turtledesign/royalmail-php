@@ -102,14 +102,14 @@ trait Filters {
   }
 
 
-  static function doSkipBlank($val, $settings, $helper = NULL) {
+  static function doSkipBlank($val, $settings = NULL, $helper = NULL) {
     if (! self::hasValue(['val' => $val], 'val')) throw new BuilderSkipFieldException('Skipping blank field');
 
     return $val;
   }
 
 
-  static function doCleanUKPhone($val, $settings, $helper = NULL) {
+  static function doCleanGBPhone($val, $settings, $helper = NULL) {
     if (! empty($settings['stripCountryCode'])) {
       $val = preg_replace('/^\s*(\+|00)\d\d\s*/', '0', $val);
       $val = preg_replace('/^0?\s*\(0\)\s*/', '', $val);
@@ -122,15 +122,27 @@ trait Filters {
   }
 
 
+  static function doFormatGBPostcode($val, $settings = NULL, $helper = NULL) {
+    if ((! isset($settings['check_country'])) || self::checkPath($settings['check_country'], ['in' => ['GB']], $helper)) {
+      $val = strtoupper($val);
+      
+      if (strpos($val, ' ') != (strlen($val) - 2)) { 
+        $val = str_replace(' ', '', $val);
+        $val = preg_replace('/(.+)(.{3})$/', '$1 $2', $val);
+      }
+    }
+
+    return $val;
+  }
+
+
   /**
    * Skip this field if another field is empty - works on input array so far, can add output test later.
    */
   static function doSkipThisIfThatEmpty($val, $settings, $helper = NULL) {
     if (is_string($settings)) $settings = ['that' => $settings];
 
-    list($where, $path) = explode(':', $settings['that']);
-
-    if (! self::hasValue($helper[$where], $path)) throw new BuilderSkipFieldException('Skipping as ' . $path . ' is blank');
+    if (! self::checkPath($settings['that'], [], $helper)) throw new BuilderSkipFieldException('Skipping as ' . $settings['that'] . ' is blank');
 
     return $val;
   }

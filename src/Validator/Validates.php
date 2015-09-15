@@ -193,16 +193,27 @@ trait Validates {
   }
 
 
+  static function checkGBPostcode($value, $params, $helper) {
+    if (! (isset($params['check_country'])) || self::checkPath($params['check_country'], ['in' => ['GB']], $helper)) {
+    
+      if (! preg_match('/^((([A-PR-UWYZ][0-9])|([A-PR-UWYZ][0-9][0-9])|([A-PR-UWYZ][A-HK-Y][0-9])|([A-PR-UWYZ][A-HK-Y][0-9][0-9])|([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY]))\s?([0-9][ABD-HJLNP-UW-Z]{2})|(GIR)\s?(0AA))$/', $value)) {
+        self::fail($value, $params, ['message' => 'not a valid UK postcode']);
+      }
+
+    }
+
+    return $value;
+  }
+
+
   /**
    * Check field exists based on the value of another field.
    * 
    * NB: Valitron's equals method checks against a field val, not a string, so 'in' is used for strings and arrays.
    */
   static function checkThisRequiredWhenThat($value, $params, $helper) {
-    list($where, $path) = explode(':', $params['that']);
-
-    if (self::is($helper[$where], ['required' => $path, 'in' => [[$path, (array) $params['is']]]])) {
-      $params = array_merge(['message' => 'required when ' . $path . ' in ' . implode(', ', (array) $params['is'])], $params);
+    if (self::checkPath($params['that'], ['required' => TRUE, 'in' => (array) $params['is']], $helper)) {
+      $params = array_merge(['message' => 'required when ' . $params['that'] . ' in (' . implode(', ', (array) $params['is']) . ')'], $params);
       
       return self::checkNotBlank($value, $params, $helper);
     }
@@ -211,10 +222,11 @@ trait Validates {
   }
 
 
+
   static function isBlank($value) { 
     return ($value === FALSE || $value === '' || $value === NULL); 
   }
-
+ 
 
   static function hasValue($arr, $field) {
     return self::is($arr, ['required' => $field]);
@@ -233,6 +245,32 @@ trait Validates {
     return [];
   }
 
+
+  /**
+   * Build a Valitron ruleset from a given path and constraints.
+   * 
+   * @param string  $path        (input|output):dot.path.to.var.*.vars
+   * @param array   $constraints constraints and other settings, defaults to ['required' => TRUE] if empty
+   * @param $helper ArrayObject  data checks are run on.
+   * 
+   * @return Boolean True if rules validate, False otherwise.
+   */
+  static function checkPath($path, $constraints, $helper) {
+    list($where, $path) = explode(':', $path);
+
+    if (empty($constraints)) $constraints = ['required' => TRUE];
+
+    foreach ($constraints as $con => $params) {
+      if ($con === 'required') $constraints['required'] = $path;
+
+      elseif ($con === 'in')   $constraints['in'] = [[$path, $params]]; // !REM!:  params for Valitron rule in indexed array.
+
+      else unset($constraints[$con]); 
+    }
+
+
+    return self::is($helper[$where], $constraints);
+  }
 
 
   static function is($arr, $rules) {

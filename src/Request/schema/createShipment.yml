@@ -110,12 +110,12 @@ properties:
         _help: "UK mobile phone number. Required if an SMS service enhancement is selected."
         _key: telephoneNumber/telephoneNumber
         _pre_filter:
-          CleanUKPhone: { stripCountryCode: true, stripBlanks: true }
+          CleanGBPhone: { stripCountryCode: true, stripBlanks: true }
         _validate:
           - Numeric: ~
           - Length: { max: 12 }
           - ThisRequiredWhenThat:
-              that: input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code
+              that: "input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code"
               is: ['13', '15'] # 13: SMS Notification, 15: SMS & Email
 
       phoneCountry:
@@ -133,7 +133,62 @@ properties:
           - Email: ~
           - Length: { max: 60 }
           - ThisRequiredWhenThat:
-              that: input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code
+              that: "input:requestedShipment.serviceEnhancements.enhancementType.*.serviceEnhancement.code"
               is: ['14', '15'] # 14: Email notification, 15: Email & SMS
 
 
+    recipientAddress:
+
+      buildingName: 
+        _help: >
+          This field will be used if supplied but is not necessary to process a shipment.
+          It does not replace the need for a full addressLine1 input.
+        _validate: 
+          Length: { max: 34 }
+
+      buildingNumber:
+        _help: >
+          This field will be used if supplied but is not necessary to process a shipment.
+          It does not replace the need for a full addressLine1 input.
+        _validate:
+          Length: { max: 4 }
+
+      addressLine1:
+        _help: "First line of the address. NOTE: truncated to 35 characters on labels."
+        _required: true
+        _validate: 
+          Length: { max: 80 }
+
+      addressLine2:
+        _help: "Second line of the address. NOTE: truncated to 35 characters on labels."
+        _validate: 
+          Length: { max: 80 }
+
+      addressLine3:
+        _help: "Third line of the address. NOTE: truncated to 35 characters on labels."
+        _validate: 
+          Length: { max: 80 }
+
+      postTown:
+        _help: "Town or City. The postTown will be updated to match the postTown resolved postcode."
+        _required: true
+        _validate: 
+          Length: { max: 40 }
+
+      postcode:
+        _help: "Mandatory for UK addresses. If the Shipment Type is “Return” then this must match the postcode of the registered return address."
+        _pre_filter: formatGBPostcode
+        _validate:
+          - Length: { max: 15 }
+          - ThisRequiredWhenThat:
+              that: "input:requestedShipment.recipientAddress.country"
+              is: "GB"
+          - GBPostcode:
+              check_country: "input:requestedShipment.recipientAddress.country"
+
+      country:
+        _help: "The relevant country code for the address - For domestic services this must be GB."
+        _key: ~/countryCode/code
+        _required: true
+        _options: country_codes
+        _validate: Choice

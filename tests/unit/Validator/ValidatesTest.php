@@ -96,4 +96,27 @@ class Validates extends atoum {
       ->string(self::constrain('foo', 'ThisRequiredWhenThat', ['that' => 'input:bar', 'is' => ['baz', 'kaboom']], ['input' => ['bar' => 'boing']]))
       ->isEqualTo('foo');
   }
+
+
+  function testGBPostcode() {
+    $this // Required and valid.
+      ->string(self::constrain('EH10 4BF', 'GBPostcode', ['check_country' => 'input:country'], ['input' => ['country' => 'GB']]))
+      ->isEqualTo('EH10 4BF');
+
+    $this // Required and valid - no country check.
+      ->string(self::constrain('EH10 4BF', 'GBPostcode', [], []))
+      ->isEqualTo('EH10 4BF');
+
+    $this // Overseas (and would be invalid).
+      ->string(self::constrain('123456789', 'GBPostcode', ['check_country' => 'input:country'], ['input' => ['country' => 'FR']]))
+      ->isEqualTo('123456789');
+
+    $this // Invalid.
+      ->exception(function () { self::constrain('123456789', 'GBPostcode', ['check_country' => 'input:country'], ['input' => ['country' => 'GB']]); })
+      ->message->contains('not a valid UK postcode');
+
+    $this // Invalid (more subtle).
+      ->exception(function () { self::constrain('EH101 4BF', 'GBPostcode', ['check_country' => 'input:country'], ['input' => ['country' => 'GB']]); })
+      ->message->contains('not a valid UK postcode');
+  }
 }
