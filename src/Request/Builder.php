@@ -97,8 +97,16 @@ class Builder {
    */
   static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
     try {
-      $val = self::processProperty($schema, $val, $defaults, $helper);
+      $val = (isset($schema['_multiple'])) 
+        ? self::processMultipleProperty($schema, $val, $defaults, $helper)
+        : self::processProperty($schema, $val, $defaults, $helper);
 
+    } catch (\RoyalMail\Exception\ValidatorException $e) {
+      $errors[$k] = $k . ': ' . $e->getMessage(); 
+
+    } catch (\RoyalMail\Exception\RequestException $re) {
+      foreach ($re->getErrors() as $k_nested => $v) $errors[$k . ':' . $k_nested] = $v;
+    
     } catch (\RoyalMail\Exception\BuilderSkipFieldException $e) { return $arr; } // Exception is notification that rules exclude this field.
      
 
@@ -106,7 +114,7 @@ class Builder {
       $top_ref = & $arr;
 
       foreach (explode('/', $schema['_key']) as $path) {   // If there is a _key: this/that path value it replaces the $key value entirely.
-        if ($path === '~') $path = $key;                   // Combine existing key.
+        if ($path === '~') $path = $key;                   
         
         if (empty($top_ref[$path])) $top_ref[$path] = [];  // New elements can be added to existing paths, so only create what isn't there.
         
@@ -140,6 +148,23 @@ class Builder {
       return $nest;
     }
 
+    return self::validateAndFilter($schema, $val, $defaults, $helper);
+  }
+
+
+  static function processMultipleProperty($schema, $val, $defaults, $helper = NULL) {
+    $single_schema = array_diff_key($schema, ['_multiple' => 1]);
+    
+    if (isset($schema['_multiple']['nest_key'])) $single_schema['_key'] = $schema['_multiple']['nest_key'];
+    
+    $multi_values = [];
+    foreach ($val as $m) array_push($multi_values, self::addProperty([], $single_schema, '', $m, $defaults, $helper));
+
+    return $multi_values;
+  }
+
+
+  static function validateAndFilter($schema, $val, $defaults, $helper = NULL) {
     $schema = array_merge((array) $defaults, $schema);
     
     $val = self::filter($val, $schema, $type = 'pre', $helper);

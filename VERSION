@@ -1,6 +1,7 @@
 
-0.0.14.1      15/09/2015 Added Address block with filter and validator for UK postcodes [2.25]
-0.0.13.1      13/09/2015 Added conditional require: ThisRequiredWhenThat [2]
+0.0.15.1      20/09/2015 Basic multiple element addition [1.8]
+0.0.14.1      15/09/2015 Added Address block with filter and validator for UK postcodes [2.4]
+0.0.13.1      13/09/2015 Added conditional require: ThisRequiredWhenThat [2.2]
 0.0.12.1      13/09/2015 Start switch to Valitron validation, implemented + tested SkipThisIfThatEmpty filtering for conditional value inclusion. [3.5]
 0.0.11.1      11/09/2015 Skip filtering added + couple more string filters. Added help to schema. createShipment passing tests up to recipientContact. [3.5]
 0.0.10.1      11/09/2015 Added tests for the data files and cleaned the data a bit. [2]

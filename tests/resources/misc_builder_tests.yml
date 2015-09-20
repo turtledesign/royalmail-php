@@ -1,0 +1,26 @@
+
+multiple_property_single_element:
+  schema:
+    properties:
+      multiprop:
+        _key: ~/parent_path
+        _multiple: { nest_key: child_path/end_key }
+
+  values:
+    multiprop:
+      - one
+      - two
+      - three
+      - banana
+      - four
+
+
+  expect:
+    multiprop:
+      parent_path:
+        - { child_path: { end_key: one }}
+        - { child_path: { end_key: two }}
+        - { child_path: { end_key: three }}
+        - { child_path: { end_key: banana }}
+        - { child_path: { end_key: four }}
+

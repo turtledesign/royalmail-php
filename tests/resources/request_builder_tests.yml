@@ -32,6 +32,10 @@ createShipment:
         customerReference: CustSuppRef1
         senderReference: SenderReference1
 
+        serviceEnhancements:
+          - "5"
+          - "13"
+
         recipientContact:
           name: Mr Tom Smith
           companyName: Department 98
@@ -75,6 +79,12 @@ createShipment:
         senderReference: SenderReference1
 
 
+        serviceEnhancements:
+          enhancementType:
+            - serviceEnhancement: { code: "5" }
+            - serviceEnhancement: { code: "13" }
+
+
         recipientContact:
           name: Mr Tom Smith
           complementaryName: Department 98
@@ -94,21 +104,22 @@ createShipment:
 
         # items:
         #   item:
-        #     numberOfItems: 2
-        #     weight:
-        #       unitOfMeasureCode:
-        #         code: g
-        #       value: 100
+          #    -
+          #     numberOfItems: 2
+          #     weight:
+          #       unitOfMeasureCode:
+          #         code: g
+          #       value: 100
 
-        #     offlineShipments:
-        #       - 
-        #         itemID: 2000001
-        #         status:
-        #           statusCode: null
-        #         validFrom: 2015-02-09T09:52:06.000+02:00
-        #       -
-        #         itemID: 2000002
-        #         status:
-        #           statusCode: null
-        #         validFrom: 2015-02-09T09:52:06.000+02:00
+          #     offlineShipments:
+          #       - 
+          #         itemID: 2000001
+          #         status:
+          #           statusCode: null
+          #         validFrom: 2015-02-09T09:52:06.000+02:00
+          #       -
+          #         itemID: 2000002
+          #         status:
+          #           statusCode: null
+          #         validFrom: 2015-02-09T09:52:06.000+02:00
 

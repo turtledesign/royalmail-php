@@ -9,7 +9,7 @@ This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping
 
 ## Prerequisites
 
-   - PHP 5.something or above
+   - PHP 5.4 or above
    - [soap](http://php.net/manual/en/book.soap.php) & [openssl](http://php.net/manual/en/book.openssl.php) extensions must be enabled
 
 ## Installation

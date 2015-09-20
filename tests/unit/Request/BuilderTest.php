@@ -11,12 +11,9 @@ class Builder extends atoum {
 
   use \RoyalMail\tests\TestDataLoader;
 
-  /**
-   * Verify all the request schema files load and match with their summary data.
-   * 
-   */
-  function testGetRequestSchema() {
-    foreach (Yaml::parse(RESOURCES_DIR . '/request_summaries.yml') as $request_name => $verify) {
+
+  function testGetRequestSchema() { 
+    foreach (self::getTestConfigs('request_summaries') as $request_name => $verify) {
 
       $this
         ->array(ReqBuilder::getRequestSchema($request_name)['properties'])
@@ -63,6 +60,23 @@ class Builder extends atoum {
         ->array(ReqBuilder::buildRequest($r, $valid['request'], $helper))
         ->isEqualTo($valid['expect']);
     }
+  }
+
+
+  function testMultiplePropertyCreation() {
+    $tests = self::getTestConfigs('misc_builder_tests');
+
+    $musi = $tests['multiple_property_single_element'];
+    $this
+      ->array(ReqBuilder::processSchema($musi['schema'], $musi['values']))
+      ->isEqualTo($musi['expect']);
+
+  }
+
+
+
+  static function getTestConfigs($key) {
+    return Yaml::parse(RESOURCES_DIR . '/' . $key . '.yml');
   }
 
 

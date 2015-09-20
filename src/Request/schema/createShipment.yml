@@ -82,17 +82,14 @@ properties:
         Length: { max: 20 }
 
 
-    # serviceEnhancements:
-    #   enhancementType:
-    #     _help: "If serviceEnhancement is included then enhancementType is Mandatory. There can never be more than one enhancementType specified from each Service Enhancement Group."
-    #     _multiple: true
-    #     _key: ~/serviceEnhancement/code
-    #     _options: service_enhancements
-    #     _validate: Choice 
-    #     _required: true
+    serviceEnhancements:
+      _key: ~/enhancementType
+      _multiple: { nest_key: serviceEnhancement/code }
+      _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
+      _options: service_enhancements
+      _validate: Choice 
 
     
-
     recipientContact:
       name:
         _help: "Contact Name."
@@ -192,3 +189,35 @@ properties:
         _required: true
         _options: country_codes
         _validate: Choice
+
+
+    # items:
+    #   _help: "Container for item details. Up to 9 shipments can be created with one request."
+    #   _key: ~/item
+    #   _multiple:
+    #     max: 9
+
+    #   numberofItems:
+    #     _help: "Number of items for the associated weight"
+    #     _validate:
+    #       Range:
+    #         min: 0
+    #         max: 99
+
+    #   weight:
+    #     value:
+    #       _help: >
+    #         Weight in grams of each item (no decimal places). If the service has a weight band, for example Special Delivery, 
+    #         then the upper band will be used. For example, 150 grams will use the 100 to 200 grams band. Tracked services, for 
+    #         example, do not have a band and therefore take the actual weight.
+    #       _pre_filter: round
+    #       _validate:
+    #         Range:
+    #           min: 0
+    #           max: 99999
+
+    #     unitOfMeasure:
+    #       _help: "Must be ‘g’ for grams"
+    #       _key: ~/unitOfMeasureCode/code
+    #       _default: "g"
+    #       _hidden: true
