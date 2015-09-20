@@ -3,7 +3,7 @@
 namespace RoyalMail\Request;
 
 use \Symfony\Component\Yaml\Yaml;
-
+use \RoyalMail\Exception\BuilderSkipFieldException;
 
 /**
  * Request builder utility - implemented with static methods as there shouldn't be any state or side-effects at this level.
@@ -13,23 +13,6 @@ class Builder {
 
   use \RoyalMail\Validator\Validates;
   use \RoyalMail\Filter\Filters;
-
-
-  /**
-   * Build the full named request with the parameters given and the integrationHeader element added.
-   * 
-   * @param string       $request_name
-   * @param array        $params
-   * @param \ArrayObject $helper
-   * 
-   * @return array structured, validated, and modified request.
-   */
-  static function build($request_name, $params = [], $helper) {
-    return array_merge(
-      self::buildRequest(self::getRequestSchema('integrationHeader'), $params['integrationHeader']),
-      self::buildRequest(self::getRequestSchema($request_name), $params[$request_name])
-    );
-  }
 
 
 
@@ -42,7 +25,7 @@ class Builder {
    * 
    * @return array
    */
-  static function buildRequest($request_name, $params, $helper = NULL) {
+  static function build($request_name, $params, $helper = NULL) {
     return self::processSchema(self::getRequestSchema($request_name), $params, $helper);
   }
 
@@ -63,10 +46,14 @@ class Builder {
 
     (is_null($helper)) ? $helper = ['input' => $params] : $helper['input'] = $params;
 
+    $schema['defaults'] = @$schema['defaults'] ?: [];
+
+    if (isset($helper['override_defaults'])) $schema['defaults'] = array_merge($schema['defaults'], $helper['override_defaults']);
+
 
     try {
       foreach ($schema['properties'] as $k => $v) {
-        $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], @$schema['defaults'] ?: [], $helper);
+        $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], $schema['defaults'], $helper);
       }
     
     } catch (\RoyalMail\Exception\ValidatorException $e) {
@@ -89,7 +76,7 @@ class Builder {
    * @param array       $arr    The structure so far.
    * @param array       $schema Build map
    * @param string      $key    current key
-   * @param mixed       $value
+   * @param mixed       $val
    * @param array       $defaults
    * @param ArrayObject $helper
    * 
@@ -97,12 +84,10 @@ class Builder {
    */
   static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
     try {
-      $val = (isset($schema['_multiple'])) 
-        ? self::processMultipleProperty($schema, $val, $defaults, $helper)
-        : self::processProperty($schema, $val, $defaults, $helper);
+      $val = self::processProperty($schema, $val, $defaults, $helper);
 
     } catch (\RoyalMail\Exception\ValidatorException $e) {
-      $errors[$k] = $k . ': ' . $e->getMessage(); 
+      $errors[] = $key . ': ' . $e->getMessage(); 
 
     } catch (\RoyalMail\Exception\RequestException $re) {
       foreach ($re->getErrors() as $k_nested => $v) $errors[$k . ':' . $k_nested] = $v;
@@ -110,7 +95,7 @@ class Builder {
     } catch (\RoyalMail\Exception\BuilderSkipFieldException $e) { return $arr; } // Exception is notification that rules exclude this field.
      
 
-    if (isset($schema['_key'])) {
+    if (isset($schema['_key'])) { // TODO: Extract this.
       $top_ref = & $arr;
 
       foreach (explode('/', $schema['_key']) as $path) {   // If there is a _key: this/that path value it replaces the $key value entirely.
@@ -129,6 +114,15 @@ class Builder {
   }
 
 
+  static function processProperty($schema, $val, $defaults = [], $helper = NULL) {
+    switch (TRUE) {
+      case isset($schema['_include']):  return self::processInclude($schema, $val, $defaults, $helper);
+      case isset($schema['_multiple']): return self::processMultipleProperty($schema, $val, $defaults, $helper);
+      default:                          return self::processSingleProperty($schema, $val, $defaults, $helper);
+    }
+  }
+
+
   /**
    * Process a single value to add to the structure: at this point just adding defaults and validating.
    * 
@@ -139,7 +133,7 @@ class Builder {
    * 
    * @return mixed processed value or sub-structure.
    */
-  static function processProperty($schema, $val, $defaults = [], $helper = NULL) {
+  static function processSingleProperty($schema, $val, $defaults = [], $helper = NULL) {
     if ($nested = self::getNested($schema)) {
       $nest = [];
 
@@ -164,6 +158,13 @@ class Builder {
   }
 
 
+  static function processInclude($schema, $val, $defaults, $helper = NULL) {
+    if (empty($defaults['_disable_includes'])) return self::build($schema['_include'], $val, $helper);
+
+    throw new BuilderSkipFieldException; // Testing is simpler if we can check requests atomically.
+  }
+
+
   static function validateAndFilter($schema, $val, $defaults, $helper = NULL) {
     $schema = array_merge((array) $defaults, $schema);
     
@@ -185,6 +186,8 @@ class Builder {
    */
   static function getNested($schema) {
     $nested = [];
+
+    $nested = (isset($schema['_include']) && empty($defaults['_disable_includes'])) ? self::getRequestSchema($schema['_include'])['properties'] : [];
 
     if (is_array($schema)) foreach ($schema as $k => $v) if (! preg_match('/^_/', $k)) $nested[$k] = $v;
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+################################################################################
+#	Description:			Schema Extensions for SOAP Message Construct
+# 	Revision: 				1.2
+#	Date: 					05/08/2014
+#  Owner:					Mark Cornforth (RMG Enterprise Integration Architect) 
+#  Canonical Model:	Aligned RMG Canonical Model (CM) v2.3
+################################################################################
+#	History: 
+#  Version		Date 				Author					Description of Change 
+#  v1.0			07/01/2014		Mark Cornforth 		Initial version created
+# 	v1.1			10/04/2014		Mark Cornforth		exceptionDetails updated to be mandatory
+#  v1.2			05/08/2014		Mark Cornforth		Updated to align with latest CDM	
+################################################################################
+-->
+<xs:schema xmlns:int="http://www.royalmailgroup.com/integration/core/V1" xmlns:soapext="http://www.royalmailgroup.com/soap/extensions/V1" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.royalmailgroup.com/soap/extensions/V1" version="1.2">
+	<xs:import namespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" schemaLocation="DatatypesV2_3.xsd"/>
+	<xs:import namespace="http://www.royalmailgroup.com/integration/core/V1" schemaLocation="CommonIntegrationSchemaV1_11.xsd"/>
+	<xs:complexType name="detail">
+		<xs:annotation>
+			<xs:documentation>Element used to hold SOAP fault details</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="exceptionDetails" type="soapext:exceptionDetails"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="exceptionDetails">
+		<xs:annotation>
+			<xs:documentation>Used to hold the RMG defined data elements associated with the SOAP fault</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="exceptionTransactionId" type="int:transactionId"/>
+			<xs:element name="exceptionCode" type="int:errorCode"/>
+			<xs:element name="exceptionText" type="dt:description"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

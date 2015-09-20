@@ -1,0 +1,16 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  cancelShipments:
+    _multiple: 
+      nest_key: shipmentNumber
+      min: 1
+
+    _help: "The shipment number to be cancelled"
+    _validate:
+      Length: { max: 13 }

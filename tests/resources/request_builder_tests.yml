@@ -123,3 +123,14 @@ createShipment:
           #           statusCode: null
           #         validFrom: 2015-02-09T09:52:06.000+02:00
 
+
+cancelShipment:
+  valid:
+    request:
+      cancelShipments:
+        - "RQ221150289GB"
+
+
+    expect:
+      cancelShipments:
+        - shipmentNumber: "RQ221150289GB"

@@ -9,10 +9,10 @@ use \Symfony\Component\Yaml\Yaml;
  */
 class Data extends \ArrayObject {
 
-  function __construct() {
-    return parent::__construct([
+  function __construct($init = []) {
+    return parent::__construct(array_merge([
       'shipment_types' => ['Delivery' => 'Delivery', 'Return' => 'Return'],
-    ]);
+    ], $init));
   }
 
 

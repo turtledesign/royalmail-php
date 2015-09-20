@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" version="V1.3">
+	<xs:simpleType name="twoDBarcode">
+		<xs:annotation>
+			<xs:documentation>Used in the digital representation of 2D Barcodes</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:base64Binary"/>
+	</xs:simpleType>
+	<xs:simpleType name="boolean">
+		<xs:annotation>
+			<xs:documentation>Boolean, or boolean logic, is a subset of algebra used for creating true/false statements. Boolean expressions use the operators AND, OR, XOR, and NOT to compare values and return a true or false result. Boolean values can also be referred to as 'flags'. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="cardinal">
+		<xs:annotation>
+			<xs:documentation>A number indicating a whole number amount as in a count of items. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="document">
+		<xs:annotation>
+			<xs:documentation>Used in the digital representation of documents</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:base64Binary"/>
+	</xs:simpleType>
+	<xs:simpleType name="comment">
+		<xs:annotation>
+			<xs:documentation>A comment is a sub-type of string which can be used as a note intended as an explanation, illustration, instruction, capture of an interaction or an annotation. This is free format text which can be input by the end user.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="date">
+		<xs:annotation>
+			<xs:documentation>A date represents a period in time which could be a particular month, day, and year at which some event happened or will happen. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="dateTime">
+		<xs:annotation>
+			<xs:documentation>dateTime represents a period in time which could be a particular month, day, and year at which some event happened or will happen but also includes a breakdown of time using hours, minutes, seconds and milliseconds. A dateTime stamp is a common use for this data type so that a precise record of an event can be captured.  </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:simpleType name="decimal">
+		<xs:annotation>
+			<xs:documentation>A decimal data type represents a real number with every decimal place indicating a multiple of a negative power of 10. It represents non-repeating decimal fractions like 0.3 and -1.17 without rounding, and gives the ability to do arithmetic on them.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+	<xs:simpleType name="description">
+		<xs:annotation>
+			<xs:documentation>A description is a sub-type of string and is statement in words that gives an account or descriptive representation of a thing. Descriptions are only editable via an admin function and are for display and information purposes only for end users.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="float">
+		<xs:annotation>
+			<xs:documentation>A float describes a data type for representing an approximation to real numbers in a way that can support a wide range of values. The numbers are, in general, represented approximately to a fixed number of significant digits (the mantissa) and scaled using an exponent. The base for the scaling is normally 2, 10 or 16.
+For example, the numbers 5.5, 0.001, and -2,345.6789 are floating point numbers. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float"/>
+	</xs:simpleType>
+	<xs:simpleType name="geoSpatial">
+		<xs:annotation>
+			<xs:documentation>A decimal data type representing Latitude and Longitude data. The format of decimal 10,7 was chosen as a generic representation which facilities conversion between geospatial systems</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="7"/>
+			<xs:totalDigits value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="identifier">
+		<xs:annotation>
+			<xs:documentation>An identifier is a sub-type of string which serves as a means of identification for a particular thing; An identifier can be associated with a name. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="integer">
+		<xs:annotation>
+			<xs:documentation>An integer is a whole number (not a fraction) that can be positive, negative, or zero. Unlike floats, integers cannot have decimal places.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="longDescription">
+		<xs:annotation>
+			<xs:documentation>A long description is a sub-type of string and is a longer version of a description (see definition of description) and is used to expand a description. Descriptions are only editable via an admin function and are for display and information purposes only for end users.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="512"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="longName">
+		<xs:annotation>
+			<xs:documentation>A long name is a sub-type of string and is word or a combination of words by which an organization, place, or thing, a body or class, or any object of thought is designated, called, or known.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="name">
+		<xs:annotation>
+			<xs:documentation>A name is a sub-type of string and is word or a combination of words by which a person, place, or thing, a body or class, or any object of thought is designated, called, or known.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ordinal">
+		<xs:annotation>
+			<xs:documentation>A number indicating a position as in a sequence number. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="shortDescription">
+		<xs:annotation>
+			<xs:documentation>A short description is a sub-type of string and is a shorter version of a description (see definition of description) and is used to summarise a longer description. Descriptions are only editable via an admin function and are for display and information purposes only for end users</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="shortName">
+		<xs:annotation>
+			<xs:documentation>A name is a sub-type of string and is word or a combination of words by which a person, place, or thing, a body or class, or any object of thought is designated, called, or known. short name is intended for use with Reference data items</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string">
+		<xs:annotation>
+			<xs:documentation>Simple set of alphanumeric characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="time">
+		<xs:annotation>
+			<xs:documentation>time is a unit of measure to record hours, minutes, seconds and milliseconds. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:time"/>
+	</xs:simpleType>
+	<xs:simpleType name="twoDBbarcode">
+		<xs:annotation>
+			<xs:documentation>Used in the digital representation of 2D Barcodes 
+### DO NOT USE - superceded by twoDBarcode ###</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:base64Binary"/>
+	</xs:simpleType>
+</xs:schema>

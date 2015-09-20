@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/common/V4" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:com="http://www.royalmailgroup.com/cm/common/V4" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:rd="http://www.royalmailgroup.com/cm/referenceData/V3" version="V4.1">
+	<xs:annotation>
+		<xs:documentation>This package contains those complex classes which are viewed as being ubiquitous across the organization i.e. address, amount, status.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.royalmailgroup.com/cm/referenceData/V3" schemaLocation="ReferenceDataV2_3.xsd"/>
+	<xs:import namespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" schemaLocation="DatatypesV2_3.xsd"/>
+	<xs:element name="postcode" type="com:postcode"/>
+	<xs:complexType name="postcode">
+		<xs:annotation>
+			<xs:documentation>A geospatial categorization of a geographical area.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="postcodeIdentifier" type="dt:identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unique identifier for a postcode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postcode" type="dt:identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A code created to abbreviate a series of postal addresses, that share location affinity, in order to facilitate mail collection, processing and delivery.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="com:status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the state of the entity (i.e. it is active, approved, draft, inactive, etc).  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="audit" type="com:audit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The audit type is appended to all business data constructs to ensure a standard way of capturing key data to track back users who have made changes to the data. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="formatDatetime" type="com:formatDatetime"/>
+	<xs:complexType name="formatDatetime">
+		<xs:annotation>
+			<xs:documentation>Defines a primitive Date time with a specified format.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dateFormatType" type="rd:dateFormatType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines a preferred format for a date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateTime" type="dt:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A temporal value which contains both date and time elements</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="address" type="com:address"/>
+	<xs:complexType name="address">
+		<xs:annotation>
+			<xs:documentation>A postal address is a method of identifying a deliverable Location to the postal service.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="addressUsageType" type="rd:addressUsageType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This denotes the function the address plays (i.e. it is a primary address, seasonal, etc). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domesticIndicator" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This flag indicates whether the address is a UK domestic address or an international address. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="buildingName" type="dt:name" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the vanity name for a building or house (i.e. Rowland Hill House). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="buildingNumber" type="dt:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the allocated number identifying the location within the postcode. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine1" type="dt:description" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Generic line to hold address body (i.e. street name and number, direction, borough, etc). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine2" type="dt:description" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Generic line to hold address body (i.e. street name and number, direction, borough, etc). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine3" type="dt:description" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Generic line to hold address body (i.e. street name and number, direction, borough, etc). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine4" type="dt:description" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Generic line to hold address body (i.e. street name and number, direction, borough, etc). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stateOrProvince" type="rd:stateOrProvinceType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is used specifically for international items only and is applicable for the US, Canada, Australia, etc. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postTown" type="dt:name" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A town is a human settlement larger than a village but smaller than a city.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="county" type="rd:countyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A territorial division exercising administrative, judicial, and political functions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postcode" type="dt:identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A code created to abbreviate a series of postal addresses, that share location affinity, in order to facilitate mail collection, processing and delivery.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="rd:countryType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A Country as recognised by the International Standards Organisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="com:status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the state of the entity (i.e. it is active, approved, draft, inactive, etc).  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="audit" type="com:audit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The audit type is appended to all business data constructs to ensure a standard way of capturing key data to track back users who have made changes to the data. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="amount" type="com:amount"/>
+	<xs:complexType name="amount">
+		<xs:annotation>
+			<xs:documentation>An amount is the total or two or more quantities; the aggregate. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="creditIndicator" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This indicates whether the amount is a credit or a debit. If the boolean value is a 1 then the amount is greater than or equal to zero. If the boolean value is a 0, then the amount is less than zero. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" type="rd:currencyType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The currency code for the taxonomy is used to indicate the system of money (monetary units) in common use, especially in a nation. Under this definition, British pounds, U.S. dollars, and European euros are different types of currency, or currencies. Currencies in the sense used by foreign exchange markets, are defined by governments, and each type has limited boundaries of acceptance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value" type="dt:decimal" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The number that designates the quantity of the amount. i.e. 5.50 Because there is a credit indicator, this field MUST always be an absolute value and the credit or debit is interpreted through the indicator field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="audit" type="com:audit"/>
+	<xs:complexType name="audit">
+		<xs:annotation>
+			<xs:documentation>The audit class is appended to all business and reference data constructs to ensure a standard way of capturing key data to track back users who have made changes to the data.   </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lastUpdateDate" type="dt:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The date the data was late updated. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lastUpdateUserIdentifier" type="dt:identifier" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The last update user ID represents the user identifier for the last person who updated the record. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="contactMechanism" type="com:contactMechanism"/>
+	<xs:complexType name="contactMechanism">
+		<xs:annotation>
+			<xs:documentation>The Contact Mechanism object contains the methods and usage for contacting a Party.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactMechanismIdentifier" type="dt:identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Contact mechanism unique identifier </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactMethod" type="rd:contactMethodType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Contact method unique identifier in the MDM system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactUsage" type="rd:contactUsageType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines Contact usage i.e. 
+•	1000000 – UNKNOWN
+•	1000001 – NOT APPLICABLE
+•	1000002 – BUSINESS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="audit" type="com:audit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The audit type is appended to all business data constructs to ensure a standard way of capturing key data to track back users who have made changes to the data. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="digitalAddress" type="com:digitalAddress"/>
+	<xs:complexType name="digitalAddress">
+		<xs:annotation>
+			<xs:documentation>Electronic address such as email or twitter. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="com:contactMechanism">
+				<xs:sequence>
+					<xs:element name="electronicAddress" type="dt:description" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A address relating to email, website or other internet location</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="dimension" type="com:dimension"/>
+	<xs:complexType name="dimension">
+		<xs:annotation>
+			<xs:documentation>A dimension is a measure of spatial extent. It is a physical property, such as mass, length, time, or a combination thereof, regarded as a fundamental measure or as one of a set of fundamental measures of a physical quantity. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="unitOfMeasure" type="rd:unitOfMeasureType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A unit of measure is the reference value to select the type of dimension being referenced. Sample values could be weight, length, height, depth, etc. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The number that designates the quantity of the dimension. i.e. 5 centimeters.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="geoSpatialPosition" type="com:geoSpatialPosition"/>
+	<xs:complexType name="geoSpatialPosition">
+		<xs:annotation>
+			<xs:documentation>defines the exact position according to a geo spatial system  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="geoDeticSystem" type="rd:systemNameType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Standard global positioning system being used i.e. WGS84</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="geoSpatialPositionType" type="rd:geospatialPositionType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines the context for a geo spatial location i.e. back door, front door, post box etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="altitude" type="dt:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines the height component of a position</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="longitude" type="dt:geoSpatial" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The longitude component of a geospatial position</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="latitude" type="dt:geoSpatial" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The latitude component of a geospatial position</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="status" type="com:status"/>
+	<xs:complexType name="status">
+		<xs:annotation>
+			<xs:documentation>This is the state of the entity (i.e. it is active, approved, draft, inactive, etc).  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="status" type="rd:statusType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the state of the reference data (i.e. it is active, approved, draft, inactive, etc).  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validFrom" type="dt:dateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The date at which the data becomes active. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validTo" type="dt:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The date at which the data is retired. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="systemCrossReference" type="com:systemCrossReference"/>
+	<xs:complexType name="systemCrossReference">
+		<xs:annotation>
+			<xs:documentation>This class is used to manage cross reference keys between systems. For example an entity will be known by one identifier in the source system and have another in the target system so these keys are used so that the target system can identify the appropriate entity within its own system. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="sourceSystemCode" type="rd:systemNameType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The source identifier can be an acronym or number used to identify it. The system catalogue is a frequently used number to identify systems within RMG. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sourceCrossReferenceAttribute" type="dt:name" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of the attribute of a source system cross referenced to the target system.    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sourceCrossReferenceValue" type="dt:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of a source system attribute cross referenced to the target system value.    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="targetSystemCode" type="rd:systemNameType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The target source system name is the commonly used name for a system and will be more business oriented than a numerical identifier. An example would the Traffic and Revenue Reporting System.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="targetCrossReferenceAttribute" type="dt:name" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of a target system attribute cross referenced to the source system.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="targetCrossReferenceValue" type="dt:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of a target system attribute cross referenced to the source system value.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="com:status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the state of the entity (i.e. it is active, approved, draft, inactive, etc).  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="audit" type="com:audit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The audit type is appended to all business data constructs to ensure a standard way of capturing key data to track back users who have made changes to the data. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="telephoneNumber" type="com:telephoneNumber"/>
+	<xs:complexType name="telephoneNumber">
+		<xs:annotation>
+			<xs:documentation>Standard Format for a telephone number</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="com:contactMechanism">
+				<xs:sequence>
+					<xs:element name="countryCode" type="dt:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Standard Country Dialing code i.e. 0044</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="areaCode" type="dt:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Standard telephone number area code</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="telephoneNumber" type="dt:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Body of the telephone number.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="extensionNumber" type="dt:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Extension number within a location.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="speedDialNumber" type="dt:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Speed dial number for a location.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

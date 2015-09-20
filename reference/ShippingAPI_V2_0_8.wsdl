@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+########################################################################################################
+#  Description:	Royal Mail Shipping API Public Facing WSDL
+#  Revision:    2.0.8
+#  Date: 		18/12/2014
+########################################################################################################
+#  History:
+#  Version		Date 			Author		                     Description of Change
+#  v0.1			24/06/2013		Somsubhra Bhattacharya(CSC)      Initial Draft
+#  v0.2			29/06/2013		Somsubhra Bhattacharya(CSC)		 Based on XSD V0.2
+#  v0.3			02/07/2013		Somsubhra Bhattacharya(CSC)		 Based on XSD V0.3
+#  v0.4         19/08/2013      Somsubhra Bhattacharya(CSC)      Based on XSD V0.4
+#  v0.5         16/12/2013      Somsubhra Bhattacharya(CSC)      Incorporated PCR40 
+#  v0.6         04/02/2014      Somsubhra Bhattacharya(CSC)      Aligned with v0.6 of XSD 
+#  v0.7         03/04/2014      Somsubhra Bhattacharya(CSC)      Aligned with v0.7 of XSD
+#  v0.8         17/04/2014      Somsubhra Bhattacharya(CSC)      Aligned with v0.8 of XSD
+#  v1.0         01/05/2014      Somsubhra Bhattacharya(CSC)      Baselined version 1.0
+#  v1.1         07/08/2014      Somsubhra Bhattacharya(CSC)      First Draft version for SAPI Phase 2
+#  v2.0.2       28/08/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.2 XSD
+#  v2.0.4       20/10/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.4 XSD
+#  v2.0.5       30/10/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.5 XSD
+#  v2.0.6       05/11/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.6 XSD
+#  v2.0.7       27/11/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.7 XSD
+#  v2.0.8       18/12/2014      Somsubhra Bhattacharya(CSC)      Updated WSDL to match v2.0.8 XSD
+########################################################################################################
+-->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.royalmailgroup.com/api/ship/V2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="shippingAPI"
+	xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+	targetNamespace="http://www.royalmailgroup.com/api/ship/V2">
+<wsdl:documentation>Version: 2.0.8</wsdl:documentation>	
+	<wsdl:types>
+		<xs:schema attributeFormDefault="unqualified"
+			elementFormDefault="qualified" targetNamespace="http://www.royalmailgroup.com/WSDLapi/ship/V1" xmlns:tns="http://www.royalmailgroup.com/WSDLapi/ship/V1"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://www.royalmailgroup.com/api/ship/V2" schemaLocation="ShippingAPI_V2_0_8.xsd" />
+			<xs:import namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" schemaLocation="oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="createShipmentRequest">
+		<wsdl:part name="createShipmentRequest" element="tns:createShipmentRequest" />
+	</wsdl:message>
+	<wsdl:message name="createShipmentResponse">
+		<wsdl:part name="createShipmentResponse" element="tns:createShipmentResponse" />
+	</wsdl:message>
+	<wsdl:message name="printLabelRequest">
+		<wsdl:part name="printLabelRequest" element="tns:printLabelRequest" />
+	</wsdl:message>
+	<wsdl:message name="printLabelResponse">
+		<wsdl:part name="printLabelResponse" element="tns:printLabelResponse" />
+	</wsdl:message>
+	<wsdl:message name="createManifestRequest">
+		<wsdl:part name="createManifestRequest" element="tns:createManifestRequest" />
+	</wsdl:message>
+	<wsdl:message name="createManifestResponse">
+		<wsdl:part name="createManifestResponse" element="tns:createManifestResponse" />
+	</wsdl:message>
+	<wsdl:message name="printManifestRequest">
+		<wsdl:part name="printManifestRequest" element="tns:printManifestRequest" />
+	</wsdl:message>
+	<wsdl:message name="printManifestResponse">
+		<wsdl:part name="printManifestResponse" element="tns:printManifestResponse" />
+	</wsdl:message>
+	<wsdl:message name="updateShipmentRequest">
+		<wsdl:part name="updateShipmentRequest" element="tns:updateShipmentRequest" />
+	</wsdl:message>
+	<wsdl:message name="updateShipmentResponse">
+		<wsdl:part name="updateShipmentResponse" element="tns:updateShipmentResponse" />
+	</wsdl:message>
+	<wsdl:message name="cancelShipmentRequest">
+		<wsdl:part name="cancelShipmentRequest" element="tns:cancelShipmentRequest" />
+	</wsdl:message>
+	<wsdl:message name="cancelShipmentResponse">
+		<wsdl:part name="cancelShipmentResponse" element="tns:cancelShipmentResponse" />
+	</wsdl:message>
+	<wsdl:message name="printDocumentRequest">
+		<wsdl:part name="printDocumentRequest" element="tns:printDocumentRequest" />
+	</wsdl:message>
+	<wsdl:message name="printDocumentResponse">
+		<wsdl:part name="printDocumentResponse" element="tns:printDocumentResponse" />
+	</wsdl:message>
+	<wsdl:message name="request1DRangesRequest">
+		<wsdl:part name="request1DRangesRequest" element="tns:request1DRangesRequest" />
+	</wsdl:message>
+	<wsdl:message name="request1DRangesResponse">
+		<wsdl:part name="request1DRangesResponse" element="tns:request1DRangesResponse" />
+	</wsdl:message>
+	<wsdl:message name="request2DItemIDRangeRequest">
+		<wsdl:part name="request2DItemIDRangeRequest" element="tns:request2DItemIDRangeRequest" />
+	</wsdl:message>
+	<wsdl:message name="request2DItemIDRangeResponse">
+		<wsdl:part name="request2DItemIDRangeResponse" element="tns:request2DItemIDRangeResponse" />
+	</wsdl:message>
+	<wsdl:message name="securityHeader">
+		<wsdl:part name="security" element="wsse:Security"/>
+	</wsdl:message>
+	<wsdl:message name="faultResponse">
+	     <wsdl:part name="faultResponse" element="tns:exceptionDetails" />
+	</wsdl:message>
+	<wsdl:portType name="shippingAPIPortType">
+		<wsdl:operation name="createShipment" parameterOrder="createShipmentRequest">
+			<wsdl:input message="tns:createShipmentRequest" />
+			<wsdl:output message="tns:createShipmentResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="printLabel" parameterOrder="printLabelRequest">
+			<wsdl:input message="tns:printLabelRequest" />
+			<wsdl:output message="tns:printLabelResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="createManifest" parameterOrder="createManifestRequest">
+			<wsdl:input message="tns:createManifestRequest" />
+			<wsdl:output message="tns:createManifestResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="printManifest" parameterOrder="printManifestRequest">
+			<wsdl:input message="tns:printManifestRequest" />
+			<wsdl:output message="tns:printManifestResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="updateShipment" parameterOrder="updateShipmentRequest">
+			<wsdl:input message="tns:updateShipmentRequest" />
+			<wsdl:output message="tns:updateShipmentResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="cancelShipment" parameterOrder="cancelShipmentRequest">
+			<wsdl:input message="tns:cancelShipmentRequest" />
+			<wsdl:output message="tns:cancelShipmentResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="printDocument" parameterOrder="printDocumentRequest">
+			<wsdl:input message="tns:printDocumentRequest" />
+			<wsdl:output message="tns:printDocumentResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="request1DRanges" parameterOrder="request1DRangesRequest">
+			<wsdl:input message="tns:request1DRangesRequest" />
+			<wsdl:output message="tns:request1DRangesResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="request2DItemIDRange" parameterOrder="request2DItemIDRangeRequest">
+			<wsdl:input message="tns:request2DItemIDRangeRequest" />
+			<wsdl:output message="tns:request2DItemIDRangeResponse" />
+			<wsdl:fault name="faultResponse" message="tns:faultResponse" />
+		</wsdl:operation>						
+	</wsdl:portType>
+	<wsdl:binding name="shippingAPISoapBinding" type="tns:shippingAPIPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="createShipment">
+			<soap:operation soapAction="createShipment" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="printLabel">
+			<soap:operation soapAction="printLabel" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createManifest">
+			<soap:operation soapAction="createManifest" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		<wsdl:operation name="printManifest">
+			<soap:operation soapAction="printManifest" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		<wsdl:operation name="updateShipment">
+			<soap:operation soapAction="updateShipment" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		<wsdl:operation name="cancelShipment">
+			<soap:operation soapAction="cancelShipment" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+
+		<wsdl:operation name="printDocument">
+			<soap:operation soapAction="printDocument" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		<wsdl:operation name="request1DRanges">
+			<soap:operation soapAction="request1DRanges" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		<wsdl:operation name="request2DItemIDRange">
+			<soap:operation soapAction="request2DItemIDRange" style="document" />
+			<wsdl:input>
+			    <soap:header message="tns:securityHeader" part="security" use="literal"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="faultResponse">
+			    <soap:fault name="faultResponse" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>						
+	</wsdl:binding>
+	<wsdl:service name="shippingAPI">
+		<wsdl:port binding="tns:shippingAPISoapBinding" name="shippingAPIPort">
+		    <soap:address location="https://api.royalmail.com/shipping" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+#########################################################################################################
+#	Description:			Schema for Common Integration Header and Footer
+# 	Revision: 				1.11
+#	Date: 					07/07/2014
+#  Owner:					Mark Cornforth (RMG Enterprise Integration Architect) 
+#  Canonical Model:	Aligned RMG Canonical Model (CM) v2.3
+#########################################################################################################
+#	History: 
+#  Version		Date 				Author					Description of Change 
+#  v1.0			07/05/2013		Mark Cornforth 		Initial version created
+#  v1.1			08/05/2013		Mark Cornforth		Amendments made following internal review feedback. 
+#																		Changed serviceRequesterId to applicationId to make this more generic for 
+#																		internal and external use.
+# v1.2			05/06/2013		Mark Cornforth		date element changed to dateTime to capture the date and timestamp 
+#																		associated with when the message was generated.
+# v1.3			11/06/2013		Mark Cornforth		Added 'testFlag' and 'debugFlag' elements following external review.
+# v1.4			17/06/2013		Mark Cornforth		File renamed and updated to include integrationFooter elements for returing  
+#																		one or more business error or warning messages in the response.
+#																		Added 'endUserId' element to optionally capture details of the end user.
+# v1.5			25/06/2013		Mark Cornforth		integrationFooter updated to refer to errorStructure and warningStructure  
+#																		(as opposed to errorDetail and warningDetail)
+# v1.6			16/07/2013		Mark Cornforth		Corrected some typos within the annotations 
+# v1.7			12/11/2013		Mark Cornforth		transactionId and applicationId fields updated with a pattern restriction to 
+#																		address security vulnerability which allows unfiltered values which may 
+#																		lead to a possible XSS attack.
+# v1.8			13/11/2013		Mark Cornforth		Patterns for transactionId and applicationId elements relaxed
+# v1.9			12/12/2013		Mark Cornforth		applicationId restriction updated to allow the '-' character.
+#																		transactionId restriction updated to allow the '-' and '/' characters. 
+#																		Aligned to canonical message release v2.2.
+# v1.10			03/07/2014		Mark Cornforth		Updated to reference v2.3 of the Canonical Data Model (CDM) release.
+# v1.11			07/07/2014		Mark Cornforth		Added 'performanceFlag' element to optionally capture performance data.
+#########################################################################################################
+# Guidance:
+# (1) The integrationHeader construct must be used for all web service request and response messages
+# (2) The integrationFooter construct must be used for all web service response messages when communicating business 
+#      errors and/or warning messages
+#########################################################################################################
+-->
+<xs:schema xmlns:int="http://www.royalmailgroup.com/integration/core/V1" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.royalmailgroup.com/integration/core/V1" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.9">
+	<xs:import namespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" schemaLocation="DatatypesV2_3.xsd"/>
+	<!-- Define elements used for Integration Header definition -->
+	<xs:simpleType name="applicationId">
+		<xs:annotation>
+			<xs:documentation>For a request, this is the ID of the Service Requester calling the service, unique when combined with the TransactionId. For the response, this is the ID of the Service Provider, unique when combined with the TransactionId.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="dt:identifier">
+			<xs:maxLength value="50"/>
+			<xs:whiteSpace value="preserve"/>
+			<xs:minLength value="1"/>
+			<xs:pattern value="[a-zA-Z0-9-]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="transactionId">
+		<xs:annotation>
+			<xs:documentation>Id preserved throughout the lifespan of the transaction, unique when combined with the applicationId and intermediaryId (if applicable).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="dt:identifier">
+			<xs:maxLength value="50"/>
+			<xs:whiteSpace value="preserve"/>
+			<xs:minLength value="1"/>
+			<xs:pattern value="[a-zA-Z0-9/-]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="identificationStructure">
+		<xs:sequence>
+			<xs:element name="endUserId" type="dt:identifier" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>User ID associated with the end user of the internal or external organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="applicationId" type="int:applicationId">
+				<xs:annotation>
+					<xs:documentation>The ID of the Service Requester system calling the service, unique when combined with the transactionId.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="intermediaryId" type="int:applicationId" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Id associated with the Intermediary application (if applicable).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="transactionId" type="int:transactionId">
+				<xs:annotation>
+					<xs:documentation>Unique session id sent by the Service Requestor (for the request) or returned by the Service Provider (for the response)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="integrationHeader">
+		<xs:annotation>
+			<xs:documentation>Common integration header definition</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dateTime" type="dt:dateTime" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date timestamp associated with when the data was generated, sent or received</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="version" type="dt:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Version of the service</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identification" type="int:identificationStructure">
+				<xs:annotation>
+					<xs:documentation>Identification details associated with the Service Requestor or Service Provider</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="testFlag" type="dt:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Flag which can be used to test that the exposed service is available. It is not expected that this flag will be used under normal BAU service operation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debugFlag" type="dt:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Flag which can be used to allow any messages to be dynamically debugged. It is not expected that this flag will be used under normal BAU service operation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="performanceFlag" type="dt:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Flag which can be used to track the performance of the service across RMG systems (entry time, exit time, latency etc).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Define elements used for Integration Footer definition -->
+	<xs:simpleType name="errorCode">
+		<xs:annotation>
+			<xs:documentation>Code associated with the error condition in the form ENNNN</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="dt:identifier">
+			<xs:pattern value="[E]{1}[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="warningCode">
+		<xs:annotation>
+			<xs:documentation>Code associated with the warning condition in the form WNNNN</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="dt:identifier">
+			<xs:pattern value="[W]{1}[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="errorDetail">
+		<xs:sequence>
+			<xs:element name="errorCode" type="int:errorCode">
+				<xs:annotation>
+					<xs:documentation>Code associated with the error condition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorDescription" type="dt:description">
+				<xs:annotation>
+					<xs:documentation>Description of the error condition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorCause" type="dt:description" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cause of the business error (if known)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorResolution" type="dt:description" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Description of the resolution and action required to correct the error</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorContext" type="dt:description" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Context of the business error, e.g. client or server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="errorStructure">
+		<xs:sequence>
+			<xs:element name="error" type="int:errorDetail" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="warningDetail">
+		<xs:sequence>
+			<xs:element name="warningCode" type="int:warningCode">
+				<xs:annotation>
+					<xs:documentation>Code associated with the warning</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="warningDescription" type="dt:description">
+				<xs:annotation>
+					<xs:documentation>Description of the warning</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="warningCause" type="dt:description" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cause of the warning (if known)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="warningResolution" type="dt:description" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Description of the resolution and action required to correct the warning</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="warningContext" type="dt:description" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Context of the warning, e.g. client or server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="warningStructure">
+		<xs:sequence>
+			<xs:element name="warning" type="int:warningDetail" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="integrationFooter">
+		<xs:annotation>
+			<xs:documentation>Common integration footer definition</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="errors" type="int:errorStructure" minOccurs="0"/>
+			<xs:element name="warnings" type="int:warningStructure" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="integrationHeader" type="int:integrationHeader"/>
+	<xs:element name="integrationFooter" type="int:integrationFooter"/>
+</xs:schema>

@@ -21,9 +21,14 @@ trait soapConnector {
    * 
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
-  function doRequest($config, $request_type, $params) {
+  function doRequest($request_type, $params = [], $config = []) {
+    $config = array_merge(['timezone' => 'BST'], $config);
 
+    return $this->getSecuredSoapClient($config)->__soapCall($request_type, $params);
   }
+
+
+
 
 
   /**
@@ -34,7 +39,9 @@ trait soapConnector {
    * @return SoapClient
    */
   protected function getSecuredSoapClient($config) {
-    return $this->addSecurityHeader(new \SoapClient($this->getEndpoint() . '?wsdl'));
+    if (empty($this->soap_client)) $this->soap_client = $this->addSecurityHeader(new \RoyalMail\Connector\TDSoapClient($this->getEndpoint()), $config);
+
+    return $this->soap_client;
   }
 
 

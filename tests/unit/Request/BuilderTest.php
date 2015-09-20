@@ -25,9 +25,9 @@ class Builder extends atoum {
 
 
   function testValueDefaulting() {
-    $this->string(ReqBuilder::processProperty(['_default' => 'foo'], @$not_defined))->isEqualTo('foo');
-    $this->string(ReqBuilder::processProperty(['_default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
-    $this->string(ReqBuilder::processProperty(['_default' => '0044'], NULL))->isEqualTo('0044');
+    $this->string(ReqBuilder::processSingleProperty(['_default' => 'foo'], @$not_defined))->isEqualTo('foo');
+    $this->string(ReqBuilder::processSingleProperty(['_default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
+    $this->string(ReqBuilder::processSingleProperty(['_default' => '0044'], NULL))->isEqualTo('0044');
   }
 
 
@@ -48,8 +48,7 @@ class Builder extends atoum {
 
 
   function testValidRequests() {
-    $requests = ['integrationHeader', 'createShipment'];
-    $helper   = new \RoyalMail\Helper\Data();
+    $helper   = new \RoyalMail\Helper\Data(['override_defaults' => ['_disable_includes' => TRUE]]);
 
     $test_schema = $this->getTestSchema('request_builder');
 
@@ -57,7 +56,7 @@ class Builder extends atoum {
       $valid = $s['valid'];
 
       $this
-        ->array(ReqBuilder::buildRequest($r, $valid['request'], $helper))
+        ->array(ReqBuilder::build($r, $valid['request'], $helper))
         ->isEqualTo($valid['expect']);
     }
   }

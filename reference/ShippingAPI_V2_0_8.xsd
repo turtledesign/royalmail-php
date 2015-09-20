@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+###################################################################################################################
+#  Description:	Schema for Royal Mail Shipping API Public Facing WSDL
+#  Revision:    2.0.8
+#  Date: 		18/12/2014
+###################################################################################################################
+#  History:
+#  Version		Date 			Author		                     Description of Change
+#  v0.1			24/06/2013		Somsubhra Bhattacharya(CSC)      Initial Draft
+#  v0.2         29/06/2013      Somsubhra Bhattacharya(CSC)		 Included business rules and other minor changes
+#  v0.3			02/07/2013		Somsubhra Bhattacharya(CSC)		 Incorporated suggestions from Neil Manley
+#  v0.4         19/08/2013      Somsubhra Bhattacharya(CSC)      Modified XSD according to latest Neopost XSD (v0.11)
+#  v0.5         16/12/2013      Somsubhra Bhattacharya(CSC)      Included CommonIntegrationSchemaV1_8.xsd
+#  v0.6         04/02/2014      Somsubhra Bhattacharya(CSC)      Set maxOccurs value to 99 for shipmentNumber field  
+#  v0.7         03/04/2014      Somsubhra Bhattacharya(CSC)      Imported V2.2 of CDM and fixed Defect 354 
+#  v0.8         17/04/2014      Somsubhra Bhattacharya(CSC)      Made shipmentType, serviceType and serviceOffering optional     
+#  v1.0         01/05/2014      Somsubhra Bhattacharya(CSC)      Baselined version 1.0    
+#  v1.1         07/08/2014      Somsubhra Bhattacharya(CSC)      First Draft version for SAPI Phase 2  
+#  v2.0.2       28/08/2014      Somsubhra Bhattacharya(CSC)      Changed cardinality of serviceRange and serviceOffering, corrected serviceOccurrence typo      
+#  v2.0.4       20/10/2014      Somsubhra Bhattacharya(CSC)      Added new elements as well as modified some according to Neopost XSD v2.0.4
+#  v2.0.5       30/10/2014      Somsubhra Bhattacharya(CSC)      Made cardinality changes in responses of 1D and 2D barcode range.
+#  v2.0.6       05/11/2014      Somsubhra Bhattacharya(CSC)      Made trackingNumber element in labelData optional
+#  v2.0.7       27/11/2014      Somsubhra Bhattacharya(CSC)      Offline barcode fix
+#  v2.0.8       18/12/2014      Somsubhra Bhattacharya(CSC)      Building name/number made optional in PrintLabelResponse
+####################################################################################################################
+-->
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified" version="2.0.8"
+	targetNamespace="http://www.royalmailgroup.com/api/ship/V2" xmlns:ns="http://www.royalmailgroup.com/api/ship/V2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:rd="http://www.royalmailgroup.com/cm/referenceData/V3"
+	xmlns:com="http://www.royalmailgroup.com/cm/common/V4" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1"
+	xmlns:int="http://www.royalmailgroup.com/integration/core/V1" xmlns:soapext="http://www.royalmailgroup.com/soap/extensions/V1">
+
+	<xs:import namespace="http://www.royalmailgroup.com/integration/core/V1"
+		schemaLocation="CDM/CommonIntegrationSchemaV1_11.xsd" />
+	<xs:import namespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1"
+		schemaLocation="CDM/DatatypesV2_3.xsd" />
+	<xs:import namespace="http://www.royalmailgroup.com/cm/common/V4"
+		schemaLocation="CDM/CommonClassesV2_3.xsd" />
+	<xs:import namespace="http://www.royalmailgroup.com/cm/referenceData/V3"
+		schemaLocation="CDM/ReferenceDataV2_3.xsd" />
+	<xs:import namespace="http://www.royalmailgroup.com/soap/extensions/V1"
+	    schemaLocation="CDM/RMGSOAPExtensionsV1_2.xsd" />	
+
+	<xs:element name="createShipmentRequest" type="ns:createShipmentRequest" >
+		<xs:annotation>
+			<xs:documentation>request to create a domestic shipment</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="createShipmentResponse" type="ns:createShipmentResponse" >
+		<xs:annotation>
+			<xs:documentation>response to creating a domestic shipment</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printLabelRequest" type="ns:printLabelRequest" >
+		<xs:annotation>
+			<xs:documentation>request to provide a label for one or more shipments</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printLabelResponse" type="ns:printLabelResponse" >
+		<xs:annotation>
+			<xs:documentation>response to print label request returning label <label/> is a Base64 Encoded Document</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="updateShipmentRequest" type="ns:updateShipmentRequest" >
+		<xs:annotation>
+			<xs:documentation>request to update details for a single shipment</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="updateShipmentResponse" type="ns:updateShipmentResponse" >
+		<xs:annotation>
+			<xs:documentation>response to request to update details for a single shipment</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="createManifestRequest" type="ns:createManifestRequest" >
+		<xs:annotation>
+			<xs:documentation>request to create a manifest for items with a status of printed.  It is possible to create a manifest for </xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="createManifestResponse" type="ns:createManifestResponse" >
+		<xs:annotation>
+			<xs:documentation>response to provide a manifest of shipments with a status of printed</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printManifestRequest" type="ns:printManifestRequest" >
+		<xs:annotation>
+			<xs:documentation>request to print previously created manifest by Batch Number or Sales Order Number</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printManifestResponse" type="ns:printManifestResponse" >
+		<xs:annotation>
+			<xs:documentation>response to print manifest request returning manifest</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="cancelShipmentRequest" type="ns:cancelShipmentRequest" >
+		<xs:annotation>
+			<xs:documentation>request to cancel one or more shipments</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="cancelShipmentResponse" type="ns:cancelShipmentResponse" >
+		<xs:annotation>
+			<xs:documentation>response to request to cancel one or more shipments</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printDocumentRequest" type="ns:printDocumentRequest" >
+		<xs:annotation>
+			<xs:documentation>request to provide an International document for one or more shipments</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="printDocumentResponse" type="ns:printDocumentResponse" >
+		<xs:annotation>
+			<xs:documentation>response to print International document request returning document</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="request1DRangesRequest" type="ns:request1DRangesRequest" >
+		<xs:annotation>
+			<xs:documentation>request to obtain one or more ranges of 1D barcodes for a service occurrence, service offering, service enhancement combination</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="request1DRangesResponse" type="ns:request1DRangesResponse" >
+		<xs:annotation>
+			<xs:documentation>response to request range of 1D barcode ranges</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="request2DItemIDRangeRequest" type="ns:request2DItemIDRangeRequest" >
+		<xs:annotation>
+			<xs:documentation>request to obtain a range of 2D ItemIDs for use in 2D Matrix</xs:documentation>
+		</xs:annotation>	
+	</xs:element>
+	<xs:element name="request2DItemIDRangeResponse" type="ns:request2DItemIDRangeResponse" >
+		<xs:annotation>
+			<xs:documentation>response to request a range of 2D ItemIDs</xs:documentation>
+		</xs:annotation>	
+	</xs:element>		
+	<xs:complexType name="baseRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold static elements in ComplexContents</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="createShipmentRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for createShipment operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="requestedShipment" type="ns:requestedShipment" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="createShipmentResponse">
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="completedShipmentInfo" type="ns:completedShipmentInfo"
+				minOccurs="0" />
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="requestedShipment">
+		<xs:annotation>
+			<xs:documentation>schema to hold the details for the shipment</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="shipmentType" type="rd:referenceDataType" minOccurs="0"/>
+			<xs:element name="serviceOccurrence" type="dt:ordinal"
+				minOccurs="0" />
+			<xs:element name="serviceType" type="rd:referenceDataType" minOccurs="0"/>
+			<xs:element name="serviceOffering" type="rd:serviceOfferingType" minOccurs="0"/>
+			<xs:element name="serviceFormat" type="rd:serviceFormatType"
+				minOccurs="0" />
+			<xs:element name="bfpoFormat" type="rd:bFPOFormatType"
+				minOccurs="0" />
+			<xs:element name="serviceEnhancements" type="ns:serviceEnhancements"
+				minOccurs="0" />
+			<xs:element name="signature" type="dt:boolean" minOccurs="0" />
+			<xs:element name="shippingDate" type="dt:date" minOccurs="0" />
+			<xs:element name="recipientContact" type="ns:contact"
+				minOccurs="0" />
+			<xs:element name="recipientAddress" type="com:address"
+				minOccurs="0" />
+			<xs:element name="items" type="ns:items" minOccurs="0" />
+			<xs:element name="departmentReference" type="dt:identifier"
+				minOccurs="0" />
+			<xs:element name="customerReference" type="dt:identifier"
+				minOccurs="0" />
+			<xs:element name="senderReference" type="dt:identifier"
+				minOccurs="0" />
+			<xs:element name="safePlace" type="dt:comment" minOccurs="0" />
+			<xs:element name="importerContact" type="ns:contact"
+			    minOccurs="0">
+		<xs:annotation>
+			<xs:documentation>schema to hold contact details of importer</xs:documentation>
+		</xs:annotation>			    
+			    </xs:element>
+			<xs:element name="importerAddress" type="com:address"
+			    minOccurs="0">
+		<xs:annotation>
+			<xs:documentation>schema to hold address of importer</xs:documentation>
+		</xs:annotation>			    
+			    </xs:element>
+			<xs:element name="exporterContact" type="ns:contact"
+			    minOccurs="0">
+		<xs:annotation>
+			<xs:documentation>schema to hold contact details of exporter</xs:documentation>
+		</xs:annotation>			    
+			    </xs:element>
+			<xs:element name="exporterAddress" type="com:address"
+			    minOccurs="0">
+		<xs:annotation>
+			<xs:documentation>schema to hold address of exporter</xs:documentation>
+		</xs:annotation>			    
+			    </xs:element>
+			<xs:element name="internationalInfo" type="ns:internationalInfo"
+			    minOccurs="0"/>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="internationalInfo">
+		<xs:annotation>
+			<xs:documentation>Only for international shipments</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="parcels" type="ns:parcels" minOccurs="0"/>
+			<xs:element name="shipperExporterVatNo" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="recipientImporterVatNo" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="originalExportShipmentNo" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="documentsOnly" type="dt:boolean" minOccurs="0"/>
+			<xs:element name="documentsDescription" type="dt:shortDescription" minOccurs="0"/>
+			<xs:element name="shipmentDescription" type="dt:shortDescription" minOccurs="0"/>
+			<xs:element name="comments" type="dt:longDescription" minOccurs="0"/>
+			<xs:element name="invoiceDate" type="dt:date" minOccurs="0"/>
+			<xs:element name="termsOfDelivery" type="dt:longDescription" minOccurs="0"/>
+			<xs:element name="purchaseOrderRef" type="dt:identifier" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="parcels">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of single parcel structures</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="parcel" type="ns:parcel" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="parcel">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of a single parcel</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="weight" type="com:dimension" minOccurs="0"/>
+			<xs:element name="length" type="com:dimension" minOccurs="0"/>
+			<xs:element name="height" type="com:dimension" minOccurs="0"/>
+			<xs:element name="width" type="com:dimension" minOccurs="0"/>
+			<xs:element name="purposeOfShipment" type="rd:referenceDataType" minOccurs="0"/>
+			<xs:element name="explanation" type="dt:description" minOccurs="0"/>
+			<xs:element name="invoiceNumber" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="exportLicenseNumber" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="certificateNumber" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="contentDetails" type="ns:contentDetails" minOccurs="0"/>
+			<xs:element name="fees" type="dt:decimal" minOccurs="0"/>
+			<xs:element name="offlineShipments" type="ns:shipment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentDetails">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of single parcel structures</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contentDetail" type="ns:contentDetail" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentDetail">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of a parcel contents</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="countryOfManufacture" type="rd:countryType" minOccurs="0"/>
+			<xs:element name="manufacturersName" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="description" type="dt:shortDescription"/>
+			<xs:element name="unitWeight" type="com:dimension"/>
+			<xs:element name="unitQuantity" type="dt:integer"/>
+			<xs:element name="unitValue" type="dt:decimal"/>
+			<xs:element name="currencyCode" type="rd:referenceDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Currency code is used to indicate the system of money (monetary units) in common use within a nation. Under this definition, British pounds, U.S. dollars, and European euros are different types of currency, or currencies. Currencies in the sense used by foreign exchange markets, are defined by governments, and each type has limited boundaries of acceptance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tariffCode" type="rd:referenceDataType" minOccurs="0"/>
+			<xs:element name="tariffDescription" type="rd:referenceDataType" minOccurs="0"/>
+			<xs:element name="articleReference" type="dt:identifier" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>					
+	<xs:element name="complementaryName" type="dt:longName">
+		<xs:annotation>
+			<xs:documentation>element to hold alternative or alias for business name</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="contact">
+		<xs:sequence>
+            <xs:element name="name" type="dt:longName" minOccurs="0"/>
+			<xs:element ref="ns:complementaryName" minOccurs="0" />
+			<xs:element name="telephoneNumber" type="com:telephoneNumber"
+				minOccurs="0" />
+			<xs:element name="electronicAddress" type="com:digitalAddress"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="serviceEnhancements">
+		<xs:annotation>
+			<xs:documentation>schema to hold service enhancements</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="enhancementType" type="rd:serviceEnhancementType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="items">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of single item structures</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="item" type="ns:item" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="item">
+		<xs:annotation>
+			<xs:documentation>schema to hold quantity and weight of items</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="numberOfItems" type="dt:cardinal"
+				minOccurs="0" />
+			<xs:element name="weight" type="com:dimension" minOccurs="1" />
+            <xs:element name="offlineShipments" type="ns:shipment" minOccurs="0"
+                maxOccurs="unbounded"/>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shipment">
+		<xs:annotation>
+			<xs:documentation>schema to hold an details of a shipment including 1D barcode and ItemID references</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="shipmentNumber" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="itemID" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="status" type="com:status"/>
+		</xs:sequence>
+	</xs:complexType>	
+	<xs:complexType name="completedShipmentInfo">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of the response to created shipments</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="status" type="com:status" />
+			<xs:element name="allCompletedShipments" type="ns:allCompletedShipments" />
+			<xs:element name="requestedShipment" type="ns:requestedShipment" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="allCompletedShipments">
+		<xs:annotation>
+			<xs:documentation>schema containing the choice of 1D or 2D structures</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="completedShipments" type="ns:completedShipments"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedShipments">
+		<xs:annotation>
+			<xs:documentation>schema to hold the details for 1D barcoded items</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="weight" type="com:dimension" minOccurs="0"/>
+			<xs:element name="shipments" type="ns:shipments" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shipments">
+		<xs:annotation>
+			<xs:documentation>schema to hold an array of shipment numbers</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="shipmentNumber" type="dt:identifier"
+				minOccurs="0" maxOccurs="99"/>
+			<xs:element name="shipment" type="ns:shipment" maxOccurs="99"/>	
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="printLabelRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for printLabel operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="shipmentNumber" type="dt:identifier"
+						minOccurs="1" />
+                    <xs:element name="outputFormat" type="dt:identifier" minOccurs="0"/>
+					<xs:element name="localisedAddress" type="ns:localisedAddress" minOccurs="0"/>						
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="localisedAddress">
+		<xs:annotation>
+			<xs:documentation>schema to hold native address and contact details for non-English countries</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="recipientContact" type="ns:contact" minOccurs="0"/>
+			<xs:element name="recipientAddress" type="com:address" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>	
+	<xs:complexType name="printLabelResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for printLabel operation</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="label" type="dt:document" minOccurs="0" />
+			<xs:element name="labelImages" type="ns:labelImages" minOccurs="0"/>
+			<xs:element name="labelData" type="ns:labelData" minOccurs="0"/>
+			<xs:element name="outputFormat" type="dt:identifier" minOccurs="0"/>			
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="labelImages">
+		<xs:annotation>
+			<xs:documentation>schema to hold an array of shipment numbers</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="image1DBarcode" type="dt:document"/>
+			<xs:element name="image2DMatrix" type="dt:twoDBarcode"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="labelData">
+		<xs:annotation>
+			<xs:documentation>schema to hold details for the 2D Data Matrix</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="upuCode" type="dt:identifier"/>
+			<xs:element name="informationTypeID" type="dt:identifier"/>
+			<xs:element name="versionID" type="dt:integer"/>
+			<xs:element name="format" type="dt:identifier"/>
+			<xs:element name="class" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="mailType" type="dt:identifier"/>
+			<xs:element name="itemID" type="dt:identifier"/>
+			<xs:element name="checkDigit" type="dt:integer"/>
+			<xs:element name="itemWeight" type="dt:integer"/>
+			<xs:element name="weightType" type="dt:identifier"/>
+			<xs:element name="product" type="dt:identifier"/>
+			<xs:element name="typeOfItem" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="trackingNumber" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="destinationPostcodeDPS" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="returnToSenderPostcode" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="requiredAtDelivery" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="reservedBIV" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="reservedBIVK" type="dt:identifier" minOccurs="0"/>
+			<xs:element name="spareCapacity" type="dt:shortDescription" minOccurs="0"/>
+			<xs:element name="buildingNumber" type="dt:integer" minOccurs="0"/>
+			<xs:element name="buildingName" type="dt:name" minOccurs="0"/>
+			<xs:element name="dateOfShipment" type="dt:date"/>
+			<xs:element name="recipientContact" type="ns:contact" minOccurs="0"/>
+			<xs:element name="recipientAddress" type="com:address" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>		
+	<xs:complexType name="createManifestRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for createManifest operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="serviceOccurrence" type="dt:ordinal"
+						minOccurs="0" />
+					<xs:element name="serviceOffering" type="rd:serviceOfferingType"
+						minOccurs="0" />
+					<xs:element name="yourDescription" type="dt:comment"
+						minOccurs="0" />
+					<xs:element name="yourReference" type="dt:identifier"
+						minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="createManifestResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for createManifest operation</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="completedManifests" type="ns:completedManifests"
+				minOccurs="0" />
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedManifests">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of manifest details</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="completedManifestInfo" type="ns:completedManifestInfo"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedManifestInfo">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of manifest</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="manifestBatchNumber" type="dt:identifier"
+				minOccurs="1" />
+			<xs:element name="totalItemCount" type="dt:cardinal"
+				minOccurs="1" />
+			<xs:element name="manifestShipments" type="ns:manifestShipments"
+				minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="manifestShipments">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of shipments manifested</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="manifestShipment" type="ns:manifestShipment"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="manifestShipment">
+		<xs:annotation>
+			<xs:documentation>schema to hold shipments manifested and associated service offering</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="serviceOffering" type="rd:serviceOfferingType" minOccurs="0"/>
+			<xs:element name="shipmentNumber" type="dt:identifier" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="printManifestRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for printManifest operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:choice>
+						<xs:element name="manifestBatchNumber" type="dt:identifier"/>
+						<xs:element name="salesOrderNumber" type="dt:identifier"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="printManifestResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for printManifest operation. <manifest/> is a Base64 encoded PDF Document
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="manifest" type="dt:document" minOccurs="0" />
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="updateShipmentRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for updateShipment operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="shipmentNumber" type="dt:identifier"
+						minOccurs="0" />
+					<xs:element name="requestedShipment" type="ns:requestedShipment" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="updateShipmentResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for updateShipment operation</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="status" type="com:status" minOccurs="0" />
+			<xs:element name="shipmentNumber" type="dt:identifier"
+				minOccurs="0" />
+			<xs:element name="requestedShipment" type="ns:requestedShipment"
+				minOccurs="0" />
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="cancelShipmentRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for cancelShipmentRequest operation</xs:documentation>
+		</xs:annotation>	
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="cancelShipments" type="ns:cancelShipments"
+						minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="cancelShipments">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of shipment numbers</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="shipmentNumber" type="dt:identifier"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="cancelShipmentResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for cancelShipmentResponse operation</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader" />
+			<xs:element name="completedCancelInfo" type="ns:completedCancelInfo"
+				minOccurs="0" />
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedCancelInfo">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of cancelled shipments</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="status" type="com:status" minOccurs="0" />
+			<xs:element name="completedCancelShipments" type="ns:completedCancelShipments"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedCancelShipments">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of cancelled shipments and their associated status</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="shipmentNumber" type="dt:identifier"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="printDocumentRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for printDocument operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="shipmentNumber" type="dt:identifier"/>
+					<xs:element name="documentName" type="dt:identifier"/>
+					<xs:element name="documentFormat" type="dt:identifier" minOccurs="0"/>
+					<xs:element name="documentCopies" type="dt:integer" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="printDocumentResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for printDocument operation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader"/>
+			<xs:element name="internationalDocument" type="dt:document" minOccurs="0"/>
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="request1DRangesRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for request1DRangeRequest operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest">
+				<xs:sequence>
+					<xs:element name="serviceReferences" type="ns:serviceReferences"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="serviceReferences">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of service references</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="serviceReference" type="ns:serviceReference"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="serviceReference">
+		<xs:annotation>
+			<xs:documentation>schema to hold details for service occurrence, service offering, service enhancements combinations</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="serviceOccurrence" type="dt:ordinal" minOccurs="0"/>
+			<xs:element name="serviceOffering" type="rd:serviceOfferingType" minOccurs="0"/>
+			<xs:element name="serviceEnhancements" type="ns:serviceEnhancements" minOccurs="0"/>
+			<xs:element name="signature" type="dt:boolean" minOccurs="0"/>
+			<xs:element name="serviceType" type="rd:referenceDataType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>		
+	<xs:complexType name="request1DRangesResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for request1DRangeRequest operation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader"/>
+			<xs:element name="serviceRanges" type="ns:serviceRanges" minOccurs="0"/>
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="serviceRanges">
+		<xs:annotation>
+			<xs:documentation>schema to hold array of serviceRanges</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="serviceRange" type="ns:serviceRange"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="serviceRange">
+		<xs:annotation>
+			<xs:documentation>schema to hold details of 1D Barcodes and associated service references</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="serviceReference" type="ns:serviceReference"/>
+			<xs:element name="barcode1DRange" type="ns:barcode1DRange"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="barcode1DRange">
+		<xs:annotation>
+			<xs:documentation>schema to hold start and end 1D barcode range</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="barcode1DRangeStart" type="dt:identifier"/>
+			<xs:element name="barcode1DRangeEnd" type="dt:identifier"/>
+		</xs:sequence>
+	</xs:complexType>			
+	<xs:complexType name="request2DItemIDRangeRequest">
+		<xs:annotation>
+			<xs:documentation>schema to hold request details for request2DItemIDRangeRequest operation</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ns:baseRequest"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="request2DItemIDRangeResponse">
+		<xs:annotation>
+			<xs:documentation>schema to hold response details for request2DItemIDRangeRequest operation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="integrationHeader" type="int:integrationHeader"/>
+			<xs:element name="itemIDRange" type="ns:itemIDRange" minOccurs="0"/>
+			<xs:element name="integrationFooter" type="int:integrationFooter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="itemIDRange">
+		<xs:annotation>
+			<xs:documentation>schema to hold start and end itemID range</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="itemIDRangeStart" type="dt:identifier"/>
+			<xs:element name="itemIDRangeEnd" type="dt:identifier"/>
+		</xs:sequence>
+	</xs:complexType>			
+	<xs:element name="exceptionDetails" type="soapext:exceptionDetails">
+		<xs:annotation>
+			<xs:documentation>schema to hold exceptions responses</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>
+
