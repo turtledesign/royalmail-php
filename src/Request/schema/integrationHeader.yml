@@ -1,3 +1,7 @@
+defaults:
+  _trim: true
+
+  
 properties:
   version:            # The version of the API currently being used (currently 2).
     _default: 2

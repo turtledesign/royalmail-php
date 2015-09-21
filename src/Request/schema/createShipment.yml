@@ -82,12 +82,12 @@ properties:
         Length: { max: 20 }
 
 
-    serviceEnhancements:
-      _key: ~/enhancementType
-      _multiple: { nest_key: serviceEnhancement/code }
-      _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
-      _options: service_enhancements
-      _validate: Choice 
+    # serviceEnhancements:
+    #   _key: ~/enhancementType
+    #   _multiple: { nest_key: serviceEnhancement/code }
+    #   _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
+    #   _options: service_enhancements
+    #   _validate: Choice 
 
     
     recipientContact:

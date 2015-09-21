@@ -2,11 +2,9 @@
 
 namespace RoyalMail\Response
 
-class baseResponse {
+class Interpreter extends ArrayObject {
 
-
-
-
+  protected $response_instance = NULL;
 
   function hasIssues() { return $this->hasErrors() || $this->hasWarnings(); }
 

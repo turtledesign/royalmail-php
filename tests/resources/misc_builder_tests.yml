@@ -4,7 +4,7 @@ multiple_property_single_element:
     properties:
       multiprop:
         _key: ~/parent_path
-        _multiple: { nest_key: child_path/end_key }
+        _multiple: true
 
   values:
     multiprop:
@@ -18,9 +18,9 @@ multiple_property_single_element:
   expect:
     multiprop:
       parent_path:
-        - { child_path: { end_key: one }}
-        - { child_path: { end_key: two }}
-        - { child_path: { end_key: three }}
-        - { child_path: { end_key: banana }}
-        - { child_path: { end_key: four }}
+        - one 
+        - two
+        - three
+        - banana
+        - four
 

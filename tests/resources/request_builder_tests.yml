@@ -32,9 +32,9 @@ createShipment:
         customerReference: CustSuppRef1
         senderReference: SenderReference1
 
-        serviceEnhancements:
-          - "5"
-          - "13"
+        # serviceEnhancements: # Need to find out the actual format multiples with nested items need to be in.
+        #   - "5"
+        #   - "13"
 
         recipientContact:
           name: Mr Tom Smith
@@ -79,10 +79,10 @@ createShipment:
         senderReference: SenderReference1
 
 
-        serviceEnhancements:
-          enhancementType:
-            - serviceEnhancement: { code: "5" }
-            - serviceEnhancement: { code: "13" }
+        # serviceEnhancements:
+        #   enhancementType:
+        #     - serviceEnhancement: { code: "5" }
+        #     - serviceEnhancement: { code: "13" }
 
 
         recipientContact:
@@ -129,8 +129,9 @@ cancelShipment:
     request:
       cancelShipments:
         - "RQ221150289GB"
+        - "RQ221150290GB"
 
 
     expect:
       cancelShipments:
-        - shipmentNumber: "RQ221150289GB"
+        shipmentNumber: [ "RQ221150289GB", "RQ221150290GB" ]

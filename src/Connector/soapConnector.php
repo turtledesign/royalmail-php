@@ -12,7 +12,9 @@ ini_set("soap.wsdl_cache_enabled","1"); # Save a bit of network traffic and dela
  * Any class implementing it needs to have the getEndpoint() method implemented to return the API URL.
  * 
  */
-trait soapConnector {
+class soapConnector extends baseConnector {
+
+  protected $endpoint = NULL;
 
   /**
    * Send off the request to the Royal Mail API
@@ -21,27 +23,24 @@ trait soapConnector {
    * 
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
-  function doRequest($request_type, $params = [], $config = []) {
-    $config = array_merge(['timezone' => 'BST'], $config);
+  function doRequest($request_type, $params, $config = []) {
+    $config = array_merge(['timezone' => 'BST', 'trace' => 1, 'exception' => 0], $config);
 
-    return $this->getSecuredSoapClient($config)->__soapCall($request_type, $params);
+    return $this->getSoapClient($config)->__soapCall($request_type, [$params]);
   }
 
 
-
-
-
-  /**
-   * Create the soap client for the endpoint given and add the WSSE header.
-   * 
-   * @param array $config
-   * 
-   * @return SoapClient
-   */
-  protected function getSecuredSoapClient($config) {
-    if (empty($this->soap_client)) $this->soap_client = $this->addSecurityHeader(new \RoyalMail\Connector\TDSoapClient($this->getEndpoint()), $config);
+  function getSoapClient($config = NULL) {
+    if (empty($this->soap_client)) $this->soap_client = new \RoyalMail\Connector\TDSoapClient($this->getEndpoint());
 
     return $this->soap_client;
+  }
+
+
+  function setSoapClient($client) {
+    $this->soap_client = $client;
+
+    return $this;
   }
 
 
@@ -69,7 +68,7 @@ trait soapConnector {
   <wsse:Username>' . $config['username'] . '</wsse:Username>
   <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-tokenprofile-1.0#PasswordDigest">' . $this->getPasswordDigest($nonce, $ts, $config['password']) . '</wsse:Password>
   <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-messagesecurity-1.0#Base64Binary">' . base64_encode($nonce) . '</wsse:Nonce>
-  <wsu:Created>' . $s . '</wsu:Created>
+  <wsu:Created>' . $ts . '</wsu:Created>
   </wsse:UsernameToken>
   </wsse:Security>
 </soapenv:Header>
@@ -91,6 +90,20 @@ trait soapConnector {
 
   protected function getPasswordDigest($nonce, $ts, $pass) {
     return base64_encode(sha1($nonce . $ts . sha1($pass)));
+  }
+
+
+  function setEndpoint($endpoint) { 
+    $this->endpoint = $endpoint; 
+
+    return $this;
+  }
+
+
+  function getEndpoint() {
+    if (empty($this->endpoint)) throw new \InvalidArgumentException('No location or endpoint given for SOAP WSDL');
+
+    return $this->endpoint;
   }
 
 

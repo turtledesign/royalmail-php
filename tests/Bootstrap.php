@@ -1,6 +1,9 @@
 <?php
 
-require_once dirname(__FILE__) . '/../vendor/autoload.php';
-require_once dirname(__FILE__) . '/TestDataLoader.php';
+define('PROJECT_ROOT',  dirname(__FILE__) . '/..');
+define('RESOURCES_DIR',  PROJECT_ROOT . '/tests/resources');
 
-define('RESOURCES_DIR', dirname(__FILE__) . '/resources');
+require_once PROJECT_ROOT . '/vendor/autoload.php';
+require_once PROJECT_ROOT . '/tests/TestDataLoader.php';
+
+

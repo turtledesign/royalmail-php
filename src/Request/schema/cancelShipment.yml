@@ -7,10 +7,8 @@ properties:
     _include: integrationHeader
 
   cancelShipments:
-    _multiple: 
-      nest_key: shipmentNumber
-      min: 1
-
+    _key: ~/shipmentNumber
+    _multiple: { min: 1 }
     _help: "The shipment number to be cancelled"
     _validate:
       Length: { max: 13 }

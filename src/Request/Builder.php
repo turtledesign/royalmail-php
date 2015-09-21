@@ -147,12 +147,12 @@ class Builder {
 
 
   static function processMultipleProperty($schema, $val, $defaults, $helper = NULL) {
-    $single_schema = array_diff_key($schema, ['_multiple' => 1]);
+    $single_schema = array_diff_key($schema, ['_multiple' => 1, '_key' => 1]);
     
     if (isset($schema['_multiple']['nest_key'])) $single_schema['_key'] = $schema['_multiple']['nest_key'];
     
     $multi_values = [];
-    foreach ($val as $m) array_push($multi_values, self::addProperty([], $single_schema, '', $m, $defaults, $helper));
+    foreach ($val as $m) array_push($multi_values, current(self::addProperty([], $single_schema, '', $m, $defaults, $helper)));
 
     return $multi_values;
   }
