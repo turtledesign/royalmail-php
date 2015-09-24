@@ -12,8 +12,6 @@ class MockSoapClient extends \RoyalMail\Connector\TDSoapClient {
 
   protected $postfix = 'Response.xml';
 
-
-
   function __doRequest($request, $location, $action, $version, $one_way = 0) {
     return file_get_contents(RESOURCES_DIR . '/responses/' . $action . $this->postfix);
   }

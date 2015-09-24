@@ -28,21 +28,51 @@ class soapConnector extends atoum {
 
 
   function testXMLGeneration() {
-    $test_schema = $this->getTestSchema('request_builder');
-
-    $request  = array_merge($test_schema['cancelShipment']['valid']['request'], ['integrationHeader' => $test_schema['integrationHeader']['valid']['request']]);
-    $response = array_merge($test_schema['cancelShipment']['valid']['expect'], ['integrationHeader'  => $test_schema['integrationHeader']['valid']['expect']]);
-
-    $helper = new \RoyalMail\Helper\Data();
+    $action = $this->getTestRequest('cancelShipment');
 
     $this
-      ->array($req_params = ReqBuilder::build('cancelShipment', $request, $helper))
-      ->isEqualTo($response);
+      ->array($action['request'])
+      ->isEqualTo($action['response']);
 
     $this
-      ->given($this->newTestedInstance->setSoapClient(new MockSoap(ENDPOINT)))
-      ->object($response = $this->testedInstance->doRequest('cancelShipment', $req_params, ['password' => 'blah', 'username' => 'blah']))
+      ->given($this->newTestedInstance->setSoapClient($this->getMockSoapClient()))
+      ->object($response = $this->testedInstance->doRequest('cancelShipment', $action['request']))
       ->string($response->integrationHeader->version)
       ->isEqualTo("2");
+  }
+
+
+  function testWSSecurity() {
+    $action = $this->getTestRequest('cancelShipment');
+    $client = $this->getMockSoapClient(['return_request' => TRUE]);
+
+    $this
+      ->given($this->newTestedInstance->setSoapClient($client))
+      ->object($this->testedInstance->doRequest('cancelShipment', $action['request']));
+
+
+    $this
+      ->string($client->__getLastRequest())
+      ->contains('Username>blah<')
+      ->contains('Created>' . date_create()->format('Y-m-d')) // Do not run this test at midnight! (Or get it wet).
+      ->matches('/:Password>\w+==</');
+  }
+
+
+  function getMockSoapClient() {
+    return new MockSoap(ENDPOINT, ['password' => 'blah', 'username' => 'blah', 'timezone' => 'BST', 'trace' => 1]);
+  }
+
+
+  function getTestRequest($req) {
+    $test_schema = $this->getTestSchema('request_builder');
+
+    $request  = array_merge($test_schema[$req]['valid']['request'], ['integrationHeader' => $test_schema['integrationHeader']['valid']['request']]);
+    $response = array_merge($test_schema[$req]['valid']['expect'],  ['integrationHeader'  => $test_schema['integrationHeader']['valid']['expect']]);
+
+    return [
+      'request'  => ReqBuilder::build($req, $request, new \RoyalMail\Helper\Data()), 
+      'response' => $response
+    ];
   }
 }

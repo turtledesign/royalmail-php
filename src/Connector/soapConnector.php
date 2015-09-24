@@ -16,6 +16,8 @@ class soapConnector extends baseConnector {
 
   protected $endpoint = NULL;
 
+
+
   /**
    * Send off the request to the Royal Mail API
    * 
@@ -24,72 +26,25 @@ class soapConnector extends baseConnector {
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
   function doRequest($request_type, $params, $config = []) {
-    $config = array_merge(['timezone' => 'BST', 'trace' => 1, 'exception' => 0], $config);
+    $config = array_merge(['timezone' => 'BST'], $config);
 
     return $this->getSoapClient($config)->__soapCall($request_type, [$params]);
   }
 
 
   function getSoapClient($config = NULL) {
-    if (empty($this->soap_client)) $this->soap_client = new \RoyalMail\Connector\TDSoapClient($this->getEndpoint());
+    if (empty($this->soap_client)) {
+      $this->soap_client = new \RoyalMail\Connector\TDSoapClient($this->getEndpoint(), $config);
+    }
 
     return $this->soap_client;
   }
 
 
-  function setSoapClient($client) {
+  function setSoapClient($client, $config = NULL) {
     $this->soap_client = $client;
 
     return $this;
-  }
-
-
-  /**
-   * Add the WSSE security header { https://msdn.microsoft.com/en-gb/library/ms977327.aspx }
-   * 
-   * This is currently done by directly inserting the XML template given in the RM docs for simplicity.
-   * Other possibilities: 
-   *  - http://php.net/manual/en/soapclient.soapclient.php#97273 
-   *  - https://github.com/BeSimple/BeSimpleSoapClient 
-   *  - http://stackoverflow.com/questions/2987907/how-to-implement-ws-security-1-1-in-php5
-   * 
-   * @param SoapClient $soap_client
-   * @param array      $config
-   * 
-   * @return SoapClient 
-   */
-  protected function addSecurityHeader($soap_client, $config) {
-    $nonce = $this->getNonce();
-    $ts    = $this->getTimestamp($config['timezone']);
-
-    $header_xml = '
-<soapenv:Header>
-  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecuritysecext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-  <wsse:Username>' . $config['username'] . '</wsse:Username>
-  <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-tokenprofile-1.0#PasswordDigest">' . $this->getPasswordDigest($nonce, $ts, $config['password']) . '</wsse:Password>
-  <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-messagesecurity-1.0#Base64Binary">' . base64_encode($nonce) . '</wsse:Nonce>
-  <wsu:Created>' . $ts . '</wsu:Created>
-  </wsse:UsernameToken>
-  </wsse:Security>
-</soapenv:Header>
-';
-
-    return $soap_client;
-  }
-
-
-  protected function getNonce() {
-    return mt_rand();
-  }
-
-
-  protected function getTimestamp($tz) {
-    return (new \DateTime('now', new \DateTimeZone($tz)))->format('Y-m-d\TH:i:s.000\Z');
-  }
-
-
-  protected function getPasswordDigest($nonce, $ts, $pass) {
-    return base64_encode(sha1($nonce . $ts . sha1($pass)));
   }
 
 
@@ -110,8 +65,6 @@ class soapConnector extends baseConnector {
 
   /**
    * Make sure the response from the RM API seems kosher
-   * 
-   * @param StdObject $response
    * 
    * @throws \RoyalMail\Exception\ResponseException
    */
