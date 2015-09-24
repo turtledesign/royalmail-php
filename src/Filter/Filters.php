@@ -2,7 +2,7 @@
 
 namespace RoyalMail\Filter;
 
-use \RoyalMail\Exception\BuilderSkipFieldException;
+use \RoyalMail\Exception\StructureSkipFieldException as SkipException;
 
 /**
  * The validator also needs to 'use'ed before this as the skip filter calls its methods.
@@ -103,7 +103,7 @@ trait Filters {
 
 
   static function doSkipBlank($val, $settings = NULL, $helper = NULL) {
-    if (! self::hasValue(['val' => $val], 'val')) throw new BuilderSkipFieldException('Skipping blank field');
+    if (! self::hasValue(['val' => $val], 'val')) throw new SkipException('Skipping blank field');
 
     return $val;
   }
@@ -142,7 +142,7 @@ trait Filters {
   static function doSkipThisIfThatEmpty($val, $settings, $helper = NULL) {
     if (is_string($settings)) $settings = ['that' => $settings];
 
-    if (! self::checkPath($settings['that'], [], $helper)) throw new BuilderSkipFieldException('Skipping as ' . $settings['that'] . ' is blank');
+    if (! self::checkPath($settings['that'], [], $helper)) throw new SkipException('Skipping as ' . $settings['that'] . ' is blank');
 
     return $val;
   }

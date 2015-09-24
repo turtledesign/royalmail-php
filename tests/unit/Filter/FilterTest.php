@@ -53,6 +53,6 @@ class Filters extends atoum {
 
     $this
       ->exception(function () use ($schema, $helper) { self::filter('foo', $schema, 'pre', $helper); })
-      ->isInstanceOf('\RoyalMail\Exception\BuilderSkipFieldException');
+      ->isInstanceOf('\RoyalMail\Exception\StructureSkipFieldException');
   }
 }

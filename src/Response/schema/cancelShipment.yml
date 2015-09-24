@@ -1,0 +1,20 @@
+
+properties:
+  integrationHeader:
+    include: integrationHeader
+
+  completedCancelInfo:
+    status:
+      status:
+        statusCode:
+          code:
+            _key: status
+          validFrom:
+            _key: updated
+
+    completedCancelShipments:
+      shipmentNumber:
+        _multiple: true
+        _key: cancelled_shipments
+
+

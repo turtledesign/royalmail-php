@@ -6,6 +6,8 @@ use \Symfony\Component\Yaml\Yaml;
 
 /**
  * Helper to get value options &c.
+ * 
+ * 
  */
 class Data extends \ArrayObject {
 
