@@ -7,7 +7,8 @@ use \RoyalMail\Exception\StructureSkipFieldException as SkipException;
 
 trait Structure {
 
-  static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
+  // FIXME: Wrapping this call for the Interpreter isn't ideal - could use a pre-filter to extract the value.... (also too many call vars?)
+  static function doAddProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
     try {
       $val = self::processProperty($schema, $val, $defaults, $helper);
 
@@ -22,7 +23,6 @@ trait Structure {
 
     return self::addToArray($arr, $val, $key, @$schema['_key']);
   }
-
 
 
   static function processProperty($schema, $val, $defaults = [], $helper = NULL) {
@@ -98,7 +98,7 @@ trait Structure {
 
     return $arr;
   }
-  
+
 
   static function stripMeta($arr) {
     $s = [];

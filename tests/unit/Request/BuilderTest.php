@@ -9,7 +9,7 @@ use \Symfony\Component\Yaml\Yaml;
 
 class Builder extends atoum {
 
-  use \RoyalMail\tests\TestDataLoader;
+  use \RoyalMail\tests\lib\TestDataLoader;
 
 
   function testGetRequestSchema() { 

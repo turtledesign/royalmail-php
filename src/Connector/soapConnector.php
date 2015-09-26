@@ -17,7 +17,6 @@ class soapConnector extends baseConnector {
   protected $endpoint = NULL;
 
 
-
   /**
    * Send off the request to the Royal Mail API
    * 

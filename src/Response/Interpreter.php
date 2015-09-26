@@ -3,16 +3,21 @@
 namespace RoyalMail\Response;
 
 use \Symfony\Component\Yaml\Yaml;
-use \RoyalMail\Helper\Data as DH;
 
 
 class Interpreter extends \ArrayObject {
+  
+  use \RoyalMail\Validator\Validates;
+  use \RoyalMail\Filter\Filters;
+  use \RoyalMail\Helper\Structure;
 
   protected 
     $response_instance = NULL,
-    $meta              = [],
+    $schema            = NULL,
+    $security_info     = [],
     $errors            = [],
-    $warnings          = [];
+    $warnings          = [],
+    $succeeded         = FALSE;
 
 
   function __construct($key = NULL, $response = NULL) {
@@ -20,60 +25,84 @@ class Interpreter extends \ArrayObject {
   }
 
 
+  function succeeded()   { return $this->succeeded; }
+
+  function hasIssues()   { return $this->hasErrors() || $this->hasWarnings(); } // don't we wall.
+  function hasErrors()   { return count($this->getErrors()); }
+  function getErrors()   { return $this->errors; }
+  function hasWarnings() { return count($this->getWarnings()); }
+  function getWarnings() { return $this->warnings; }
+
+  function getSecurityInfo() {
+    return $this->security_info;
+  }
+
+
+  function getResponse() {
+    return $this->getArrayCopy();
+  }
+
+
   function loadResponse($key, $response) {
     $this->response_instance = $response;
 
-    return self::parseWithSchema(self::getResponseSchema($key), $response);
+    $result = self::build($key, $response);
+
+    if (isset($result['META']['success']))  $this->succeeded     = $result['META']['success'];
+    if (isset($result['META']['security'])) $this->security_info = $result['META']['security'];
+
+    if (isset($result['RESPONSE']) && is_array($result['RESPONSE'])) $this->exchangeArray($result['RESPONSE']);
+
+    return $this;
   }
 
 
-  function parseWithSchema($schema, $response) {
-    foreach ($schema['properties'] as $key => $field) $this->parseField($key, $response, $field);
+
+  static function build($key, $response, $helper = NULL) {
+    if (empty($response) && isset($helper['source'])) $response = $helper['source'];
+
+    return self::processSchema(self::getResponseSchema($key), $response);
   }
 
 
-  function parseField($key, $response, $schema) {
-    switch (TRUE) {
-      case isset($schema['_include']):  return $this->parseInclude($key, $response, $schema);
-      case isset($schema['_multiple']): return $this->parseMultiValue($key, $response, $schema);
-      default:                          return $this->parseSingleValue($key, $response, $schema);
+  static function processSchema($schema, $response) {
+    $built    = [];
+
+    foreach ($schema['properties'] as $k => $map) {
+      $built = self::addProperty($built, $map, $k, NULL, [], ['source' => $response]);
     }
-  }
-
-
-  function parseSingleValue($key, $response, $schema) {
-    $val = self::extractValue($key, $response, $schema);
-
-
-  }
-
-
-  function parseMultiValue($key, $response, $schema) {
-
-  }
-
-
-  function parseInclude($key, $response, $schema) {
-
-  }
-
-
-  function addValue() {
-
-  }
-
-
-  static function extractValue($key, $response, $schema) {
     
+    return $built;
   }
 
 
-  function hasIssues() { return $this->hasErrors() || $this->hasWarnings(); } // don't we wall.
-  function hasErrors() { return count($this->getErrors()); }
-  function getErrors() { return []; }
-  function hasWarnings() { return count($this->getWarnings()); }
-  function getWarnings() { return []; }
+  static function addProperty($arr, $schema, $key, $val, $defaults, $helper) {
+    $val = (empty($schema['_extract'])) ? $val : self::extractValue($helper['source'], $schema);
+
+    return self::doAddProperty($arr, $schema, $key, $val, $defaults, $helper);
+  }
+
+
+  static function extractValue($response, $map) {
+    foreach (explode('/', $map['_extract']) as $step) {
+      if (! isset($response->$step)) {
+        $response = NULL;
+        break;
+      
+      } else $response = $response->$step;
+    }
+
+    return isset($map['_multiple']) ? [$response] : $response; // TODO: this will need updating depending on how multi-values are returned.
+  }
+
+
+
   function toJSON() { }
+
+
+  function serialise($result, $schema, $settings = []) {
+
+  }
 
 
   static function getResponseSchema($response_name) {

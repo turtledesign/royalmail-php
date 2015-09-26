@@ -83,17 +83,25 @@ trait Filters {
   static function doInt($val, $settings, $helper = NULL) { return (int) $val; }
 
 
-
-  /**
-   * Format a DateTime - this just passes through any value that isn't a DateTime.
-   * 
-   */
   static function doFormatDate($val, $settings, $helper = NULL) {
     if (is_string($settings)) $settings = ['format' => $settings];
     
     return ($val instanceof DateTime) ? $val->format($settings['format']) : $val;
   }
 
+
+  static function doObjectifyDate($val, $settings, $helper) { // DISCLAIMER: Method name is not a lifestyle recomendation.
+    try {
+      return (isset($settings['from_format'])) ? date_create_from_format($val) : date_create($val);
+
+    } catch (Exception $e) { return $val; } // Not a valid date, pass through as this isn't a validator.
+  }
+
+
+  static function doIsEqual($val, $settings, $helper) {
+    return $val === $settings;
+  }
+  
 
   static function doTruncate($val, $settings, $helper = NULL) {
     if (is_scalar($settings)) $settings = ['length' => $settings];

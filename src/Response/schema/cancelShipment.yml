@@ -1,20 +1,24 @@
 
 properties:
-  integrationHeader:
-    include: integrationHeader
+  META:
+    success:
+      _extract: completedCancelInfo/status/status/statusCode/code
+      _post_filter: { isEqual: 'Cancelled' }
+    
+    security:
+      _include: integrationHeader
 
-  completedCancelInfo:
+  RESPONSE:
     status:
-      status:
-        statusCode:
-          code:
-            _key: status
-          validFrom:
-            _key: updated
+      _extract: completedCancelInfo/status/status/statusCode/code
 
-    completedCancelShipments:
-      shipmentNumber:
-        _multiple: true
-        _key: cancelled_shipments
+    updated:
+      _extract: completedCancelInfo/status/validFrom
+      _post_filter: ObjectifyDate
+
+    cancelled_shipments:
+      _extract: completedCancelInfo/completedCancelShipments/shipmentNumber
+      _multiple: true
+
 
 

@@ -1,0 +1,15 @@
+
+properties:
+  timestamp:
+    _extract: integrationHeader/dateTime
+    _post_filter: ObjectifyDate
+
+  version:
+    _extract: integrationHeader/version
+
+  application_id:
+    _extract: integrationHeader/identification/applicationId
+    
+  transaction_id:
+    _extract: integrationHeader/identification/transactionId
+

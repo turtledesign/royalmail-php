@@ -51,7 +51,6 @@ class Builder {
 
     if (isset($helper['override_defaults'])) $schema['defaults'] = array_merge($schema['defaults'], $helper['override_defaults']);
 
-
     try {
       foreach ($schema['properties'] as $k => $v) {
         $built = self::addProperty($built, $schema['properties'][$k], $k, @$params[$k], $schema['defaults'], $helper);
@@ -67,6 +66,11 @@ class Builder {
     if (! empty($errors)) throw (new \RoyalMail\Exception\RequestException())->withErrors($errors);
 
     return $built;
+  }
+
+
+  static function addProperty($arr, $schema, $key, $val, $defaults = [], $helper = NULL) {
+    return self::doAddProperty($arr, $schema, $key, $val, $defaults, $helper);
   }
 
 
