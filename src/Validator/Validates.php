@@ -168,7 +168,7 @@ trait Validates {
     }
 
     if (isset($params['max']) && $func($value) > $params['max']) {
-      self::fail($value, $params, ['message' => 'value should be at least ' . $params['min'] . ' characters long']);
+      self::fail($value, $params, ['message' => 'value should be at least ' . $params['max'] . ' characters long']);
     }
 
     return $value;

@@ -58,5 +58,4 @@ trait TestDataLoader {
   function dateVector($interval, $format = 'Y-m-d') {
     return '"' . date_create()->modify($interval)->format($format) . '"'; // return quoted string as otherwise the YAML loader seems to be objectifying it.
   }
-
 }

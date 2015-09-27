@@ -43,10 +43,10 @@ class Interpreter extends \ArrayObject {
   }
 
 
-  function loadResponse($key, $response) {
+  function loadResponse($key, $response, $helper = []) {
     $this->response_instance = $response;
 
-    $result = self::build($key, $response);
+    $result = self::build($key, $response, $helper);
 
     if (isset($result['META']['success']))  $this->succeeded     = $result['META']['success'];
     if (isset($result['META']['security'])) $this->security_info = $result['META']['security'];
@@ -61,15 +61,16 @@ class Interpreter extends \ArrayObject {
   static function build($key, $response, $helper = NULL) {
     if (empty($response) && isset($helper['source'])) $response = $helper['source'];
 
-    return self::processSchema(self::getResponseSchema($key), $response);
+    return self::processSchema(self::getResponseSchema($key), $response, $helper);
   }
 
 
-  static function processSchema($schema, $response) {
-    $built    = [];
+  static function processSchema($schema, $response, $helper = []) {
+    $built  = [];
+    $helper = is_array($helper) ? array_merge(['source' => $response], $helper) : ['source' => $helper];
 
     foreach ($schema['properties'] as $k => $map) {
-      $built = self::addProperty($built, $map, $k, NULL, [], ['source' => $response]);
+      $built = self::addProperty($built, $map, $k, NULL, [], $helper);
     }
     
     return $built;
@@ -78,6 +79,20 @@ class Interpreter extends \ArrayObject {
 
   static function addProperty($arr, $schema, $key, $val, $defaults, $helper) {
     $val = (empty($schema['_extract'])) ? $val : self::extractValue($helper['source'], $schema);
+
+    if (! empty($schema['_multiple']) && count($stripped = self::stripMeta($schema))) {
+
+      $schema = array_diff_key($schema, $stripped); // FIXME: This is patching to bypass the default Structure multi property handling
+      unset($schema['_multiple']);                  
+      
+      $nest = [];
+
+      foreach ($val as $multi) {
+        $nest[] = self::processSchema(['properties' => $stripped], $multi, array_merge($helper, ['source' => $multi]));
+      }
+
+      $val = $nest;
+    }
 
     return self::doAddProperty($arr, $schema, $key, $val, $defaults, $helper);
   }
@@ -92,16 +107,18 @@ class Interpreter extends \ArrayObject {
       } else $response = $response->$step;
     }
 
-    return isset($map['_multiple']) ? [$response] : $response; // TODO: this will need updating depending on how multi-values are returned.
-  }
+    if (isset($map['_multiple']) && ! is_array($response)) $response = [$response]; // Single entries for multi-optional values in SOAP elide the array.
 
+    return $response;
+  }
 
 
   function toJSON() { }
 
 
-  function serialise($result, $schema, $settings = []) {
-
+  function serialise($settings = []) {
+    // Simplest probably to create a new instance and load the response with the 'text_only' parameter set - saves writing another scanner / parser.
+    // could have filters that only run if 'text_only' is set to format values.
   }
 
 

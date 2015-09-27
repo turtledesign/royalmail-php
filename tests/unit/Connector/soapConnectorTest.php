@@ -21,18 +21,20 @@ class soapConnector extends atoum {
 
 
 
-  function testXMLGeneration() {
-    $action = $this->getTestRequest('cancelShipment');
+  function testSchemaWSDLCompatible() {
+    $requests = ['cancelShipment', 'createManifest'];
 
-    $this
-      ->array($action['request'])
-      ->isEqualTo($action['response']);
+    foreach ($requests as $req) {
+      $action = $this->getTestRequest($req);
 
-    $this
-      ->given($this->newTestedInstance->setSoapClient($this->getMockSoapClient()))
-      ->object($response = $this->testedInstance->doRequest('cancelShipment', $action['request']))
-      ->string($response->integrationHeader->version)
-      ->isEqualTo("2");
+      $this->array($action['request'])->isEqualTo($action['response']);
+
+      $this
+        ->given($this->newTestedInstance->setSoapClient($this->getMockSoapClient()))
+        ->object($response = $this->testedInstance->doRequest($req, $action['request']))
+        ->string($response->integrationHeader->version)
+        ->isEqualTo("2");
+    }
   }
 
 

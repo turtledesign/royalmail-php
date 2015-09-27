@@ -91,6 +91,8 @@ trait Filters {
 
 
   static function doObjectifyDate($val, $settings, $helper) { // DISCLAIMER: Method name is not a lifestyle recomendation.
+    if (! empty($helper['params']['text_only'])) return $val;
+
     try {
       return (isset($settings['from_format'])) ? date_create_from_format($val) : date_create($val);
 
@@ -101,7 +103,12 @@ trait Filters {
   static function doIsEqual($val, $settings, $helper) {
     return $val === $settings;
   }
-  
+ 
+
+  static function doIsOver($val, $settings, $helper) {
+    return (is_numeric($val) && $val > $settings);
+  }
+
 
   static function doTruncate($val, $settings, $helper = NULL) {
     if (is_scalar($settings)) $settings = ['length' => $settings];

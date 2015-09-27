@@ -13,9 +13,21 @@ class Interpreter extends atoum {
   use \RoyalMail\tests\lib\TestDataLoader;
 
   function testValueExtraction() {
-    $this->string(Inter::extractValue($this->getMockResponse(), ['_extract' => 'first']))->isEqualTo('Who');
-    $this->string(Inter::extractValue($this->getMockResponse(), ['_extract' => 'roles/catcher']))->isEqualTo('Today');
-    // $this->array(Inter::extractValue($this->getMockResponse(), 'first', ['_multiple' => TRUE]))->hasSize(1)->contains('Who');
+    $mock_response = $this->getMockResponse();
+
+    $this->string(Inter::extractValue($mock_response, ['_extract' => 'first']))->isEqualTo('Who');
+    $this->array(Inter::extractValue($mock_response,  ['_extract' => 'first', '_multiple' => TRUE]))->hasSize(1)->contains('Who');
+    $this->array(Inter::extractValue($mock_response,  ['_extract' => 'field', '_multiple' => TRUE]))->hasSize(2);
+
+    $this->array(Inter::addProperty(
+      [], 
+      ['where' => ['_extract' => 'position'], 'who'   => ['_extract' => 'player']], 'field', 
+      NULL, 
+      [], 
+      ['source' => $mock_response->field[0]]
+    ))->isEqualTo(['field' => ['where' => 'left', 'who' => 'Why']]);
+
+
   }
 
 
@@ -24,55 +36,98 @@ class Interpreter extends atoum {
       'properties' => ['First'     => ['_extract' => 'first']],
     ];
 
-
     $this->array(Inter::processSchema($schema, $this->getMockResponse()))->isEqualTo(['First' => 'Who']);
-  }
+
+    $mock_response = $this->getMockResponse();
+
+    $this->array(Inter::processSchema(
+      ['properties' => ['where' => ['_extract' => 'position'], 'who'   => ['_extract' => 'player']]],
+      $mock_response->field[0]
+    ))->isEqualTo(['where' => 'left', 'who' => 'Why']);
 
 
-  function testResponseConversion() {
-    $response = (new Soap())
-                  ->setSoapClient($this->getMockSoapClient())
-                  ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
-    
-    $this->string($response->integrationHeader->version)->isEqualTo("2");
+    $nested_schema = [
+      'properties' => [
+        'field' => [
+          '_extract' => 'field', 
+          '_multiple' => TRUE,
+          'where' => ['_extract' => 'position'],
+          'who'   => ['_extract' => 'player'],
+        ]
+      ]
+    ];
 
     $this
-      ->given($this->newTestedInstance)
-      ->object($this->testedInstance->loadResponse('cancelShipment', $response))
-      
-      ->array($this->testedInstance->getResponse())
-        ->isEqualTo([
-          'status'  => 'Cancelled',
-          'updated' => date_create('2015-02-09T10:35:28.000+02:00'),
-          'cancelled_shipments' =>  ['RQ221150275GB']
-        ])
-
-      ->array($this->testedInstance->getSecurityInfo())
-        ->isEqualTo([
-          'timestamp'      => date_create('2015-02-09T09:35:28'),
-          'version'        => 2,
-          'application_id' => '111111113',
-          'transaction_id' => '420642961'
-        ]);
+      ->array(Inter::processSchema($nested_schema, $mock_response))
+      ->isEqualTo([
+        'field' => [
+          ['where' => 'left', 'who' => 'Why'],
+          ['where' => 'center', 'who' => 'Because'],
+        ]
+      ]);
   }
 
 
+  function testResponseConversions() {
+    $requests = ['cancelShipment', 'createManifest'];
+    $verify   = $this->getTestSchema('response_interpretation');
+
+    foreach ($requests as $req) {
+      $expect = $verify[$req];
+      $test   = $this->getTestRequest($req);
+
+      $response = (new Soap())
+                    ->setSoapClient($this->getMockSoapClient())
+                    ->doRequest($req, $test['request']);
+      
+      $this->string($response->integrationHeader->version)->isEqualTo("2");
+
+      $this
+        ->given($this->newTestedInstance)
+        ->object($response = $this->testedInstance->loadResponse($req, $response, ['params' => ['text_only' => TRUE]]));
+
+      $this->array($response->getSecurityInfo())->isEqualTo($expect['security']);
+      $this->array($response->getResponse())->isEqualTo($expect['response']);
+
+    }
+  }
+
+
+
+  function testPostFilters() {
+    $dates_schema = [
+      'properties' => [
+        'today'    => ['_extract' => 'roles/catcher', '_post_filter' => 'ObjectifyDate'],
+        'tomorrow' => ['_extract' => 'roles/catcher', '_post_filter' => 'ObjectifyDate'],
+      ]
+    ];
+
+    $this->array($response = Inter::processSchema($dates_schema, $this->getMockResponse()))->hasSize(2);
+
+    $this->object($response['today'])->string($response['today']->format('d'))->isEqualTo(date_create()->format('d'));
+  }
 
 
 
   function getMockResponse() {
+    $field_left = new Obj;
+    $field_left->position = 'left';
+    $field_left->player   = 'Why';
+
+    $field_center = new Obj;
+    $field_center->position = 'center';
+    $field_center->player   = 'Because';
+
     $response = new Obj;
     $response->first  = 'Who';
     $response->second = 'What';
     $response->third  = 'I Don\'t know';
     
-    $response->field = new Obj;
-    $response->field->left   = 'Why';
-    $response->field->center = 'Because';
+    $response->field = [$field_left, $field_center];
 
     $response->roles = new Obj;
-    $response->roles->pitcher   = 'Tomorrow';
-    $response->roles->catcher   = 'Today';
+    $response->roles->pitcher   = date_create()->add(new \DateInterval('P1D'))->format('Y-m-d');
+    $response->roles->catcher   = date_create()->format('Y-m-d');
     $response->roles->shortstop = 'I Don\'t Give a Darn';
 
     return $response;

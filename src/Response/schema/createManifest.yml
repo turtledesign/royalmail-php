@@ -1,0 +1,25 @@
+properties:
+  META:
+    success:
+      _extract: completedManifests/completedManifestInfo/totalItemCount
+      _post_filter: { isOver: 0 }
+    
+    security:
+      _include: integrationHeader
+
+  RESPONSE:
+    batch_number:
+      _extract: completedManifests/completedManifestInfo/manifestBatchNumber
+    
+    item_count:
+      _extract: completedManifests/completedManifestInfo/totalItemCount 
+
+    shipments:
+      _extract: completedManifests/completedManifestInfo/manifestShipments/manifestShipment
+      _multiple: true
+
+      service_offering:
+        _extract: serviceOffering/serviceOfferingCode/code
+
+      shipment_number:
+        _extract: shipmentNumber

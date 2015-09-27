@@ -1,4 +1,5 @@
 
+0.0.20.1      27/09/2015 Got the createManifest response parsing OK, including handling multiple/single shipment values [4]
 0.0.19.1      26/09/2015 Response interpreter working (with filters+meta) and tested with the provided cancelShipment response [3.9]
 0.0.18.1      23/09/2015 Factored out a load of the structure processing to implement it in Request and Response + dev on response interpreter. [1.8]
 0.0.17.1      23/09/2015 Got the WS security SOAP header functioning [1.7]

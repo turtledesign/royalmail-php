@@ -1,0 +1,32 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  serviceOccurence:
+    _help: "All or one Service Occurrence. If not included then ALL Service Occurrences are included in the manifest."
+    _validate:
+      Range:
+        min: 0
+        max: 99
+
+  serviceOffering:
+    _key: ~/serviceOfferingCode/code
+    _help: "All or one Service Offerings. If not included then ALL Service Offerings are included in the manifest."
+    _options: service_offerings
+    _validate: Choice
+
+  yourDescription:
+    _help: >
+      This is a description field that corresponds to the Your Description field in RM’s Online Business Account (OBA). 
+      This is for customer reference and will not appear on any paperwork.
+    _validate:
+      Length: { max: 40 }
+
+  yourReference:
+    _help: "Included on the Customer Collection Receipt."
+    _validate:
+      Length: { max: 40 }
