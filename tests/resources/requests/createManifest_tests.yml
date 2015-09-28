@@ -1,0 +1,13 @@
+valid:
+  request:
+    serviceOccurence: "2"
+    serviceOffering: "TRM"
+    yourDescription: "Optional description, not shown on paperwork..."
+    yourReference: "Optional reference, included on customer collection receipt"
+
+  expect:
+    serviceOccurence: "2"
+    serviceOffering: 
+      serviceOfferingCode: { code: "TRM" }
+    yourDescription: "Optional description, not shown on paperwork..."
+    yourReference: "Optional reference, included on customer collection receipt"

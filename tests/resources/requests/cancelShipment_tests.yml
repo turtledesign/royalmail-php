@@ -1,0 +1,10 @@
+valid:
+  request:
+    cancelShipments:
+      - "RQ221150289GB"
+      - "RQ221150290GB"
+
+
+  expect:
+    cancelShipments:
+      shipmentNumber: [ "RQ221150289GB", "RQ221150290GB" ]

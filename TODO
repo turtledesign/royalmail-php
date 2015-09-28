@@ -6,3 +6,4 @@
 > Move more fully to Valitron validators.
 > Better handling for multi-values in the interpreters - currently only handles them with nesting.
 > > Could do with separating it out as the handling is different in Builder and Interpreter and currently requires bypass to avoid conflict.
+> createShipment needs the multi-option values setting up.

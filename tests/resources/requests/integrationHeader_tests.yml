@@ -1,0 +1,11 @@
+valid:
+  request:
+    identification:
+      applicationId: '    0123456789' # If this isn't quoted it gets changed to 342391, not octal, not hex, just weird. TODO: find out why.
+      transactionId: 'order-123'
+
+  expect:
+    version: 2
+    identification:
+      applicationId: '0123456789' 
+      transactionId: 'order-123'

@@ -12,18 +12,6 @@ class Builder extends atoum {
   use \RoyalMail\tests\lib\TestDataLoader;
 
 
-  function testGetRequestSchema() { 
-    foreach (self::getTestConfigs('request_summaries') as $request_name => $verify) {
-
-      $this
-        ->array(ReqBuilder::getRequestSchema($request_name)['properties'])
-        ->hasSize($verify['size'])
-        ->hasKey($verify['last_key']);
-    
-    }
-  }
-
-
   function testValueDefaulting() {
     $this->string(ReqBuilder::processSingleProperty(['_default' => 'foo'], @$not_defined))->isEqualTo('foo');
     $this->string(ReqBuilder::processSingleProperty(['_default' => 'bar'], '0'))->isEqualTo('bar'); // Beware.
@@ -49,14 +37,16 @@ class Builder extends atoum {
 
   function testValidRequests() {
     $helper   = new \RoyalMail\Helper\Data(['override_defaults' => ['_disable_includes' => TRUE]]);
+    $requests = glob(RESOURCES_DIR . '/requests/*.yml');
 
-    $test_schema = $this->getTestSchema('request_builder');
+    foreach ($requests as $req_file) {
+      $req_name    = basename($req_file, '_tests.yml');
+      $setup = $this->getTestSchema('requests/' . $req_name);
 
-    foreach ($test_schema as $r => $s) {
-      $valid = $s['valid'];
+      $valid = $setup['valid'];
 
       $this
-        ->array(ReqBuilder::build($r, $valid['request'], $helper))
+        ->array(ReqBuilder::build($req_name, $valid['request'], $helper))
         ->isEqualTo($valid['expect']);
     }
   }
