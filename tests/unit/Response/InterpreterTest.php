@@ -26,8 +26,6 @@ class Interpreter extends atoum {
       [], 
       ['source' => $mock_response->field[0]]
     ))->isEqualTo(['field' => ['where' => 'left', 'who' => 'Why']]);
-
-
   }
 
 
@@ -69,10 +67,14 @@ class Interpreter extends atoum {
 
 
   function testResponseConversions() {
-    $requests = ['cancelShipment', 'createManifest'];
+    $requests = glob(PROJECT_ROOT . '/src/Response/schema/*.yml');
     $verify   = $this->getTestSchema('response_interpretation');
 
     foreach ($requests as $req) {
+      $req = basename($req, '.yml');
+
+      if (preg_match('/^integration/', $req)) continue;
+
       $expect = $verify[$req];
       $test   = $this->getTestRequest($req);
 
@@ -89,9 +91,31 @@ class Interpreter extends atoum {
       $this->array($response->getSecurityInfo())->isEqualTo($expect['security']);
       $this->array($response->getResponse())->isEqualTo($expect['response']);
 
+      $this->boolean($response->hasErrors())->isFalse();
+      $this->boolean($response->hasWarnings())->isFalse();
     }
   }
 
+
+  function testErrorResponses() {
+    $soap = (new Soap())
+                    ->setSoapClient($this->getMockSoapClient()->setPostfix('SingleErrorResponse.xml'))
+                    ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+
+    $this
+      ->given($this->newTestedInstance)
+      ->object($response = $this->testedInstance->loadResponse('cancelShipment', $soap, ['params' => ['text_only' => TRUE]]));
+
+    $this->boolean($response->hasErrors())->isTrue();
+    $this->boolean($response->hasWarnings())->isFalse();
+    $this->boolean($response->succeeded())->isFalse();
+
+
+    $this->array($response->getErrors())->isEqualTo([[
+      'code'    => 'E1084',
+      'message' => 'shipmentType is a required field',
+    ]]);
+  }
 
 
   function testPostFilters() {

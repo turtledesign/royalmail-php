@@ -17,4 +17,11 @@ class MockSoapClient extends \RoyalMail\Connector\TDSoapClient {
   }
 
 
+  function setPostfix($postfix) {
+    $this->postfix = $postfix;
+
+    return $this;
+  }
+
+
 }

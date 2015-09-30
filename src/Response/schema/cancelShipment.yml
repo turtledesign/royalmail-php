@@ -7,6 +7,10 @@ properties:
     security:
       _include: integrationHeader
 
+    messages:
+      _include: integrationFooter
+
+
   RESPONSE:
     status:
       _extract: completedCancelInfo/status/status/statusCode/code

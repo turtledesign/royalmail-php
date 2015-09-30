@@ -7,3 +7,5 @@
 > Better handling for multi-values in the interpreters - currently only handles them with nesting.
 > > Could do with separating it out as the handling is different in Builder and Interpreter and currently requires bypass to avoid conflict.
 > createShipment needs the multi-option values setting up.
+> Automatic error minimising way to check request conversion schema completeness - parse WSDL for all possible values?
+> May not need the success flag on responses - any failure should have an error response.

@@ -1,0 +1,7 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader

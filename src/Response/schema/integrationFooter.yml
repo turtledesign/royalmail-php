@@ -1,0 +1,40 @@
+
+properties:
+  errors:
+    _extract: integrationFooter/errors/error
+    _multiple: true
+
+    code:
+      _extract: errorCode
+
+    message:
+      _extract: errorDescription
+
+    cause:
+      _extract: errorCause
+
+    fix:
+      _extract: errorResolution
+
+    context:
+      _extract: errorContext
+
+
+  warnings:
+    _extract: integrationFooter/warnings/warning
+    _multiple: true
+
+    code:
+      _extract: warningCode
+
+    message:
+      _extract: warningDescription
+
+    cause:
+      _extract: warningCause
+
+    fix:
+      _extract: warningResolution
+
+    context:
+      _extract: warningContext

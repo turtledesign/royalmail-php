@@ -1,0 +1,6 @@
+# Single command request, only integrationHeader sent.
+
+valid:
+  request: []
+
+  expect: []

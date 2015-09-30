@@ -1,0 +1,28 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  shipmentNumber:
+    _help: "Mandatory. The number of the shipment to document."
+    _required: true
+    _validate:
+      Length: { max: 13 }
+
+  documentName:
+    _help: "Mandatory. The name of the document to output. Valid values are: CN22, CN23 and CI (for Commercial Invoice)."
+    _required: true
+    _options: international_documents
+    _validate: Choice
+
+  documentCopies:
+    _help: >
+      Number of copies of the International Document within the single Base64 Encoded PDF document output.
+      Valid values: 1 or 3 - 3 for Commercial Invoice Only
+    _options:
+      '1': 'Single copy'
+      '3': 'Three copies - only works with the Commercial Invoice option'
+    _validate: Choice #TODO: validate !3 if ! CI

@@ -3,7 +3,7 @@
 namespace RoyalMail\Response;
 
 use \Symfony\Component\Yaml\Yaml;
-
+use \RoyalMail\Exception\StructureSkipFieldException as SkipException;
 
 class Interpreter extends \ArrayObject {
   
@@ -27,10 +27,10 @@ class Interpreter extends \ArrayObject {
 
   function succeeded()   { return $this->succeeded; }
 
-  function hasIssues()   { return $this->hasErrors() || $this->hasWarnings(); } // don't we wall.
-  function hasErrors()   { return count($this->getErrors()); }
+  function hasIssues()   { return $this->hasErrors() || $this->hasWarnings(); } 
+  function hasErrors()   { return count($this->getErrors()) > 0; }
   function getErrors()   { return $this->errors; }
-  function hasWarnings() { return count($this->getWarnings()); }
+  function hasWarnings() { return count($this->getWarnings()) > 0; }
   function getWarnings() { return $this->warnings; }
 
   function getSecurityInfo() {
@@ -48,10 +48,14 @@ class Interpreter extends \ArrayObject {
 
     $result = self::build($key, $response, $helper);
 
-    if (isset($result['META']['success']))  $this->succeeded     = $result['META']['success'];
-    if (isset($result['META']['security'])) $this->security_info = $result['META']['security'];
+    if (isset($result['META']['success']))              $this->succeeded     = $result['META']['success'];
+    if (isset($result['META']['security']))             $this->security_info = $result['META']['security'];
+    if (isset($result['META']['messages']['errors']))   $this->errors        = $result['META']['messages']['errors'];
+    if (isset($result['META']['messages']['warnings'])) $this->warnings      = $result['META']['messages']['warnings'];
 
     if (isset($result['RESPONSE']) && is_array($result['RESPONSE'])) $this->exchangeArray($result['RESPONSE']);
+
+    if ($this->hasErrors()) $this->succeeded = FALSE;
 
     return $this;
   }
@@ -78,7 +82,13 @@ class Interpreter extends \ArrayObject {
 
 
   static function addProperty($arr, $schema, $key, $val, $defaults, $helper) {
-    $val = (empty($schema['_extract'])) ? $val : self::extractValue($helper['source'], $schema);
+    try {
+      $val = (empty($schema['_extract'])) ? $val : self::extractValue($helper['source'], $schema);
+
+    } catch (SkipException $e) {
+      // pass for now - in some circumstances may be best to create an empty structure (defined in schema).
+      return $arr;
+    }
 
     if (! empty($schema['_multiple']) && count($stripped = self::stripMeta($schema))) {
 
@@ -100,11 +110,9 @@ class Interpreter extends \ArrayObject {
 
   static function extractValue($response, $map) {
     foreach (explode('/', $map['_extract']) as $step) {
-      if (! isset($response->$step)) {
-        $response = NULL;
-        break;
-      
-      } else $response = $response->$step;
+      if (! isset($response->$step)) throw new SkipException('value not present in response');
+
+      $response = $response->$step;
     }
 
     if (isset($map['_multiple']) && ! is_array($response)) $response = [$response]; // Single entries for multi-optional values in SOAP elide the array.

@@ -1,0 +1,15 @@
+properties:
+  META:
+    success:
+      _extract: itemIDRange/itemIDRangeEnd
+      _post_filter: { isOver: 0 }
+    
+    security:
+      _include: integrationHeader
+
+  RESPONSE:
+    start:
+      _extract: itemIDRange/itemIDRangeStart
+
+    end:
+      _extract: itemIDRange/itemIDRangeEnd

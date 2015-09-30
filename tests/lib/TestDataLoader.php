@@ -29,7 +29,7 @@ trait TestDataLoader {
     $test_schema        = $this->getTestSchema('requests/' . $req);
 
     $request  = array_merge($test_schema['valid']['request'], ['integrationHeader' => $integration_schema['valid']['request']]);
-    $response = array_merge($test_schema['valid']['expect'],  ['integrationHeader'  => $integration_schema['valid']['expect']]);
+    $response = array_merge($test_schema['valid']['expect'],  ['integrationHeader' => $integration_schema['valid']['expect']]);
 
     return [
       'request'  => ReqBuilder::build($req, $request, new \RoyalMail\Helper\Data()), 
