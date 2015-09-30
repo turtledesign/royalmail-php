@@ -98,22 +98,90 @@ class Interpreter extends atoum {
 
 
   function testErrorResponses() {
+    $errors = [
+      'Single' => [[
+          'code'    => 'E1084',
+          'message' => 'shipmentType is a required field'
+        ]],
+    ];
+
+    $errors['Multiple'] = array_merge($errors['Single'], [[
+      'code'    => 'E1085',
+      'message' => 'another error'
+    ]]);
+
+
+    foreach (array_keys($errors) as $layout) {
+      $soap = (new Soap())
+                      ->setSoapClient($this->getMockSoapClient()->setPostfix($layout . 'ErrorResponse.xml'))
+                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+
+      $this
+        ->given($this->newTestedInstance)
+        ->object($response = $this->testedInstance->loadResponse('cancelShipment', $soap, ['params' => ['text_only' => TRUE]]));
+
+      $this->boolean($response->hasErrors())->isTrue();
+      $this->boolean($response->hasWarnings())->isFalse();
+      $this->boolean($response->succeeded())->isFalse();
+
+      $this->array($response->getErrors())->isEqualTo($errors[$layout]);
+    }
+  }
+
+
+  function testWarningResponses() {
+    $warnings = [
+      'Single' => [[
+          'code'    => 'W1084',
+          'message' => 'shipmentType would be nice to have...'
+        ]],
+    ];
+
+    $warnings['Multiple'] = array_merge($warnings['Single'], [[
+      'code'    => 'W1085',
+      'message' => 'another warning'
+    ]]);
+
+
+    foreach (array_keys($warnings) as $layout) {
+      $soap = (new Soap())
+                      ->setSoapClient($this->getMockSoapClient()->setPostfix($layout . 'WarningResponse.xml'))
+                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+
+      $this
+        ->given($this->newTestedInstance)
+        ->object($response = $this->testedInstance->loadResponse('cancelShipment', $soap, ['params' => ['text_only' => TRUE]]));
+
+      $this->boolean($response->hasErrors())->isFalse();
+      $this->boolean($response->hasWarnings())->isTrue();
+      $this->boolean($response->succeeded())->isTrue();
+
+      $this->array($response->getWarnings())->isEqualTo($warnings[$layout]);
+    }
+  }
+
+
+  function testWarningAndErrorResponse() {
     $soap = (new Soap())
-                    ->setSoapClient($this->getMockSoapClient()->setPostfix('SingleErrorResponse.xml'))
-                    ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+              ->setSoapClient($this->getMockSoapClient()->setPostfix('ErrorAndWarningResponse.xml'))
+              ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
 
     $this
       ->given($this->newTestedInstance)
       ->object($response = $this->testedInstance->loadResponse('cancelShipment', $soap, ['params' => ['text_only' => TRUE]]));
 
     $this->boolean($response->hasErrors())->isTrue();
-    $this->boolean($response->hasWarnings())->isFalse();
+    $this->boolean($response->hasWarnings())->isTrue();
     $this->boolean($response->succeeded())->isFalse();
 
+    $this->array($response->getWarnings())->isEqualTo([[
+      'code'    => 'W1084',
+      'message' => 'shipmentType would be nice to have...'
+    ]]);
 
     $this->array($response->getErrors())->isEqualTo([[
       'code'    => 'E1084',
-      'message' => 'shipmentType is a required field',
+      'message' => 'shipmentType is a required field'
     ]]);
   }
 
