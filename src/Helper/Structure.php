@@ -49,11 +49,18 @@ trait Structure {
 
   static function processMultipleProperty($schema, $val, $defaults, $helper = NULL) {
     $single_schema = array_diff_key($schema, ['_multiple' => 1, '_key' => 1]);
+    $multi_schema  = $schema['_multiple'];
     
-    if (isset($schema['_multiple']['nest_key'])) $single_schema['_key'] = $schema['_multiple']['nest_key'];
-    
+    if (isset($multi_schema['nest_key'])) $single_schema['_key'] = $multi_schema['nest_key'];
     $multi_values = [];
+
     foreach ($val as $m) array_push($multi_values, current(self::addProperty([], $single_schema, '', $m, $defaults, $helper)));
+
+    if (! empty($multi_schema['multi_key'])) {
+      $multi_values = [$multi_schema['multi_key'] => $multi_values];
+
+      if (! empty($multi_schema['add_count'])) $multi_values[$multi_schema['add_count']] = count($multi_values[$multi_schema['multi_key']]);
+    }
 
     return $multi_values;
   }

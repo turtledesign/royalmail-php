@@ -27,7 +27,10 @@ valid:
         postTown: Edinburgh
         postcode: Eh10 4Bf
         country: GB
-
+      items:
+        - 
+          weight:
+            grams: 100
 
 
   expect:
@@ -82,14 +85,16 @@ valid:
           countryCode:
             code: GB
 
-      # items:
-      #   item:
-        #    -
-        #     numberOfItems: 2
-        #     weight:
-        #       unitOfMeasureCode:
-        #         code: g
-        #       value: 100
+      items:
+        numberOfItems: 1
+
+        item:
+           -    
+            weight:
+              value: 100
+              unitOfMeasure:
+                unitOfMeasureCode:
+                  code: g
 
         #     offlineShipments:
         #       - 

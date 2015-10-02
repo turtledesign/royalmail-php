@@ -117,6 +117,11 @@ trait Filters {
   }
 
 
+  static function doRound($val, $settings, $helper = NULL) {
+    return round($val);
+  }
+
+
   static function doSkipBlank($val, $settings = NULL, $helper = NULL) {
     if (! self::hasValue(['val' => $val], 'val')) throw new SkipException('Skipping blank field');
 
