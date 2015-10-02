@@ -11,10 +11,11 @@ valid:
       signature: true
       customerReference: CustSuppRef1
       senderReference: SenderReference1
+      safePlace: in the garage
 
-      # serviceEnhancements: # Need to find out the actual format multiples with nested items need to be in.
-      #   - "5"
-      #   - "13"
+      serviceEnhancements: # Need to find out the actual format multiples with nested items need to be in.
+        - "5"
+        - "13"
 
       recipientContact:
         name: Mr Tom Smith
@@ -60,12 +61,13 @@ valid:
 
       customerReference: CustSuppRef1
       senderReference: SenderReference1
+      safePlace: in the garage
 
 
-      # serviceEnhancements:
-      #   enhancementType:
-      #     - serviceEnhancement: { code: "5" }
-      #     - serviceEnhancement: { code: "13" }
+      serviceEnhancements:
+        enhancementType:
+          - serviceEnhancementCode: { code: "5" }
+          - serviceEnhancementCode: { code: "13" }
 
 
       recipientContact:

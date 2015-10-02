@@ -81,13 +81,20 @@ properties:
       _validate: 
         Length: { max: 20 }
 
+    safePlace:
+      _help: >
+        For Tracked non-signature service offerings only; this field allows a string that gives details of the recipient’s designated safeplace 
+        (e.g. “inside the porch”). Will be truncated to 24 characters on label.
+      _validate:
+        Length: { max: 30 }
 
-    # serviceEnhancements:
-    #   _key: ~/enhancementType
-    #   _multiple: { nest_key: serviceEnhancement/code }
-    #   _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
-    #   _options: service_enhancements
-    #   _validate: Choice 
+
+    serviceEnhancements:
+      _key: ~/enhancementType
+      _multiple: { nest_key: serviceEnhancementCode/code }
+      _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
+      _options: service_enhancements
+      _validate: Choice 
 
     
     recipientContact:

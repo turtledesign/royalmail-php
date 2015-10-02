@@ -1,5 +1,6 @@
 
-0.0.22.1      02/10/2015 items key on createShipment working, added Round filter and generation of county key for multi-properties [2.5]
+0.0.23.1      02/10/2015 serviceEnhancements working with subkey nesting of values. [0.5]
+0.0.22.1      02/10/2015 Items key on createShipment working, added Round filter and generation of county key for multi-properties [2.5]
 0.0.21.1      30/09/2015 Added loading for the errors and warnings in the integrationFooter, tested with single error [2.5 (+1c)]
 0.0.20.1      27/09/2015 Got the createManifest response parsing OK, including handling multiple/single shipment values [4]
 0.0.19.1      26/09/2015 Response interpreter working (with filters+meta) and tested with the provided cancelShipment response [3.9]
