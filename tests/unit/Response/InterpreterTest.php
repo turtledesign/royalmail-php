@@ -113,6 +113,8 @@ class Interpreter extends atoum {
 
       $this->boolean($response->hasBinaries())->isTrue();
 
+      if (! function_exists('finfo_open')) return;
+
       $finfangfo = finfo_open(FILEINFO_MIME_TYPE);
 
       foreach ($response->getBinariesInfo() as $key => $mime) {
