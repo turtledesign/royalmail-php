@@ -1,0 +1,32 @@
+properties:
+  META:
+    success:
+      _extract: integrationHeader/version
+      _post_filter: { isEqual: 2 }
+    
+    security:
+      _include: integrationHeader
+
+    messages:
+      _include: integrationFooter
+
+  RESPONSE:
+    label:
+      _extract: label
+
+    1DBarcode:
+      _extract: labelImages/image1DBarcode
+
+    2DBarcode:
+      _extract: labelImages/image2DBarcode
+
+    format:
+      _extract: outputFormat
+
+
+binaries:
+  label: application/pdf
+
+  1DBarcode: image/png
+
+  2DBarcode: image/png

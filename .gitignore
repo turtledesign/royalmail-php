@@ -1,4 +1,5 @@
 vendor/*
+tests/tmp/*
 composer.lock
 *.sublime-project
 *.sublime-workspace

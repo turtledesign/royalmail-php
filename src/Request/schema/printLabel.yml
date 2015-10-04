@@ -1,0 +1,58 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  shipmentNumber:
+    _help: "The shipment number of the shipment to be printed"
+    _validate:
+      Length: { max: 13 }
+
+  outputFormat:
+    _options: label_formats
+    _validate: Choice
+
+  localisedAddress:
+    recipientContact:
+      name:
+        _help: "Localised Contact Name."
+        _validate:
+          Length: { max: 80 }
+
+      companyName:
+        _key: complementaryName
+        _help: "Localised Business Name."
+        _validate:
+          Length: { max: 64 }
+
+
+    recipientAddress:
+      addressLine1:
+        _help: "Localised First line of the address. NOTE: truncated to 35 characters on labels."
+        _validate: 
+          Length: { max: 80 }
+
+      addressLine2:
+        _help: "Localised Second line of the address. NOTE: truncated to 35 characters on labels."
+        _validate: 
+          Length: { max: 80 }
+
+      addressLine3:
+        _help: "Localised Third line of the address. NOTE: truncated to 35 characters on labels."
+        _validate: 
+          Length: { max: 80 }
+
+      postTown:
+        _help: "Localised Town or City. NOTE: truncated to 35 characters on labels."
+        _required: true
+        _validate: 
+          Length: { max: 40 }
+
+      postcode:
+        _help: "Localised Destination postcode."
+        _pre_filter: formatGBPostcode
+        _validate:
+          - Length: { max: 15 }

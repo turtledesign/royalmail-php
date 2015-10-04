@@ -1,4 +1,5 @@
 
+0.0.24.1      04/10/2015 Added printLabel request + testing and methods for binary files. [3]
 0.0.23.1      02/10/2015 serviceEnhancements working with subkey nesting of values. [0.5]
 0.0.22.1      02/10/2015 Items key on createShipment working, added Round filter and generation of county key for multi-properties [2.5]
 0.0.21.1      30/09/2015 Added loading for the errors and warnings in the integrationFooter, tested with single error [2.5 (+1c)]

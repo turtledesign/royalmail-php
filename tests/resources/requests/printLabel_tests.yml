@@ -1,0 +1,7 @@
+valid:
+  request:
+    shipmentNumber: HY188980152GB
+
+
+  expect:
+    shipmentNumber: HY188980152GB

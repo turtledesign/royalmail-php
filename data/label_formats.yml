@@ -1,0 +1,5 @@
+PDF:   Standard Base64 Encoded PDF Label.
+PNG:   Base64 Encoded PNG images of the 2D Data Matric and 1D Linear Barcode.
+DS:    Data stream.
+DSPDF: Both the data stream and the Base64 Encoded PDF Label.
+DSPNG: Both the data stream and the Base64 Encoded PNG images of the 2D Data Matric and 1D Linear Barcode.

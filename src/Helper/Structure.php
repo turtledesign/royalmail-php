@@ -40,6 +40,8 @@ trait Structure {
 
       foreach ($nested as $k => $v) $nest = self::addProperty($nest, $schema[$k], $k, @$val[$k], $defaults, $helper);
 
+      if (empty($nest)) throw new SkipException('No values nested here');
+
       return $nest;
     }
 
@@ -71,7 +73,7 @@ trait Structure {
   static function processInclude($schema, $val, $defaults, $helper = NULL) {
     if (empty($defaults['_disable_includes'])) return self::build($schema['_include'], $val, $helper);
 
-    throw new SkipException; // Testing is simpler if we can check requests atomically.
+    else throw new SkipException; // Testing is simpler if we can check requests atomically.
   }
 
 

@@ -89,10 +89,43 @@ class Interpreter extends atoum {
         ->object($response = $this->testedInstance->loadResponse($req, $response, ['params' => ['text_only' => TRUE]]));
 
       $this->array($response->getSecurityInfo())->isEqualTo($expect['security']);
-      $this->array($response->getResponse())->isEqualTo($expect['response']);
+      $this->array($response->getResponseEncoded())->isEqualTo($expect['response']);
 
       $this->boolean($response->hasErrors())->isFalse();
       $this->boolean($response->hasWarnings())->isFalse();
+    }
+  }
+
+
+  function testBinaries() {
+    $requests = ['printLabel'];
+
+    foreach ($requests as $req) {
+      $test   = $this->getTestRequest($req);
+
+      $response = (new Soap())
+                    ->setSoapClient($this->getMockSoapClient())
+                    ->doRequest($req, $test['request']);
+
+      $this
+        ->given($this->newTestedInstance)
+        ->object($response = $this->testedInstance->loadResponse($req, $response));
+
+      $this->boolean($response->hasBinaries())->isTrue();
+
+      $finfangfo = finfo_open(FILEINFO_MIME_TYPE);
+
+      foreach ($response->getBinariesInfo() as $key => $mime) {
+        if (empty($response[$key])) continue;
+
+        $test_file = TMP_DIR . '/' . $key . '.test';
+
+        file_put_contents($test_file, $response[$key]);
+
+        $this->string(finfo_file($finfangfo, $test_file))->isEqualTo($mime);
+
+        unlink($test_file);
+      }
     }
   }
 

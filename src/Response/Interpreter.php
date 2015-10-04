@@ -13,6 +13,7 @@ class Interpreter extends \ArrayObject {
 
   protected 
     $response_instance = NULL,
+    $response_schema   = NULL,
     $schema            = NULL,
     $security_info     = [],
     $errors            = [],
@@ -33,6 +34,13 @@ class Interpreter extends \ArrayObject {
   function hasWarnings() { return count($this->getWarnings()) > 0; }
   function getWarnings() { return $this->warnings; }
 
+  function hasBinaries() {
+    foreach ($this->getBinaryKeys() as $bin) if (! empty($this[$bin])) return TRUE;
+
+    return FALSE;
+  }
+
+
   function getSecurityInfo() {
     return $this->security_info;
   }
@@ -45,8 +53,9 @@ class Interpreter extends \ArrayObject {
 
   function loadResponse($key, $response, $helper = []) {
     $this->response_instance = $response;
+    $this->response_schema   = self::getResponseSchema($key);
 
-    $result = self::build($key, $response, $helper);
+    $result = self::build($this->response_schema, $response, $helper);
 
     if (isset($result['META']['success']))              $this->succeeded     = $result['META']['success'];
     if (isset($result['META']['security']))             $this->security_info = $result['META']['security'];
@@ -62,10 +71,12 @@ class Interpreter extends \ArrayObject {
 
 
 
-  static function build($key, $response, $helper = NULL) {
+  static function build($schema, $response, $helper = NULL) {
     if (empty($response) && isset($helper['source'])) $response = $helper['source'];
 
-    return self::processSchema(self::getResponseSchema($key), $response, $helper);
+    if (is_scalar($schema)) $schema = self::getResponseSchema($schema);
+
+    return self::processSchema($schema, $response, $helper);
   }
 
 
@@ -121,7 +132,26 @@ class Interpreter extends \ArrayObject {
   }
 
 
-  function toJSON() { }
+  function getResponseEncoded() {
+    $arr = $this->getResponse();
+
+    if (isset($this->response_schema['binaries'])) foreach (array_keys($this->response_schema['binaries']) as $bin) {
+      if (! empty($arr[$bin])) $arr[$bin] = base64_encode($arr[$bin]);
+    }
+
+    return $arr;
+  }
+
+
+
+  function getBinaryKeys() {
+    return array_keys($this->getBinariesInfo());
+  }
+
+
+  function getBinariesInfo() {
+    return @$this->response_schema['binaries'] ?: [];
+  }
 
 
   function serialise($settings = []) {
