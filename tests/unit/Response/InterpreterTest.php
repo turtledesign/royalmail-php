@@ -100,6 +100,8 @@ class Interpreter extends atoum {
   function testBinaries() {
     $requests = ['printLabel'];
 
+    if (! file_exists(TMP_DIR)) mkdir(TMP_DIR);
+
     foreach ($requests as $req) {
       $test   = $this->getTestRequest($req);
 
@@ -112,6 +114,8 @@ class Interpreter extends atoum {
         ->object($response = $this->testedInstance->loadResponse($req, $response));
 
       $this->boolean($response->hasBinaries())->isTrue();
+
+      if (! function_exists('finfo_open')) return;
 
       $finfangfo = finfo_open(FILEINFO_MIME_TYPE);
 
