@@ -2,7 +2,7 @@
 
 namespace RoyalMail;
 
-define('MODULE_ROOT', dirname(__FILE__) . '/../');
+if (! defined('MODULE_ROOT')) define('MODULE_ROOT', dirname(__FILE__) . '/../');
 
 // These are used to provide (fast) canned responses when developing using the supplied sample responses.
 define('STATIC_RESPONSE_DIRECTORY', MODULE_ROOT . 'reference/responses');

@@ -1,4 +1,5 @@
 
+0.1.2.0       11/10/2015 Extracted test schema loading to the (new) Development helper [0.8]
 0.1.1.0       11/10/2015 Added magic API request action methods. [0.5] 
 0.1.0.0       11/10/2015 First Alpha Release - Main entry dispatcher working end to end in development mode.
 0.0.25.1      11/10/2015 Work on dispatcher/entry point - Helper and Connector loading working, inc. static version for dev integration. [3]

@@ -90,9 +90,6 @@ class RoyalMail extends atoum {
 
 
   function getRequestParams() {
-    return array_merge(
-      $this->getTestSchema('requests/cancelShipment')['valid']['request'],
-      ['integrationHeader' => $this->getTestSchema('requests/integrationHeader')['valid']['request']]
-    );
+    return $this->getSampleRequest('cancelShipment');
   }
 }

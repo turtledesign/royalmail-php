@@ -67,7 +67,7 @@ class Interpreter extends atoum {
 
 
   function testResponseConversions() {
-    $requests = glob(PROJECT_ROOT . '/src/Response/schema/*.yml');
+    $requests = glob(MODULE_ROOT . 'src/Response/schema/*.yml');
     $verify   = $this->getTestSchema('response_interpretation');
 
     foreach ($requests as $req) {
@@ -76,7 +76,7 @@ class Interpreter extends atoum {
       if (preg_match('/^integration/', $req)) continue;
 
       $expect = $verify[$req];
-      $test   = $this->getTestRequest($req);
+      $test   = $this->getTestRequest($req, $with_response = TRUE);
 
       $response = (new Soap())
                     ->setSoapClient($this->getMockSoapClient())
@@ -103,7 +103,7 @@ class Interpreter extends atoum {
     if (! file_exists(TMP_DIR)) mkdir(TMP_DIR);
 
     foreach ($requests as $req) {
-      $test   = $this->getTestRequest($req);
+      $test   = $this->getTestRequest($req, $with_response = TRUE);
 
       $response = (new Soap())
                     ->setSoapClient($this->getMockSoapClient())
@@ -151,7 +151,7 @@ class Interpreter extends atoum {
     foreach (array_keys($errors) as $layout) {
       $soap = (new Soap())
                       ->setSoapClient($this->getMockSoapClient()->setPostfix($layout . 'ErrorResponse.xml'))
-                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment'));
 
       $this
         ->given($this->newTestedInstance)
@@ -183,7 +183,7 @@ class Interpreter extends atoum {
     foreach (array_keys($warnings) as $layout) {
       $soap = (new Soap())
                       ->setSoapClient($this->getMockSoapClient()->setPostfix($layout . 'WarningResponse.xml'))
-                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+                      ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment'));
 
       $this
         ->given($this->newTestedInstance)
@@ -201,7 +201,7 @@ class Interpreter extends atoum {
   function testWarningAndErrorResponse() {
     $soap = (new Soap())
               ->setSoapClient($this->getMockSoapClient()->setPostfix('ErrorAndWarningResponse.xml'))
-              ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')['request']);
+              ->doRequest('cancelShipment', $this->getTestRequest('cancelShipment'));
 
     $this
       ->given($this->newTestedInstance)

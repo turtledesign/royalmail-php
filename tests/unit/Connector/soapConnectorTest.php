@@ -22,7 +22,7 @@ class soapConnector extends atoum {
     $requests = ['cancelShipment', 'createManifest'];
 
     foreach ($requests as $req) {
-      $action = $this->getTestRequest($req);
+      $action = $this->getTestRequest($req, $with_response = TRUE);
 
       $this->array($action['request'])->isEqualTo($action['response']);
 
@@ -36,7 +36,7 @@ class soapConnector extends atoum {
 
 
   function testWSSecurity() {
-    $action = $this->getTestRequest('cancelShipment');
+    $action = $this->getTestRequest('cancelShipment', $with_response = TRUE);
     $client = $this->getMockSoapClient(['return_request' => TRUE]);
 
     $this

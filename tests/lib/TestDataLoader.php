@@ -3,10 +3,9 @@
 
 namespace RoyalMail\tests\lib;
 
-define('ENDPOINT', PROJECT_ROOT . '/reference/ShippingAPI_V2_0_8.wsdl');
+define('ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl');
 
-use \Symfony\Component\Yaml\Yaml;
-use \RoyalMail\Request\Builder as ReqBuilder;
+
 use \RoyalMail\Connector\MockSoapClient as MockSoap;
 
 /**
@@ -17,50 +16,30 @@ use \RoyalMail\Connector\MockSoapClient as MockSoap;
  */
 trait TestDataLoader {
 
+  protected 
+    $development_helper = NULL;
+
   function getMockSoapClient() {
     return new MockSoap(ENDPOINT, [
       'password' => 'blah', 
       'username' => 'blah', 
       'timezone' => 'BST', 
       'trace'    => 1,
-      'static_responses' => PROJECT_ROOT . '/reference/responses'
+      'static_responses' => MODULE_ROOT . 'reference/responses'
     ]);
   }
 
 
-  function getTestRequest($req) {
-    $integration_schema = $this->getTestSchema('requests/integrationHeader');
-    $test_schema        = $this->getTestSchema('requests/' . $req);
+  function getDevelopmentHelper($config = []) {
+    if (empty($this->development_helper)) $this->development_helper = new \RoyalMail\Helper\Development($config);
 
-    $request  = array_merge($test_schema['valid']['request'], ['integrationHeader' => $integration_schema['valid']['request']]);
-    $response = array_merge($test_schema['valid']['expect'],  ['integrationHeader' => $integration_schema['valid']['expect']]);
-
-    return [
-      'request'  => ReqBuilder::build($req, $request, new \RoyalMail\Helper\Data()), 
-      'response' => $response
-    ];
+    return $this->development_helper;
   }
 
 
-  function getTestSchema($key) {
-    return Yaml::parse($this->mergeGeneratedValues(file_get_contents(RESOURCES_DIR . '/' . $key . '_tests.yml')));
-  }
+  function __call($method, array $args) {
+    if (method_exists($this->getDevelopmentHelper(), $method)) return call_user_func_array([$this->getDevelopmentHelper(), $method], $args);
 
-
-  function mergeGeneratedValues($source) {
-    return preg_replace_callback('/<<([^>]+)>>/', function($matches) {
-      $parts = explode('|', $matches[1]);
-      $method = array_shift($parts);
-
-      return (method_exists($this, $method)) 
-        ? call_user_func_array([$this, $method], $parts)
-        : $matches[0];
-
-    }, $source);
-  }
-
-
-  function dateVector($interval, $format = 'Y-m-d') {
-    return '"' . date_create()->modify($interval)->format($format) . '"'; // return quoted string as otherwise the YAML loader seems to be objectifying it.
+    return parent::__call($method, $args);
   }
 }
