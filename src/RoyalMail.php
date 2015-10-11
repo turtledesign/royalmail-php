@@ -7,6 +7,13 @@ define('STATIC_RESPONSE_DIRECTORY', dirname(__FILE__) . '/../reference/responses
 define('STATIC_ENDPOINT', dirname(__FILE__) . '/../reference/ShippingAPI_V2_0_8.wsdl');
 define('STATIC_CLIENT', '\RoyalMail\Connector\MockSoapClient');
 
+
+use \RoyalMail\Connector\soapConnector as Connector;
+use \RoyalMail\Helper\Data             as Store;
+use \RoyalMail\Request\Builder         as Builder;
+use \RoyalMail\Response\Interpreter    as Interpreter;
+
+
 class RoyalMail {
   protected 
     $connector   = NULL,
@@ -57,13 +64,17 @@ class RoyalMail {
   }
 
 
-  function processAction($action, $params) {
-    return $this->interpretResponse($this->send($this->buildRequest($action, $params)));
+  function processAction($action, $params, $config = []) {
+    return  $this->interpretResponse(
+              $this->send(
+                $this->buildRequest($action, $params, $config)
+              )
+            );
   }
 
 
-  function buildRequest($action, $params) {
-
+  function buildRequest($action, $params, $config = []) {
+    return Builder::build($action, $params, $this->getDataHelper($config));
   }
 
 
@@ -84,14 +95,14 @@ class RoyalMail {
    * @return \RoyalMail\Connector\baseConnector Variation on...
    */
   function getConnector() {
-    if (empty($this->connector)) $this->connector = new \RoyalMail\Connector\soapConnector($this->config);
+    if (empty($this->connector)) $this->connector = new Connector($this->config);
 
     return $this->connector;
   }
 
 
   function getDataHelper($config = []) {
-    if (empty($this->data_helper)) $this->data_helper = new \RoyalMail\Helper\Data($config);
+    if (empty($this->data_helper)) $this->data_helper = new Store($config);
 
     return $this->data_helper;
   }

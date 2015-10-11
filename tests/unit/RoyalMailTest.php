@@ -6,6 +6,7 @@ use atoum;
 
 class RoyalMail extends atoum {
 
+  use \RoyalMail\tests\lib\TestDataLoader;
 
   function testHelperFactory() {
     $this
@@ -26,7 +27,20 @@ class RoyalMail extends atoum {
   }
 
 
-  // function testBuildRequest() {
+  function testBuildRequest() {
+    $this
+      ->given($this->newTestedInstance)
+      ->array($built = $this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
+      ->hasKeys(['cancelShipments', 'integrationHeader'])
+      ->hasSize(2);
+  }
 
-  // }
+
+
+  function getRequestParams() {
+    return array_merge(
+      $this->getTestSchema('requests/cancelShipment')['valid']['request'],
+      ['integrationHeader' => $this->getTestSchema('requests/integrationHeader')['valid']['request']]
+    );
+  }
 }
