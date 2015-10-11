@@ -11,3 +11,4 @@
 > May not need the success flag on responses - any failure should have an error response.
 > Catch SOAP error objects and pass them back in the same object format? or throw a standard (interface unrelated) error the interpreter can parse.
 > > Layout of items input could be tidied a lot - e.g. ~/items/ as root array with number of separate, weight doesn't need value subkey.
+> SOAP response verification/security.

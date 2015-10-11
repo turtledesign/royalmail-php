@@ -10,11 +10,9 @@ use \Symfony\Component\Yaml\Yaml;
  * 
  */
 class Builder {
-
   use \RoyalMail\Validator\Validates;
   use \RoyalMail\Filter\Filters;
   use \RoyalMail\Helper\Structure;
-
 
 
   /**

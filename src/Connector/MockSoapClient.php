@@ -1,6 +1,6 @@
 <?php
 
-namespace RoyalMail\tests\lib;
+namespace RoyalMail\Connector;
 
   /**
    * This fakes a response by loading the XML from response file for the appropriate request (and postfix, if set).
@@ -8,12 +8,12 @@ namespace RoyalMail\tests\lib;
    * Allows for development and testing without using a live endpoint.
    * 
    */
-class MockSoapClient extends \RoyalMail\Connector\TDSoapClient {
+class MockSoapClient extends TDSoapClient {
 
   protected $postfix = 'Response.xml';
 
   function __doRequest($request, $location, $action, $version, $one_way = 0) {
-    return file_get_contents(RESOURCES_DIR . '/responses/' . $action . $this->postfix);
+    return file_get_contents($this->config['static_responses'] . '/' . $action . $this->postfix);
   }
 
 

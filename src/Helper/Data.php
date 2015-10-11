@@ -10,7 +10,6 @@ use \Symfony\Component\Yaml\Yaml;
  * 
  */
 class Data extends \ArrayObject {
-
   function __construct($init = []) {
     return parent::__construct(array_merge([
       'shipment_types' => ['Delivery' => 'Delivery', 'Return' => 'Return'],
@@ -22,6 +21,15 @@ class Data extends \ArrayObject {
     if (! $this->offsetExists($key)) $this->loadData($key);
 
     return parent::offsetGet($key);
+  }
+
+
+  function setDefaultOverride($key, $value) {
+    if (empty($this['override_defaults'])) $this['override_defaults'] = [];
+
+    $this['override_defaults'][$key] = $value;
+
+    return $this;
   }
 
 

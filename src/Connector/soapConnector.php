@@ -6,15 +6,22 @@ ini_set("soap.wsdl_cache_enabled","1"); # Save a bit of network traffic and dela
                                         # TODO: Check whether the cache is going to need clearing when updating to new versions of WSDL.
 
 
-
-/**
- * This trait handles the SOAP connection.  
- * Any class implementing it needs to have the getEndpoint() method implemented to return the API URL.
- * 
- */
 class soapConnector extends baseConnector {
 
-  protected $endpoint = NULL;
+  protected 
+    $endpoint = NULL,
+    $adaptor_defaults = [
+      'soap_client' => '\RoyalMail\Connector\TDSoapClient',
+    ];
+
+
+  function __construct($config = []) {
+    parent::__construct($config);
+
+    if (isset($config['endpoint']))    $this->setEndpoint($config['endpoint']);
+
+    if (isset($config['soap_client'])) $this->loadSoapClient($this->config);
+  }
 
 
   /**
@@ -25,22 +32,27 @@ class soapConnector extends baseConnector {
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
   function doRequest($request_type, $params, $config = []) {
-    $config = array_merge(['timezone' => 'BST'], $config);
-
     return $this->getSoapClient($config)->__soapCall($request_type, [$params]);
   }
 
 
   function getSoapClient($config = NULL) {
-    if (empty($this->soap_client)) {
-      $this->soap_client = new \RoyalMail\Connector\TDSoapClient($this->getEndpoint(), $config);
-    }
+    if (empty($this->soap_client)) $this->loadSoapClient(empty($config) ? $this->config : array_merge($this->config, $config));
 
     return $this->soap_client;
   }
 
 
-  function setSoapClient($client, $config = NULL) {
+  function loadSoapClient($config) {
+    $config = array_merge(['endpoint' => $this->getEndpoint()], $config);
+
+    $this->setSoapClient(new $config['soap_client']($config['endpoint'], $config));
+
+    return $this;
+  }
+
+
+  function setSoapClient($client) {
     $this->soap_client = $client;
 
     return $this;
@@ -70,6 +82,6 @@ class soapConnector extends baseConnector {
   protected function verifyResponse($response) {
     // Verify WS security values.
 
-    return $responses;
+    return $response;
   }
 }

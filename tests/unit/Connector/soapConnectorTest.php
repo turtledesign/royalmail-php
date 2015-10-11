@@ -9,16 +9,13 @@ class soapConnector extends atoum {
 
   use \RoyalMail\tests\lib\TestDataLoader;
 
-  /**
-   * More or less just a smoke test - but will need updating if the endpoint does.
-   */
+
   function testGetEndpoint() {
     $this
       ->given($this->newTestedInstance->setEndpoint(ENDPOINT))
       ->string($this->testedInstance->getEndpoint())
       ->contains('ShippingAPI_V2_0_8.wsdl');
   }
-
 
 
   function testSchemaWSDLCompatible() {

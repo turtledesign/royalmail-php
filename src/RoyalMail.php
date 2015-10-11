@@ -1,18 +1,34 @@
 <?php
 
-namespace RoyalMail
+namespace RoyalMail;
+
+// These are used to provide (fast) canned responses when developing using the supplied sample responses.
+define('STATIC_RESPONSE_DIRECTORY', dirname(__FILE__) . '/../reference/responses');
+define('STATIC_ENDPOINT', dirname(__FILE__) . '/../reference/ShippingAPI_V2_0_8.wsdl');
+define('STATIC_CLIENT', '\RoyalMail\Connector\MockSoapClient');
 
 class RoyalMail {
+  protected 
+    $connector   = NULL,
+    $data_helper = NULL,
+    $config = [
+      'cache_wsdl' => TRUE,
+      'timezone'   => 'UTC',
+      'username'   => NULL,
+      'password'   => NULL,
+      'mode'       => 'development',
 
+      'soap_client_options'  => [
+        'local_cert' => NULL,
+        'trace'      => 1,
+      ],
+    ],
 
-  protected $config = [
-    'cache_wsdl' => TRUE,
-    'timezone'   => 'UTC',
-    'username'   => NULL,
-    'password'   => NULL,
-    'connector'  => 'static',
-    'soap_opts'  => [],          # For proxy settings, etc.
-  ];
+    $modes = [
+      'development' => ['soap_client' => STATIC_CLIENT, 'endpoint' => STATIC_ENDPOINT, 'static_responses' => STATIC_RESPONSE_DIRECTORY],
+      'onboarding'  => ['endpoint' => ''],
+      'live'        => ['endpoint' => ''],
+    ];
 
 
 
@@ -36,60 +52,27 @@ class RoyalMail {
    * @param array $args This should contain security details and config default overrides.
    * 
    */
-  function __construct($args) {
-    if (isset($args['config']) && is_array($args['config'])) $this->configure($args['config']);
+  function __construct($args = []) {
+    $this->configure($args);
+  }
+
+
+  function processAction($action, $params) {
+    return $this->interpretResponse($this->send($this->buildRequest($action, $params)));
+  }
+
+
+  function buildRequest($action, $params) {
 
   }
 
 
-
-  function createShipment($args) {
-
-  }
-
-
-
-  function cancelShipment($args) {
+  function send($request) {
 
   }
 
 
-  function createManifest($args) {
-
-  }
-
-
-  function printDocument($args) {
-
-  }
-
-
-  function printLabel($args) {
-
-  }
-
-
-  function printManifest($args) {
-
-  }
-
-
-  function request1DRanges($args) {
-
-  }
-
-
-  function request2DItemIDRange($args) {
-
-  }
-
-
-  function updateShipment($args) {
-
-  }
-
-
-  static function send($config, $request_name, $params) {
+  function interpretResponse($response) {
 
   }
 
@@ -100,8 +83,17 @@ class RoyalMail {
    * 
    * @return \RoyalMail\Connector\baseConnector Variation on...
    */
-  static function getConnector($config) {
+  function getConnector() {
+    if (empty($this->connector)) $this->connector = new \RoyalMail\Connector\soapConnector($this->config);
 
+    return $this->connector;
+  }
+
+
+  function getDataHelper($config = []) {
+    if (empty($this->data_helper)) $this->data_helper = new \RoyalMail\Helper\Data($config);
+
+    return $this->data_helper;
   }
 
 
@@ -115,6 +107,8 @@ class RoyalMail {
   function configure($config = []) {
     $this->config = array_merge($this->config, $config);
 
+    $this->config = array_merge($this->config, $this->modes[$this->config['mode']]);
+
     return $this;
   }
 
@@ -124,7 +118,7 @@ class RoyalMail {
   }
 
 
-  function __call() {
-    
+  function __call($method, $args) {
+    return parent::__call($method, $args);
   }
 } 

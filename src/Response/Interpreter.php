@@ -160,6 +160,11 @@ class Interpreter extends \ArrayObject {
   }
 
 
+  function __toString() {
+    return ''; // JSON
+  }
+
+
   static function getResponseSchema($response_name) {
     return Yaml::parse(dirname(__FILE__) . '/schema/' . $response_name . '.yml');
   }

@@ -5,11 +5,9 @@ namespace RoyalMail\tests\lib;
 
 define('ENDPOINT', PROJECT_ROOT . '/reference/ShippingAPI_V2_0_8.wsdl');
 
-require_once PROJECT_ROOT . '/tests/lib/MockSoapClient.php';
-
 use \Symfony\Component\Yaml\Yaml;
 use \RoyalMail\Request\Builder as ReqBuilder;
-use \RoyalMail\tests\lib\MockSoapClient as MockSoap;
+use \RoyalMail\Connector\MockSoapClient as MockSoap;
 
 /**
  * Utility to pre-parse YAML request test files to add valid dates and similar.
@@ -20,7 +18,13 @@ use \RoyalMail\tests\lib\MockSoapClient as MockSoap;
 trait TestDataLoader {
 
   function getMockSoapClient() {
-    return new MockSoap(ENDPOINT, ['password' => 'blah', 'username' => 'blah', 'timezone' => 'BST', 'trace' => 1]);
+    return new MockSoap(ENDPOINT, [
+      'password' => 'blah', 
+      'username' => 'blah', 
+      'timezone' => 'BST', 
+      'trace'    => 1,
+      'static_responses' => PROJECT_ROOT . '/reference/responses'
+    ]);
   }
 
 

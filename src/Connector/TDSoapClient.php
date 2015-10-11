@@ -4,17 +4,20 @@ namespace RoyalMail\Connector;
 
 class TDSoapClient extends \SoapClient {
 
+  protected $config = [];
+
   private 
     $wss_ns = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd',
     $wsu_ns = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd';
 
 
   function __construct($wsdl = NULL, $config = []) {
-    parent::__construct($wsdl, array_merge(['trace' => 1], $config));
+    $this->config = $config;
+    
+    parent::__construct($wsdl, array_merge(['trace' => 1], @$config['soap_client_options'] ?: []));
 
     if (isset($config['username'])) $this->addWSSecurityHeader($config);
   }
-
 
 
   /**
@@ -23,6 +26,8 @@ class TDSoapClient extends \SoapClient {
    * c.f.  http://php.net/manual/en/soapclient.soapclient.php#114976 and others in thread.
    */
   function addWSSecurityHeader($config) {
+    $config = array_merge(['timezone' => 'BST'], $config);
+
     $nonce = $this->getNonce();
     $ts    = $this->getTimestamp($config['timezone']);
 
