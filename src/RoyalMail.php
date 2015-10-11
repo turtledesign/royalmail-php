@@ -2,9 +2,11 @@
 
 namespace RoyalMail;
 
+define('MODULE_ROOT', dirname(__FILE__) . '/../');
+
 // These are used to provide (fast) canned responses when developing using the supplied sample responses.
-define('STATIC_RESPONSE_DIRECTORY', dirname(__FILE__) . '/../reference/responses');
-define('STATIC_ENDPOINT', dirname(__FILE__) . '/../reference/ShippingAPI_V2_0_8.wsdl');
+define('STATIC_RESPONSE_DIRECTORY', MODULE_ROOT . 'reference/responses');
+define('STATIC_ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl');
 define('STATIC_CLIENT', '\RoyalMail\Connector\MockSoapClient');
 
 
@@ -19,11 +21,13 @@ class RoyalMail {
     $connector   = NULL,
     $data_helper = NULL,
     $config = [
-      'cache_wsdl' => TRUE,
-      'timezone'   => 'UTC',
-      'username'   => NULL,
-      'password'   => NULL,
-      'mode'       => 'development',
+      'cache_wsdl'      => TRUE,
+      'timezone'        => 'UTC',
+      'username'        => NULL,
+      'password'        => NULL,
+      'mode'            => 'development',
+      'request_schema'  => 'src/Request/schema',
+      'response_schema' => 'src/Response/schema',
 
       'soap_client_options'  => [
         'local_cert' => NULL,
@@ -38,20 +42,6 @@ class RoyalMail {
     ];
 
 
-
-  /**
-   * NOTES:
-   * 
-   * Can probably replace the request methods with __call() then throw exception if there isn't a request schema file.
-   * 1.  Create the request - this will take params given, validate them and merge in defaults and return an appropriate array structure.
-   *     Can probably scrap the class per request approach as the schema files will handle the customisation.
-   * 
-   * 2.  Create a connector of the required type with the config options given and pass it the request to process.
-   * 
-   * 3.  The connector will verify the response (if required) and return a Response object which is passed to the calling software.
-   * 
-   * A. Exceptions can be left for the calling software to handle.
-   */ 
 
   /**
    * Create New
@@ -124,12 +114,27 @@ class RoyalMail {
   }
 
 
-  function getConfig() {
-    return $this->config;
+  function getConfig($key = NULL) {
+    return (empty($key)) ? $this->config : $this->config[$key];
+  }
+
+
+  function getAvailableActions() {
+    $actions = [];
+
+    foreach (glob(MODULE_ROOT . $this->getConfig('request_schema') . '/*.yml') as $schema) {
+      $actions[] = basename($schema, '.yml');
+    }
+
+    return $actions;
   }
 
 
   function __call($method, $args) {
-    return parent::__call($method, $args);
+    if (in_array($method, $this->getAvailableActions())) {
+      return call_user_func_array([$this, 'processAction'], array_merge([$method], $args));
+    }
+
+    throw new \BadMethodCallException('Action "' . $method . '"" not configured.');
   }
 } 

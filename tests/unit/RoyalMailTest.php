@@ -68,8 +68,26 @@ class RoyalMail extends atoum {
       ->isInstanceOf('\RoyalMail\Response\Interpreter')
       ->boolean($intepreted->succeeded())
       ->isTrue();
-
   }
+
+
+  function testGetAvailableActions() {
+    $this
+      ->given($this->newTestedInstance)
+      ->array($this->testedInstance->getAvailableActions())
+      ->isNotEmpty();
+  }
+
+
+  function testMagicRequests() {
+    $this
+      ->given($this->newTestedInstance)
+      ->object($intepreted = $this->testedInstance->cancelShipment($this->getRequestParams()))
+      ->isInstanceOf('\RoyalMail\Response\Interpreter')
+      ->boolean($intepreted->succeeded())
+      ->isTrue();
+  }
+
 
   function getRequestParams() {
     return array_merge(
