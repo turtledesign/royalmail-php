@@ -65,7 +65,7 @@ class RoyalMail {
 
 
   function processAction($action, $params, $config = []) {
-    return  $this->interpretResponse(
+    return  $this->interpretResponse($action,
               $this->send($action,
                 $this->buildRequest($action, $params, $config)
               )
@@ -83,8 +83,8 @@ class RoyalMail {
   }
 
 
-  function interpretResponse($response) {
-
+  function interpretResponse($action, $response) {
+    return new Interpreter($action, $response, $this->getDataHelper());
   }
 
 

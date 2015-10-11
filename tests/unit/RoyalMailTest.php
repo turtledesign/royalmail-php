@@ -47,6 +47,29 @@ class RoyalMail extends atoum {
   }
 
 
+  function testResponseIntepretation() {\
+    $this
+      ->given($this->newTestedInstance)
+      ->array($built = $this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
+      ->object($response = $this->testedInstance->send('cancelShipment', $built))
+      ->object($intepreted = $this->testedInstance->interpretResponse('cancelShipment', $response))
+      ->isInstanceOf('\RoyalMail\Response\Interpreter')
+      ->boolean($intepreted->succeeded())
+      ->isTrue()
+      ->string($intepreted['status'])
+      ->isEqualTo('Cancelled');
+  }
+
+
+  function testEndtoEndAPICall() {
+    $this
+      ->given($this->newTestedInstance)
+      ->object($intepreted = $this->testedInstance->processAction('cancelShipment', $this->getRequestParams()))
+      ->isInstanceOf('\RoyalMail\Response\Interpreter')
+      ->boolean($intepreted->succeeded())
+      ->isTrue();
+
+  }
 
   function getRequestParams() {
     return array_merge(
