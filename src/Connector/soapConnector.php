@@ -31,7 +31,7 @@ class soapConnector extends baseConnector {
    * 
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
-  function doRequest($request_type, $params, $config = []) {
+  function doRequest($request_type, $params = [], $config = []) {
     return $this->getSoapClient($config)->__soapCall($request_type, [$params]);
   }
 

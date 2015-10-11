@@ -66,7 +66,7 @@ class RoyalMail {
 
   function processAction($action, $params, $config = []) {
     return  $this->interpretResponse(
-              $this->send(
+              $this->send($action,
                 $this->buildRequest($action, $params, $config)
               )
             );
@@ -78,8 +78,8 @@ class RoyalMail {
   }
 
 
-  function send($request) {
-
+  function send($action, $request, $config = []) {
+    return $this->getConnector()->request($action, $request, $config);
   }
 
 

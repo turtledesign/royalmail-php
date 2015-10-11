@@ -30,9 +30,20 @@ class RoyalMail extends atoum {
   function testBuildRequest() {
     $this
       ->given($this->newTestedInstance)
-      ->array($built = $this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
+      ->array($this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
       ->hasKeys(['cancelShipments', 'integrationHeader'])
       ->hasSize(2);
+  }
+
+
+  function testRequestSending() {
+    $this
+      ->given($this->newTestedInstance)
+      ->array($built = $this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
+      ->object($response = $this->testedInstance->send('cancelShipment', $built))
+      ->isInstanceOf('\stdClass')
+      ->string($response->completedCancelInfo->status->status->statusCode->code)
+      ->isEqualTo('Cancelled');
   }
 
 

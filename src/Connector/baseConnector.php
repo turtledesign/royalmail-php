@@ -13,12 +13,12 @@ abstract class baseConnector {
   }
 
 
-  function request($params) {
-    return $this->doRequest($params);
+  function request($request_type, $params = [], $config = []) {
+    return $this->doRequest($request_type, $params, $config);
   }
 
 
-  abstract protected function doRequest($config, $request_type, $params);
+  abstract protected function doRequest($request_type, $params = [], $config = []);
 
 
   function configure($config) {
