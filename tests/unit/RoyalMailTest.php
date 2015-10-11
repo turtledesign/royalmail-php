@@ -47,7 +47,7 @@ class RoyalMail extends atoum {
   }
 
 
-  function testResponseIntepretation() {\
+  function testResponseIntepretation() {
     $this
       ->given($this->newTestedInstance)
       ->array($built = $this->testedInstance->buildRequest('cancelShipment', $this->getRequestParams()))
