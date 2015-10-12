@@ -4,7 +4,8 @@
 
 This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping API](http://www.royalmail.com/corporate/services/shipping-api)
 
-> Currently development is in progress -- THIS IS NOT A USABLE MODULE!! RUN AWAY!!
+> This module is in an alpha state and hasn't yet been tested against the Royal Mail's servers.  
+> It should be now be possible to use it in development mode to integrate with client systems, see the [documentation (also still being created) in the wiki](https://github.com/turtledesign/royalmail-php/wiki) 
 > This is not an official SDK, we (http://www.turtledesign.com/) are a 3rd party integrator releasing the module with an open source licence because why not.
 
 ## Prerequisites
@@ -27,9 +28,9 @@ You can download composer using instructions on [Composer Official Website.](htt
 
 Currently, the SDK is available at [https://packagist.org](https://packagist.org/packages/turtledesign/royalmail-php). To use it in your project, you need to include it as a dependency in your project composer.json file. It can be done in two ways :
 
-* Running `composer require turtledesign/royalmail-php:*` command on your project root location (where project composer.json is located.)
+* Running `composer require 'turtledesign/royalmail-php:*@dev'` command on your project root location (where project composer.json is located.)
 
-* Or, manually editing composer.json file `require` field, and adding `"turtledesign/royalmail-php" :  "*"` inside it.
+* Or, manually editing composer.json file `require` field, and adding `"turtledesign/royalmail-php" :  "*@dev"` inside it.
 
 The resultant sample *composer.json* would look like this:
 
@@ -39,7 +40,7 @@ The resultant sample *composer.json* would look like this:
 
   "name": "sample/website",
   "require": {
-  	"turtledesign/royalmail-php" : "*"
+  	"turtledesign/royalmail-php" : "*@dev"
   }
 
   ...
