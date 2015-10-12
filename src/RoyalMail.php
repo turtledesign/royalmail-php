@@ -12,6 +12,7 @@ define('STATIC_CLIENT', '\RoyalMail\Connector\MockSoapClient');
 
 use \RoyalMail\Connector\soapConnector as Connector;
 use \RoyalMail\Helper\Data             as Store;
+use \RoyalMail\Helper\Development      as DevHelper;
 use \RoyalMail\Request\Builder         as Builder;
 use \RoyalMail\Response\Interpreter    as Interpreter;
 
@@ -20,6 +21,7 @@ class RoyalMail {
   protected 
     $connector   = NULL,
     $data_helper = NULL,
+    $dev_helper  = NULL,
     $config = [
       'cache_wsdl'      => TRUE,
       'timezone'        => 'UTC',
@@ -127,6 +129,13 @@ class RoyalMail {
     }
 
     return $actions;
+  }
+
+
+  function getDevelopmentHelper() {
+    if (empty($this->dev_helper)) $this->dev_helper = new DevHelper($this->getConfig());
+
+    return $this->dev_helper;
   }
 
 

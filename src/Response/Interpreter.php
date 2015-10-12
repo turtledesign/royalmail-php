@@ -46,6 +46,7 @@ class Interpreter extends \ArrayObject {
   }
 
 
+  function asArray()     { return $this->getResponse(); }
   function getResponse() {
     return $this->getArrayCopy();
   }

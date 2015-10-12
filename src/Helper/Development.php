@@ -9,6 +9,14 @@ define('SCHEMA_DIR',  MODULE_ROOT . 'tests/resources');
 
 class Development {
 
+  protected $config = NULL;
+
+
+  function __construct($config = []) {
+    $this->config = $config;
+  }
+
+
   function getTestRequest($req, $with_response = FALSE) {
     $built = ReqBuilder::build($req, $this->getSampleRequest($req), new \RoyalMail\Helper\Data());
 
