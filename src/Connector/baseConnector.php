@@ -18,12 +18,18 @@ abstract class baseConnector {
   }
 
 
+  /**
+   * Return the actual request as sent to the API.
+   * 
+   * @return string
+   */
+  abstract function getAPIFormattedRequest(); 
+
+
   abstract protected function doRequest($request_type, $params = [], $config = []);
 
 
   function configure($config) {
     $this->config = $config;
   }
-
-
 }

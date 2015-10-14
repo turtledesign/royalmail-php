@@ -10,5 +10,7 @@ use \Symfony\Component\Yaml\Yaml;
  * 
  */
 class Help {
-  
+  static function markdownRequest($action) {
+
+  }
 }

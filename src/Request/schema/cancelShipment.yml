@@ -9,6 +9,6 @@ properties:
   cancelShipments:
     _key: ~/shipmentNumber
     _multiple: { min: 1 }
-    _help: "The shipment number to be cancelled"
+    _help: "The shipment number/s to be cancelled"
     _validate:
       Length: { max: 13 }

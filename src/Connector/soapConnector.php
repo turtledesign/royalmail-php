@@ -36,6 +36,11 @@ class soapConnector extends baseConnector {
   }
 
 
+  function getAPIFormattedRequest() {
+    return $this->getSoapClient()->__getLastRequest();
+  }
+
+
   function getSoapClient($config = NULL) {
     if (empty($this->soap_client)) $this->loadSoapClient(empty($config) ? $this->config : array_merge($this->config, $config));
 

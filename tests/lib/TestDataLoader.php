@@ -15,7 +15,6 @@ use \RoyalMail\Connector\MockSoapClient as MockSoap;
  * 
  */
 trait TestDataLoader {
-
   protected 
     $development_helper = NULL;
 

@@ -27,6 +27,8 @@ class RoyalMail {
       'timezone'        => 'UTC',
       'username'        => NULL,
       'password'        => NULL,
+      'application_id'  => NULL,
+      'transaction_id'  => NULL,
       'mode'            => 'development',
       'request_schema'  => 'src/Request/schema',
       'response_schema' => 'src/Response/schema',
@@ -57,6 +59,8 @@ class RoyalMail {
 
 
   function processAction($action, $params, $config = []) {
+    if (empty($params['integrationHeader'])) $params = $this->addIntegrationHeader($params);
+
     return  $this->interpretResponse($action,
               $this->send($action,
                 $this->buildRequest($action, $params, $config)
@@ -79,6 +83,20 @@ class RoyalMail {
     return new Interpreter($action, $response, $this->getDataHelper());
   }
 
+
+  function addIntegrationHeader($params) {
+    $params['integrationHeader'] = [
+      'applicationId' => $this->getConfig()['application_id'],
+      'transactionId' => $this->getConfig()['transaction_id'],
+    ];
+
+    if (! empty($params['transaction_id'])) {
+      $params['integrationHeader']['transactionId'] = $params['transaction_id'];
+      unset($params['transaction_id']);
+    }
+
+    return $params;
+  }
 
 
   /**

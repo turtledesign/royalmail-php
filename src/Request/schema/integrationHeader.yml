@@ -3,24 +3,38 @@ defaults:
 
   
 properties:
-  version:            # The version of the API currently being used (currently 2).
+  dateTime:
+    _help: "This should be populated with the date timestamp when the message was generated."
+    _hidden: true
+    _pre_filter:
+      GenerateDate: 
+        format: 'Y-m-d\TH:i:s'
+        empty_only: true
+
+  version:
+    _help: "The version of the API currently being used (currently 2)." 
     _default: 2
     _validate: 
       Range: { min: 2 }
-  
-  identification:
 
-    applicationId:    # This is the ten digit Customer Account Number allocated by RM
-      _required: true
-      _validate:
-        Regex: 
-          pattern: '/^\d{10}$/'
-          message: 'The Customer Account Number should be exactly 10 digits long.'
+  applicationId:
+    _key: "identification/applicationId"
+    _help: "This is the ten digit Customer Account Number allocated by RM"
+    _required: true
+    _validate:
+      Regex: 
+        pattern: '/^\d{10}$/'
+        message: 'The Customer Account Number should be exactly 10 digits long.'
 
-    transactionId:    # Unique ID provided by client system
-      _required: true
-      _validate:
-        Regex: 
-          pattern: '/^[a-zA-Z0-9\/-]+$/'
-          message: 'Your reference ID, should contain only the characters: ‘a-z’, ‘A-Z’, ‘0-9’, ‘/’ and ‘-‘'
+  transactionId:
+    _key: "identification/transactionId"
+    _help: >
+      This is a unique number used to identify the transaction as provided by the customer system. 
+      Any value can be provided in this field but must contain only the characters ‘a-z’, ‘A-Z’, ‘0-9’, ‘/’ and ‘-‘. 
+      It allows the consuming application to correlate the response message to its request."
+    _required: true
+    _validate:
+      Regex: 
+        pattern: '/^[a-zA-Z0-9\/-]+$/'
+        message: 'Your reference ID, should contain only the characters: ‘a-z’, ‘A-Z’, ‘0-9’, ‘/’ and ‘-‘'
 

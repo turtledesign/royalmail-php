@@ -9,7 +9,6 @@ class soapConnector extends atoum {
 
   use \RoyalMail\tests\lib\TestDataLoader;
 
-
   function testGetEndpoint() {
     $this
       ->given($this->newTestedInstance->setEndpoint(ENDPOINT))
@@ -36,16 +35,12 @@ class soapConnector extends atoum {
 
 
   function testWSSecurity() {
-    $action = $this->getTestRequest('cancelShipment', $with_response = TRUE);
-    $client = $this->getMockSoapClient(['return_request' => TRUE]);
+    $this
+      ->given($this->newTestedInstance->setSoapClient($this->getMockSoapClient()))
+      ->object($this->testedInstance->doRequest('cancelShipment', $this->getTestRequest('cancelShipment')));
 
     $this
-      ->given($this->newTestedInstance->setSoapClient($client))
-      ->object($this->testedInstance->doRequest('cancelShipment', $action['request']));
-
-
-    $this
-      ->string($client->__getLastRequest())
+      ->string($this->testedInstance->getAPIFormattedRequest())
       ->contains('Username>blah<')
       ->contains('Created>' . date_create()->format('Y-m-d')) // Do not run this test at midnight! (Or get it wet).
       ->matches('/:Password>\w+==</');

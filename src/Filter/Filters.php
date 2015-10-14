@@ -83,6 +83,15 @@ trait Filters {
   static function doInt($val, $settings, $helper = NULL) { return (int) $val; }
 
 
+  static function doGenerateDate($val, $settings, $helper = NULL) {
+    if (is_string($settings)) $settings = ['format' => $settings];
+
+    if (! empty($settings['empty_only']) && ! empty($val)) return $val;
+
+    return date_create()->format(@$settings['format'] ?: 'Y-m-d\TH:i:s');
+  }
+
+
   static function doFormatDate($val, $settings, $helper = NULL) {
     if (is_string($settings)) $settings = ['format' => $settings];
     

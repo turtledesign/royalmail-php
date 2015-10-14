@@ -71,6 +71,23 @@ class RoyalMail extends atoum {
   }
 
 
+  function testSettingAuthDetails() {
+    $rm = new \RoyalMail\RoyalMail([
+      'application_id' => '9876543210',
+      'transaction_id' => 'order-234',
+      'username'       => 'my-username',
+      'password'       => 'my-password',
+      'soap_client_options' => ['local_cert' => __FILE__ ], // Doesn't do anything, used to check the parameter makes it through.
+    ]);
+
+
+    $this
+      ->object($rm->cancelShipment(array_diff_key($this->getRequestParams(), ['integrationHeader' => 1])))
+      ->string($req_xml = $rm->getConnector()->getAPIFormattedRequest());
+  }
+
+
+
   function testGetAvailableActions() {
     $this
       ->given($this->newTestedInstance)
