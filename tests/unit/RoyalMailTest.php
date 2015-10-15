@@ -24,6 +24,23 @@ class RoyalMail extends atoum {
       ->isInstanceOf('\RoyalMail\Connector\soapConnector')
       ->object($connector->getSoapClient())
       ->isInstanceOf('\RoyalMail\Connector\MockSoapClient');
+
+
+    // Remote (would only work with live details)
+/*    $interface = new \RoyalMail\RoyalMail([
+      'mode'           => 'onboarding',
+      'application_id' => '9876543210',
+      'transaction_id' => 'order-234',
+      'username'       => 'my-username',
+      'password'       => 'my-password',
+      'soap_client_options' => ['local_cert' => __FILE__ ], // Doesn't do anything, used to check the parameter makes it through.
+    ]);
+
+    $this
+      ->object($connector = $interface->getConnector())
+      ->isInstanceOf('\RoyalMail\Connector\soapConnector')
+      ->object($connector->getSoapClient())
+      ->isInstanceOf('\RoyalMail\Connector\MockSoapClient');*/
   }
 
 
