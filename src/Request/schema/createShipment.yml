@@ -3,6 +3,9 @@ defaults:
   _skip_blank: true
 
 properties:
+  integrationHeader:
+    _include: integrationHeader
+    
   requestedShipment:
     shipmentType:
       _help: "Specifies whether the shipment being created is a standard delivery service or a returns service. Accepted values are ‘Delivery’ and ‘Return’."

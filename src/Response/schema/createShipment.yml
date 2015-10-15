@@ -1,0 +1,27 @@
+properties:
+  META:
+    success:
+      _extract: completedShipmentInfo/status/status/statusCode/code
+      _post_filter: { isEqual: 'Allocated' }
+    
+    security:
+      _include: integrationHeader
+
+    messages:
+      _include: integrationFooter
+
+
+  RESPONSE:
+    status:
+      _extract: completedShipmentInfo/status/status/statusCode/code
+
+    updated:
+      _extract: completedShipmentInfo/status/validFrom
+      _post_filter: ObjectifyDate
+
+    # shipments:
+    #   _extract: completedShipmentInfo/completedCancelShipments/shipmentNumber
+    #   _multiple: true
+
+
+

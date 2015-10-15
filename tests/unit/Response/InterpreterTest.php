@@ -92,7 +92,7 @@ class Interpreter extends atoum {
       $this->array($response->getResponseEncoded())->isEqualTo($expect['response']);
 
       $this->boolean($response->hasErrors())->isFalse();
-      $this->boolean($response->hasWarnings())->isFalse();
+      $this->boolean($response->hasWarnings())->isEqualTo(@$expect['has_warnings'] ?: FALSE);
     }
   }
 
