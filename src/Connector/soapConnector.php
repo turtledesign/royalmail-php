@@ -12,7 +12,9 @@ class soapConnector extends baseConnector {
     $endpoint = NULL,
     $adaptor_defaults = [
       'soap_client' => '\RoyalMail\Connector\TDSoapClient',
-    ];
+    ],
+
+    $request_input = [];
 
 
   function __construct($config = []) {
@@ -31,8 +33,22 @@ class soapConnector extends baseConnector {
    * 
    * @return \RoyalMail\Response\baseResponse Response class for the request sent.
    */
-  function doRequest($request_type, $params = [], $config = []) {
-    return $this->getSoapClient($config)->__soapCall($request_type, [$params]);
+  function doRequest($action, $params = [], $config = []) {
+    $this->request_input = ['action' => $action, 'parameters' => $params];
+
+    return $this->getSoapClient($config)->__soapCall($action, [$params]);
+  }
+
+
+  function getDebugInfo() {
+    return [
+      'config'           => $this->config,
+      'request_input'    => $this->request_input,
+      'sent_request'     => $this->getAPIFormattedRequest(),
+      'sent_headers'     => $this->getSoapClient()->__getLastRequestHeaders(),
+      'response'         => $this->getSoapClient()->__getLastResponse(),
+      'response_headers' => $this->getSoapClient()->__getLastResponseHeaders(),
+    ];
   }
 
 
@@ -72,8 +88,6 @@ class soapConnector extends baseConnector {
 
 
   function getEndpoint() {
-    if (empty($this->endpoint)) throw new \InvalidArgumentException('No location or endpoint given for SOAP WSDL');
-
     return $this->endpoint;
   }
 

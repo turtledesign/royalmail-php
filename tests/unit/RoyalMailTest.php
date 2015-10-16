@@ -17,30 +17,44 @@ class RoyalMail extends atoum {
 
 
   function testConnectorFactory() {
-    // Development
     $this
       ->given($this->newTestedInstance)
       ->object($connector = $this->testedInstance->getConnector())
       ->isInstanceOf('\RoyalMail\Connector\soapConnector')
       ->object($connector->getSoapClient())
       ->isInstanceOf('\RoyalMail\Connector\MockSoapClient');
+  }
 
 
+  function testSoapFaultHandling() {
     // Remote (would only work with live details)
-/*    $interface = new \RoyalMail\RoyalMail([
+    $interface = new \RoyalMail\RoyalMail([
       'mode'           => 'onboarding',
       'application_id' => '9876543210',
       'transaction_id' => 'order-234',
       'username'       => 'my-username',
       'password'       => 'my-password',
-      'soap_client_options' => ['local_cert' => __FILE__ ], // Doesn't do anything, used to check the parameter makes it through.
+      'endpoint'       => NULL,
+      'soap_client_options' => [
+        'uri' => MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl',
+        'location'      => 'https://api.royalmail.com/shipping/onboarding',
+        'exception'     => FALSE,
+      ],
     ]);
 
     $this
       ->object($connector = $interface->getConnector())
       ->isInstanceOf('\RoyalMail\Connector\soapConnector')
       ->object($connector->getSoapClient())
-      ->isInstanceOf('\RoyalMail\Connector\MockSoapClient');*/
+      ->isInstanceOf('\RoyalMail\Connector\TDSoapClient')
+      ->object($response = $interface->cancelShipment($this->getRequestParams()))
+      ->isInstanceOf('\RoyalMail\Response\Interpreter')
+      ->boolean($response->succeeded())
+      ->isFalse()
+      ->object($debug = $response->getDebugInfo())
+      ->isInstanceOf('\RoyalMail\Exception\ResponseException')
+      ->string($debug->getSentRequest())
+      ->matches('/SOAP-ENV:Envelope/');
   }
 
 

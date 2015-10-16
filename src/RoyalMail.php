@@ -75,7 +75,12 @@ class RoyalMail {
 
 
   function send($action, $request, $config = []) {
-    return $this->getConnector()->request($action, $request, $config);
+    try {
+      return $this->getConnector()->request($action, $request, $config);
+
+    } catch (\SoapFault $e) {
+      return new \RoyalMail\Exception\ResponseException(array_merge(['exception' => $e], $this->getConnector()->getDebugInfo()));
+    }
   }
 
 
@@ -126,9 +131,9 @@ class RoyalMail {
    * @return RoyalMail\RoyalMail $this
    */
   function configure($config = []) {
-    $this->config = array_merge($this->config, $config);
+    $this->config = array_merge($this->config, $this->modes[@$config['mode'] ?: $this->config['mode']]);
 
-    $this->config = array_merge($this->config, $this->modes[$this->config['mode']]);
+    $this->config = array_merge($this->config, $config);
 
     return $this;
   }

@@ -18,7 +18,8 @@ class Interpreter extends \ArrayObject {
     $security_info     = [],
     $errors            = [],
     $warnings          = [],
-    $succeeded         = FALSE;
+    $succeeded         = FALSE,
+    $debug_info        = NULL;
 
 
   function __construct($key = NULL, $response = NULL) {
@@ -56,6 +57,8 @@ class Interpreter extends \ArrayObject {
 
 
   function loadResponse($key, $response, $helper = []) {
+    if ($response instanceof \RoyalMail\Exception\ResponseException) return $this->fail($response);
+
     $this->response_instance = $response;
     $this->response_schema   = self::getResponseSchema($key);
 
@@ -155,6 +158,17 @@ class Interpreter extends \ArrayObject {
 
   function getBinariesInfo() {
     return @$this->response_schema['binaries'] ?: [];
+  }
+
+
+  function getDebugInfo() { return $this->debug_info; }
+  
+  function fail($exception) {
+    $this->errors[] = ['message' => 'API Connection Error: more details available in debug info.'];
+
+    $this->debug_info = $exception;
+
+    return $this;
   }
 
 
