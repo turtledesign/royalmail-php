@@ -35,7 +35,7 @@ class Development {
 
 
   function getTestSchema($key) {
-    return Yaml::parse($this->mergeGeneratedValues(file_get_contents(SCHEMA_DIR . '/' . $key . '_tests.yml')));
+    return Yaml::parse($this->mergeGeneratedValues(file_get_contents(SCHEMA_DIR . '/' . $key . '.yml')));
   }
 
 

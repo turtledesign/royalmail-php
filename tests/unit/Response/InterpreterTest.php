@@ -68,14 +68,13 @@ class Interpreter extends atoum {
 
   function testResponseConversions() {
     $requests = glob(MODULE_ROOT . 'src/Response/schema/*.yml');
-    $verify   = $this->getTestSchema('response_interpretation');
 
     foreach ($requests as $req) {
       $req = basename($req, '.yml');
 
       if (preg_match('/^integration/', $req)) continue;
 
-      $expect = $verify[$req];
+      $expect = $this->getTestSchema('responses/' . $req);
       $test   = $this->getTestRequest($req, $with_response = TRUE);
 
       $response = (new Soap())

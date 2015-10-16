@@ -40,7 +40,7 @@ class Builder extends atoum {
     $requests = glob(RESOURCES_DIR . '/requests/*.yml');
 
     foreach ($requests as $req_file) {
-      $req_name    = basename($req_file, '_tests.yml');
+      $req_name    = basename($req_file, '.yml');
       $setup = $this->getTestSchema('requests/' . $req_name);
 
       $valid = $setup['valid'];

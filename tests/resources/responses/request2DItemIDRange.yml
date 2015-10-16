@@ -1,0 +1,9 @@
+security:
+  timestamp: '2015-02-09T10:45:33'
+  version: 2,
+  application_id: '111111113'
+  transaction_id: '350301134'
+
+response:
+  start: '0002250001'
+  end: '0002500000'

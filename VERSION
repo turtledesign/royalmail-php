@@ -1,4 +1,5 @@
 
+0.1.6.0       16/10/2015 Added createManifest action & re-organised response test YML files. [0.7]
 0.1.5.0       16/10/2015 createShipment response map. [1]
 0.1.4.0       14/10/2015 Couple of changes to get all the auth active and usable. [1.5] 
 0.1.3.0       12/10/2015 Linked up dev helper, added basic usage example. [0.6]

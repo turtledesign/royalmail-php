@@ -1,0 +1,17 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  manifestBatchNumber:
+    _help: "This is the batch number to print and is returned by a prior call to createManifest operation."
+    _validate:
+      Length: { max: 20 }
+
+  salesOrderNumber:
+    _help: "The Sales Order Number, which is available via the GUI the day after the manifest was created."
+    _validate:
+      Length: { max: 20 }

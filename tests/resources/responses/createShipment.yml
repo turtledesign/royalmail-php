@@ -1,0 +1,24 @@
+security:
+  timestamp: '2015-02-09T08:52:03'
+  version: 2,
+  application_id: '111111113'
+  transaction_id: '730222611'
+
+response:
+  status: 'Allocated'
+  updated: '2015-02-09T09:52:06.000+02:00'
+
+  shipments:
+    -
+      number:  'HY188980152GB'
+      item_id: '1000076'
+      status:  'Allocated'
+      updated: '2015-02-09T09:52:06.000+02:00'
+    -
+      number:  'HY188980166GB'
+      item_id: '1000077'
+      status:  'Allocated'
+      updated: '2015-02-09T09:52:06.000+02:00'
+
+
+has_warnings: true

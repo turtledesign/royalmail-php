@@ -1,0 +1,12 @@
+security:
+  timestamp: '2015-02-09T09:16:56'
+  version: 2,
+  application_id: '111111113'
+  transaction_id: '102122313'
+
+response:
+  batch_number: '81'
+  item_count: '2'
+  shipments:
+    - { service_offering: 'MP6', shipment_number: 'RQ221150275GB' }
+    - { service_offering: 'TRM', shipment_number: 'HY188980152GB' }

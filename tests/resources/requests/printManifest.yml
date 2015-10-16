@@ -1,0 +1,10 @@
+valid:
+  request:
+    manifestBatchNumber: HY188980152GB # In reality only one value would be used.
+    salesOrderNumber: 12345
+
+
+  expect:
+    manifestBatchNumber: HY188980152GB
+    salesOrderNumber: 12345
+
