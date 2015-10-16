@@ -1,0 +1,11 @@
+valid:
+  request:
+    shipmentNumber: HY188980152GB
+    documentName: CN22
+    documentCopies: 1
+
+
+  expect:
+    shipmentNumber: HY188980152GB
+    documentName: CN22
+    documentCopies: 1
