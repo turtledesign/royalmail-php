@@ -52,6 +52,9 @@ class Interpreter extends \ArrayObject {
   }
 
 
+  function getRawResponse() { return $this->response_instance; }
+
+
   function loadResponse($key, $response, $helper = []) {
     $this->response_instance = $response;
     $this->response_schema   = self::getResponseSchema($key);

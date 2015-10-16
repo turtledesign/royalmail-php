@@ -1,4 +1,5 @@
 
+0.1.5.0       16/10/2015 createShipment response map. [1]
 0.1.4.0       14/10/2015 Couple of changes to get all the auth active and usable. [1.5] 
 0.1.3.0       12/10/2015 Linked up dev helper, added basic usage example. [0.6]
 0.1.2.0       11/10/2015 Extracted test schema loading to the (new) Development helper [0.8]
