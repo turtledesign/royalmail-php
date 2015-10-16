@@ -28,12 +28,14 @@ class Interpreter extends \ArrayObject {
 
 
   function succeeded()   { return $this->succeeded; }
+ 
+  function hasIssues()    { return $this->hasErrors() || $this->hasWarnings(); } 
+  function hasErrors()    { return count($this->getErrors()) > 0; }
+  function getErrors()    { return $this->errors; }
+  function hasWarnings()  { return count($this->getWarnings()) > 0; }
+  function getWarnings()  { return $this->warnings; }
 
-  function hasIssues()   { return $this->hasErrors() || $this->hasWarnings(); } 
-  function hasErrors()   { return count($this->getErrors()) > 0; }
-  function getErrors()   { return $this->errors; }
-  function hasWarnings() { return count($this->getWarnings()) > 0; }
-  function getWarnings() { return $this->warnings; }
+  function hasDebugInfo() { return is_null($this->debug_info); }
 
   function hasBinaries() {
     foreach ($this->getBinaryKeys() as $bin) if (! empty($this[$bin])) return TRUE;
