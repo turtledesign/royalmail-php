@@ -18,6 +18,11 @@ class ResponseException extends RoyalMailException {
   }
 
 
+  function getSoapFault() {
+    return $this->get('exception');
+  }
+
+
   function get($key) {
     return (isset($this->debug_info[$key])) ? $this->debug_info[$key] : NULL;
   }
