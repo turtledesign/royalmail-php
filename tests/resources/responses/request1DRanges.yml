@@ -1,0 +1,15 @@
+security:
+  timestamp: '2015-02-09T09:24:49'
+  version: 2,
+  application_id: '111111113'
+  transaction_id: '916422861'
+
+response:
+  ranges:
+    -
+      service_occurence: "1"
+      service_offering: "MP5"
+      signature: false
+      service_type: "I"
+      start: "RQ285500433GB" 
+      end: "RQ285510427GB"

@@ -1,0 +1,32 @@
+valid:
+  request:
+    services:
+      - 
+        serviceOccurence: 1
+        serviceType: T
+        serviceOffering: TRM
+        signature: true
+        serviceEnhancements: 
+          - "5"
+          - "13"
+
+  expect:
+    serviceReferences:
+      serviceReference:
+        -
+          serviceOccurence: 1
+
+          serviceType: 
+            code: T
+          
+          serviceOffering:
+            serviceOfferingCode: 
+              code: TRM
+
+          signature: true
+          
+          serviceEnhancements:
+            enhancementType:
+              - serviceEnhancementCode: { code: "5" }
+              - serviceEnhancementCode: { code: "13" }
+      

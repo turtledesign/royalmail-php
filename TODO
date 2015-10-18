@@ -13,3 +13,4 @@
 > > Layout of items input could be tidied a lot - e.g. ~/items/ as root array with number of separate, weight doesn't need value subkey.
 > SOAP response verification/security.
 > printManifest request requires at least one value.
+> SOAP client can be intitialised with 'features' => SOAP_SINGLE_ELEMENT_ARRAYS -- may save some work.

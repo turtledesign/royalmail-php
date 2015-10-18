@@ -1,0 +1,49 @@
+defaults:
+  _trim: true
+  _skip_blank: true
+
+properties:
+  integrationHeader:
+    _include: integrationHeader
+
+  services:
+    _key: serviceReferences
+    _multiple:
+      min: 1
+      multi_key: serviceReference
+
+    # These values are the same as for createShipment.
+    serviceOccurence:
+      _help: >
+        Part of the customer’s contract identifier. In conjunction with the Service Offering it identifies an agreement line on the customer’s account. 
+        If only one Service Reference exists then this is not required.
+      _validate:
+        Range:
+          min: 0
+          max: 99
+
+    serviceType:
+      _help: "The system Service Type of the shipment."
+      _key: ~/code
+      _options: service_types
+      _required: true
+      _validate: Choice
+
+    serviceOffering:
+      _help: "The Service Offering code for the mail item ordered."
+      _key: ~/serviceOfferingCode/code
+      _options: service_offerings
+      _required: true
+      _validate: Choice
+
+    signature:
+      _help: "For RM Tracked items only, this element specifies whether a signature is required on delivery. If this element is not included then it defaults to false."
+      _pre_filter: Bool
+      _post_filter: Int
+
+    serviceEnhancements:
+      _key: ~/enhancementType
+      _multiple: { nest_key: serviceEnhancementCode/code }
+      _help: "There can never be more than one enhancementType specified from each Service Enhancement Group."
+      _options: service_enhancements
+      _validate: Choice 

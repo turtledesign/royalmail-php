@@ -1,0 +1,34 @@
+properties:
+  META:
+    success:
+      _extract: integrationHeader/version
+    
+    security:
+      _include: integrationHeader
+
+  RESPONSE:
+    ranges:
+      _extract: serviceRanges/serviceRange
+      _multiple: true
+
+      service_occurence:
+        _extract: serviceReference/serviceOccurrence
+
+      service_offering:
+        _extract: serviceReference/serviceOffering/serviceOfferingCode/code
+
+      enhancements:
+        _extract: serviceReference/serviceEnhancements/enhancementType/serviceEnhancementCode/code
+        _multiple: true
+
+      signature:
+        _extract: serviceReference/signature
+
+      service_type:
+        _extract: serviceReference/serviceType/code
+
+      start:
+        _extract: barcode1DRange/barcode1DRangeStart
+
+      end:
+        _extract: barcode1DRange/barcode1DRangeEnd
