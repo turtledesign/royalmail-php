@@ -32,17 +32,18 @@ class RoyalMail {
       'mode'            => 'development',
       'request_schema'  => 'src/Request/schema',
       'response_schema' => 'src/Response/schema',
-
+			'endpoint'				=> '',
       'soap_client_options'  => [
         'local_cert' => NULL,
         'trace'      => 1,
+        'location'	 => ''
       ],
     ],
 
     $modes = [
       'development' => ['soap_client' => STATIC_CLIENT, 'endpoint' => STATIC_ENDPOINT, 'static_responses' => STATIC_RESPONSE_DIRECTORY],
-      'onboarding'  => ['endpoint' => 'https://api.royalmail.com/shipping/onboarding'],
-      'live'        => ['endpoint' => 'https://api.royalmail.com/shipping'],
+      'onboarding'  => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.com/shipping/onboarding']],
+      'live'        => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.com/shipping']]
     ];
 
 
@@ -131,10 +132,10 @@ class RoyalMail {
    * @return RoyalMail\RoyalMail $this
    */
   function configure($config = []) {
-    $this->config = array_merge($this->config, $this->modes[@$config['mode'] ?: $this->config['mode']]);
-
-    $this->config = array_merge($this->config, $config);
-
+    $this->config = array_replace_recursive($this->config, $this->modes[@$config['mode'] ?: $this->config['mode']]);
+    
+    $this->config = array_replace_recursive($this->config, $config);
+    
     return $this;
   }
 
