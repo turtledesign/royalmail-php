@@ -186,6 +186,6 @@ class Interpreter extends \ArrayObject {
 
 
   static function getResponseSchema($response_name) {
-    return Yaml::parse(dirname(__FILE__) . '/schema/' . $response_name . '.yml');
+    return Yaml::parse(file_get_contents(dirname(__FILE__) . '/schema/' . $response_name . '.yml'));
   }
 }
