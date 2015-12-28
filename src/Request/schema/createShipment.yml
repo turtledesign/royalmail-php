@@ -206,9 +206,15 @@ properties:
       _multiple: 
         max: 9
         multi_key: item
-        add_count: 'numberOfItems'
 
-
+      numberOfItems:
+          _help: "Number of items for the associated weight"
+          _required: true
+          _validate:
+            Range:
+              min: 0
+              max: 99
+              
       weight:
         grams:
           _key: value
