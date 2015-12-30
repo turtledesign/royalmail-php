@@ -43,6 +43,6 @@ class soapConnector extends atoum {
       ->string($this->testedInstance->getAPIFormattedRequest())
       ->contains('Username>blah<')
       ->contains('Created>' . date_create()->format('Y-m-d')) // Do not run this test at midnight! (Or get it wet).
-      ->matches('/:Password>\w+=</');
+      ->matches('/:Password>.+=</');
   }
 }
