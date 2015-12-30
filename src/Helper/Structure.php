@@ -55,6 +55,7 @@ trait Structure {
     
     if (isset($multi_schema['nest_key'])) $single_schema['_key'] = '~/' . $multi_schema['nest_key'];
     
+    $val = isset($val) ? $val : array();
 
     $multi_values = [];
 

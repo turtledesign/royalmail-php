@@ -34,7 +34,7 @@ class Data extends \ArrayObject {
 
 
   protected function loadData($key) {
-    $this->offsetSet($key, Yaml::parse(dirname(__FILE__) . '/../../data/' . $key . '.yml'));
+    $this->offsetSet($key, Yaml::parse(file_get_contents(dirname(__FILE__) . '/../../data/' . $key . '.yml')));
 
     return $this;
   }

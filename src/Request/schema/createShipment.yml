@@ -14,7 +14,7 @@ properties:
       _required: true
       _validate: Choice
 
-    serviceOccurence:
+    serviceOccurrence:
       _help: >
         Part of the customer’s contract identifier. In conjunction with the Service Offering it identifies an agreement line on the customer’s account. 
         If only one Service Reference exists then this is not required.
@@ -206,9 +206,15 @@ properties:
       _multiple: 
         max: 9
         multi_key: item
-        add_count: 'numberOfItems'
 
-
+      numberOfItems:
+          _help: "Number of items for the associated weight"
+          _required: true
+          _validate:
+            Range:
+              min: 0
+              max: 99
+              
       weight:
         grams:
           _key: value

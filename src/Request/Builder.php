@@ -79,6 +79,6 @@ class Builder {
    * @return array
    */
   static function getRequestSchema($request_name) {
-    return Yaml::parse(dirname(__FILE__) . '/schema/' . $request_name . '.yml');
+    return Yaml::parse(file_get_contents(dirname(__FILE__) . '/schema/' . $request_name . '.yml'));
   }
 }

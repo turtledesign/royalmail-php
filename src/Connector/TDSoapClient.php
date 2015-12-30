@@ -34,7 +34,7 @@ class TDSoapClient extends \SoapClient {
     $auth = new \stdClass();
     $auth->Username = new \SoapVar($config['username'], XSD_STRING, NULL, $this->wss_ns, NULL, $this->wss_ns);
     $auth->Password = new \SoapVar($this->getPasswordDigest($nonce, $ts, $config['password']), XSD_STRING, NULL, $this->wss_ns, NULL, $this->wss_ns);
-    $auth->Nonce    = new \SoapVar($nonce, XSD_STRING, NULL, $this->wss_ns, NULL, $this->wss_ns);
+    $auth->Nonce    = new \SoapVar(base64_encode($nonce), XSD_STRING, NULL, $this->wss_ns, NULL, $this->wss_ns);
     $auth->Created  = new \SoapVar($ts, XSD_STRING, NULL, $this->wss_ns, NULL, $this->wsu_ns);
 
     $username_token = new \stdClass();
@@ -55,5 +55,8 @@ class TDSoapClient extends \SoapClient {
   function getTimestamp($tz) { return (new \DateTime('now', new \DateTimeZone($tz)))->format('Y-m-d\TH:i:s.000\Z'); }
 
 
-  function getPasswordDigest($nonce, $ts, $pass) { return base64_encode(sha1($nonce . $ts . sha1($pass))); }
+  function getPasswordDigest($nonce, $ts, $pass) { 
+	  $nonce_date_pwd = pack("A*",$nonce) . pack("A*",$ts) . pack("H*", sha1($pass));
+	  return base64_encode(pack('H*', sha1($nonce_date_pwd)));
+	}
 }
