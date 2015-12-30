@@ -54,8 +54,8 @@ trait Structure {
     $multi_schema  = $schema['_multiple'];
     
     if (isset($multi_schema['nest_key'])) $single_schema['_key'] = '~/' . $multi_schema['nest_key'];
-    
-    $val = isset($val) ? $val : array();
+
+    if (is_null($val)) $val = []; // CHECK: required param so always set, but if this is null may not want to be here in the first place.
 
     $multi_values = [];
 

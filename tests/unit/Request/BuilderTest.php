@@ -65,8 +65,6 @@ class Builder extends atoum {
 
 
   static function getTestConfigs($key) {
-    return Yaml::parse(RESOURCES_DIR . '/' . $key . '.yml');
+    return Yaml::parse(file_get_contents(RESOURCES_DIR . '/' . $key . '.yml'));
   }
-
-
 }

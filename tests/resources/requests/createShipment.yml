@@ -2,7 +2,7 @@ valid:
   request:
     requestedShipment:
       shipmentType: 'Delivery'
-      serviceOccurence: 1
+      serviceOccurrence: 1
       serviceType: T
       serviceOffering: TRM
       serviceFormat: P.int
@@ -30,6 +30,7 @@ valid:
         country: GB
       items:
         - 
+          numberOfItems: "2"
           weight:
             grams: 100
 
@@ -38,7 +39,7 @@ valid:
       shipmentType:
         code: 'Delivery'
       
-      serviceOccurence: 1
+      serviceOccurrence: 1
       
       serviceType: 
         code: T
@@ -87,10 +88,10 @@ valid:
             code: GB
 
       items:
-        numberOfItems: 1
 
         item:
            -    
+            numberOfItems: "2"
             weight:
               value: 100
               unitOfMeasure:

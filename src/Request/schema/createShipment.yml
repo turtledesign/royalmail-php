@@ -208,12 +208,12 @@ properties:
         multi_key: item
 
       numberOfItems:
-          _help: "Number of items for the associated weight"
-          _required: true
-          _validate:
-            Range:
-              min: 0
-              max: 99
+        _help: "Number of items for the associated weight"
+        _required: true
+        _validate:
+          Range:
+            min: 0
+            max: 99
               
       weight:
         grams:
