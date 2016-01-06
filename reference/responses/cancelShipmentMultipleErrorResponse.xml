@@ -22,18 +22,18 @@
              <shipmentNumber>RQ221150275GB</shipmentNumber>
           </completedCancelShipments>
         </completedCancelInfo>
-        <ns:integrationFooter>
-          <int:errors>
-            <int:error>
-              <int:errorCode>E1084</int:errorCode>
-              <int:errorDescription>shipmentType is a required field</int:errorDescription>
-            </int:error>
-            <int:error>
-              <int:errorCode>E1085</int:errorCode>
-              <int:errorDescription>another error</int:errorDescription>
-            </int:error>
-          </int:errors>
-        </ns:integrationFooter>
+        <integrationFooter>
+          <errors>
+            <error>
+              <errorCode>E1084</errorCode>
+              <errorDescription>shipmentType is a required field</errorDescription>
+            </error>
+            <error>
+              <errorCode>E1085</errorCode>
+              <errorDescription>another error</errorDescription>
+            </error>
+          </errors>
+        </integrationFooter>
       </cancelShipmentResponse>
    </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

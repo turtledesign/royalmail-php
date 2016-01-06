@@ -22,14 +22,14 @@
              <shipmentNumber>RQ221150275GB</shipmentNumber>
           </completedCancelShipments>
         </completedCancelInfo>
-        <ns:integrationFooter>
-          <int:warnings>
-            <int:warning>
-              <int:warningCode>W1084</int:warningCode>
-              <int:warningDescription>shipmentType would be nice to have...</int:warningDescription>
-            </int:warning>
-          </int:warnings>
-        </ns:integrationFooter>
+        <integrationFooter>
+          <warnings>
+            <warning>
+              <warningCode>W1084</warningCode>
+              <warningDescription>shipmentType would be nice to have...</warningDescription>
+            </warning>
+          </warnings>
+        </integrationFooter>
       </cancelShipmentResponse>
    </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

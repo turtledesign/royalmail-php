@@ -1,5 +1,6 @@
 
 
+> May need to have all the xmlns files local (& update sample test/responses to use them).
 > Add in a filter or pre-process to allow snake_case for input array data rather than camelCaseAsPerRM.
 > Add code coverage analysis.
 > Add failure tests for validators and filters.
