@@ -1,5 +1,5 @@
 
-0.1.9.6       06/01/2016 Added PHP 7 to Travis CI test.
+0.1.9.6       06/01/2016 Added (and removed) PHP 7 to Travis CI test - errors on Travis setup.
 0.1.9.5       06/01/2016 Modified the error and warning test sample responses to account for RM apparently removing xmlns files. [1]
 0.1.9.4       30/12/2015 Merged in changes from @minioak - fixed up tests. [1.5]
 0.1.9.0       16/10/2015 Added request1DRanges action. [0.6]
