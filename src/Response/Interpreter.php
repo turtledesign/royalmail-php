@@ -27,12 +27,16 @@ class Interpreter extends \ArrayObject {
   }
 
 
-  function succeeded()   { return $this->succeeded; }
+  function succeeded()    { return $this->succeeded; }
  
   function hasIssues()    { return $this->hasErrors() || $this->hasWarnings(); } 
+
   function hasErrors()    { return count($this->getErrors()) > 0; }
+
   function getErrors()    { return $this->errors; }
+
   function hasWarnings()  { return count($this->getWarnings()) > 0; }
+
   function getWarnings()  { return $this->warnings; }
 
   function hasDebugInfo() { return is_null($this->debug_info); }
@@ -174,14 +178,20 @@ class Interpreter extends \ArrayObject {
   }
 
 
-  function serialise($settings = []) {
-    // Simplest probably to create a new instance and load the response with the 'text_only' parameter set - saves writing another scanner / parser.
-    // could have filters that only run if 'text_only' is set to format values.
+  function serialise($json_opts = NULL) {
+    return json_encode([
+      'succeeded' => (int) $this->succeeded(),
+      'response'  => $this->asArray(),
+      'errors'    => $this->getErrors(),
+      'warnings'  => $this->getWarnings(),
+      'security'  => $this->getSecurityInfo(),
+      'debug'     => $this->getDebugInfo()
+    ], $json_opts);
   }
 
 
   function __toString() {
-    return ''; // JSON
+    return $this->serialise();
   }
 
 
