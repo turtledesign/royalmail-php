@@ -2,6 +2,7 @@
 
 namespace RoyalMail\Response;
 
+
 use \Symfony\Component\Yaml\Yaml;
 use \RoyalMail\Exception\StructureSkipFieldException as SkipException;
 
