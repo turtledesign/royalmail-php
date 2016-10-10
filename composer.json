@@ -1,5 +1,5 @@
 {
-  "name": "turtledesign/royalmail-php",
+  "name": "prashles/royalmail-php",
   "description": "PHP module for interfacing with the Royal Mail shipping api : http://www.royalmail.com/corporate/services/shipping-api ",
   "license": "MIT",
   "type": "library",
