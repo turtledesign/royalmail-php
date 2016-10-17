@@ -2,8 +2,7 @@
 
 namespace RoyalMail\Connector;
 
-ini_set("soap.wsdl_cache_enabled","1"); # Save a bit of network traffic and delay by caching the WSDL file.
-                                        # TODO: Check whether the cache is going to need clearing when updating to new versions of WSDL.
+ini_set("soap.wsdl_cache_enabled","0"); # This may cause issues with PHP version changes: http://lornajane.net/posts/2015/soapfault-when-switching-php-versions
 
 
 class soapConnector extends baseConnector {
