@@ -119,4 +119,15 @@ trait Structure {
 
     return $s;
   }
+
+
+  static function derefArray($arr) {
+    $dereffed = [];
+
+    foreach ($arr as $k => $v) {
+      $dereffed[$k] = (is_array($v)) ? self::derefArray($v) : $v; 
+    }
+
+    return $dereffed;
+  }
 }

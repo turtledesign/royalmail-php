@@ -35,6 +35,8 @@ class soapConnector extends baseConnector {
   function doRequest($action, $params = [], $config = []) {
     $this->request_input = ['action' => $action, 'parameters' => $params];
 
+
+
     return $this->getSoapClient($config)->__soapCall($action, [$params]);
   }
 

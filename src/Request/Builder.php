@@ -63,6 +63,8 @@ class Builder {
 
     if (! empty($errors)) throw (new \RoyalMail\Exception\RequestException())->withErrors($errors);
 
+    if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION > 5) $built = self::derefArray($built);
+
     return $built;
   }
 
