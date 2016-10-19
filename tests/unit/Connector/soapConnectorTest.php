@@ -13,7 +13,7 @@ class soapConnector extends atoum {
     $this
       ->given($this->newTestedInstance->setEndpoint(ENDPOINT))
       ->string($this->testedInstance->getEndpoint())
-      ->contains('ShippingAPI_V2_0_8.wsdl');
+      ->contains('ShippingAPI_V2_0_9.wsdl');
   }
 
 

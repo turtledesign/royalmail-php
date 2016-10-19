@@ -3,7 +3,7 @@
 
 namespace RoyalMail\tests\lib;
 
-define('ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl');
+define('ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_9.wsdl');
 
 
 use \RoyalMail\Connector\MockSoapClient as MockSoap;

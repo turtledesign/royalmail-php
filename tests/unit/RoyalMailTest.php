@@ -36,7 +36,7 @@ class RoyalMail extends atoum {
       'password'       => 'my-password',
       'endpoint'       => NULL,
       'soap_client_options' => [
-        'uri' => MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl',
+        'uri'           => MODULE_ROOT . 'reference/ShippingAPI_V2_0_9.wsdl',
         'location'      => 'https://api.royalmail.com/shipping/onboarding',
         'exception'     => FALSE,
       ],

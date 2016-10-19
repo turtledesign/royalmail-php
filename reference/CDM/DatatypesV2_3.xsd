@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" version="V1.3">
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/rmDatatypes/V1" version="V1.3" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:simpleType name="twoDBarcode">
 		<xs:annotation>
 			<xs:documentation>Used in the digital representation of 2D Barcodes</xs:documentation>

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/referenceData/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:rd="http://www.royalmailgroup.com/cm/referenceData/V3" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" version="V3.1">
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.royalmailgroup.com/cm/referenceData/V3" version="V3.1" xmlns:dt="http://www.royalmailgroup.com/cm/rmDatatypes/V1" xmlns:rd="http://www.royalmailgroup.com/cm/referenceData/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:documentation>Package containing the set of code/description static data types used to categorize business facts. Reference Data represents finite value sets that are logically identified by the Type and Code. Codes are unique within a type. Codes are intelligent mnemonics i.e. US for United States etc.</xs:documentation>
 	</xs:annotation>
@@ -10,7 +10,7 @@
 			<xs:documentation>A categorization of processes, people and resources organized in such a way as to produce a business outcome</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="businessFunctionCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="businessFunctionCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>A categorization of processes, people and resources organized in such a way as to  produce a business outcome</xs:documentation>
 				</xs:annotation>
@@ -23,7 +23,7 @@
 			<xs:documentation>This denotes the function the address plays (i.e. it is a primary address, seasonal, etc). </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="addressUsageCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="addressUsageCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>This denotes the function the address plays (i.e. it is a primary address, seasonal, etc). </xs:documentation>
 				</xs:annotation>
@@ -36,7 +36,7 @@
 			<xs:documentation>Reference data identifying the format of British Forces Posting Overseas Mail Items</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="bFPOFormatCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="bFPOFormatCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Reference data identifying the Format of British Forces Posting Overseas Mail Items</xs:documentation>
 				</xs:annotation>
@@ -49,7 +49,7 @@
 			<xs:documentation>Defines a calendar as being Fiscal, Operational, Quality or Calendar</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="calendarCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="calendarCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines a calendar as being Fiscal, Operational, Quality or Calendar.</xs:documentation>
 				</xs:annotation>
@@ -62,7 +62,7 @@
 			<xs:documentation>Contains the communication methods. Communication methods include telephone or email.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="contactMethodCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="contactMethodCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Means of communication, telephone, email, etc</xs:documentation>
 				</xs:annotation>
@@ -75,7 +75,7 @@
 			<xs:documentation>Usage associated with a contact method i.e. business, social etc</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="contactUsageCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="contactUsageCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Usage associated with a contact method i.e. business, social etc</xs:documentation>
 				</xs:annotation>
@@ -88,7 +88,7 @@
 			<xs:documentation>A Country as recognised by the International Standards Organisation.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="countryCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="countryCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>A Country as recognised by the International Standards Organisation</xs:documentation>
 				</xs:annotation>
@@ -101,7 +101,7 @@
 			<xs:documentation>A territorial division exercising administrative, judicial, and political functions.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="countyCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="countyCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>A territorial division exercising administrative, judicial, and political functions.</xs:documentation>
 				</xs:annotation>
@@ -114,7 +114,7 @@
 			<xs:documentation>The currency code for the taxonomy is used to indicate the system of money (monetary units) in common use, especially in a nation. Under this definition, British pounds, U.S. dollars, and European euros are different types of currency, or currencies. Currencies in the sense used by foreign exchange markets, are defined by governments, and each type has limited boundaries of acceptance.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="currencyCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="currencyCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Currency code is used to indicate the system of money (monetary units) in common use within a nation. Under this definition, British pounds, U.S. dollars, and European euros are different types of currency, or currencies. Currencies in the sense used by foreign exchange markets, are defined by governments, and each type has limited boundaries of acceptance.</xs:documentation>
 				</xs:annotation>
@@ -127,7 +127,7 @@
 			<xs:documentation>Defines a preferred format for a datetime value.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="dateFormatCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="dateFormatCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines a preferred format for a datetime value.</xs:documentation>
 				</xs:annotation>
@@ -140,7 +140,7 @@
 			<xs:documentation>Day of week i.e. Monday, Tuesday etc</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="dayOfWeekCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="dayOfWeekCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Day of week.</xs:documentation>
 				</xs:annotation>
@@ -153,7 +153,7 @@
 			<xs:documentation>Defines a type of time period i.e. weekly, monthly, quarterly, annually etc</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="durationCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="durationCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines a type of time period i.e. weekly, monthly, quarterly, annually etc</xs:documentation>
 				</xs:annotation>
@@ -166,7 +166,7 @@
 			<xs:documentation>Defines the Functional Location Group Relationship in terms of PCA, Parent, Operational, Management etc</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="functionalLocationRelationCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="functionalLocationRelationCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the Functional Location Group Relationship in terms of PCA, Parent, Operational, Management etc</xs:documentation>
 				</xs:annotation>
@@ -179,7 +179,7 @@
 			<xs:documentation>Defines the Functional Location at the lowest level in terms of airport, seaport, rail hub etc</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="functionalLocationSubtypeCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="functionalLocationSubtypeCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the Functional Location at the lowest level in terms of airport, seaport, rail hub etc</xs:documentation>
 				</xs:annotation>
@@ -192,7 +192,7 @@
 			<xs:documentation>Defines the type of Functional Location such as Region, Network Hub, Delivery Hub etc.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="functionalLocationCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="functionalLocationCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the type of Functional Location such as Region, Network Hub, Delivery Hub etc.</xs:documentation>
 				</xs:annotation>
@@ -205,7 +205,7 @@
 			<xs:documentation>Gives context to a Geo Spatial Position i.e. front door, back door, Post Box.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="geospatialPositionCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="geospatialPositionCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Gives context to a Geo Spatial Position i.e. front door, back door, Post Box.</xs:documentation>
 				</xs:annotation>
@@ -218,7 +218,7 @@
 			<xs:documentation>Reference data identifying the class of mail service.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="mailClassCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="mailClassCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Reference data identifying the class of mail service.</xs:documentation>
 				</xs:annotation>
@@ -231,7 +231,7 @@
 			<xs:documentation>The format (RM Letters or International) of the Mail Item.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="mailItemFormatCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="mailItemFormatCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>The format (RM Letters or International) of the Mail Item.</xs:documentation>
 				</xs:annotation>
@@ -244,7 +244,7 @@
 			<xs:documentation>Defines the suffix of a name i.e. Jnr, Esq etc.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="nameSuffixCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="nameSuffixCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the suffix of a name i.e. Jnr, Esq etc.</xs:documentation>
 				</xs:annotation>
@@ -257,7 +257,7 @@
 			<xs:documentation>Defines the type of name in terms of being Primary, Alias or Nickname</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="nameCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="nameCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the type of name in terms of being Primary, Alias or Nickname</xs:documentation>
 				</xs:annotation>
@@ -270,7 +270,7 @@
 			<xs:documentation>Non Working Day object contains all the planned non-working days. </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="nonWorkingDayCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="nonWorkingDayCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Non Working Day object contains all the planned non-working days i.e. Bank Holiday, Local Holiday.</xs:documentation>
 				</xs:annotation>
@@ -283,7 +283,7 @@
 			<xs:documentation>Defines the different sizes of letters or parcels</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="postageSizeCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="postageSizeCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the different sizes of letters and parcels</xs:documentation>
 				</xs:annotation>
@@ -296,22 +296,22 @@
 			<xs:documentation>The reference data class gives a common structure which will be adopted for all generic reference data. Reference data tends to be 'Qualifier' data (referenced in the data standards document on Sharepoint). For example the expression Product Short Name; 'Short' in this instance is the qualifier and could have a corresponding set of reference values that could be used. </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="identifier" type="dt:identifier" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="identifier" type="dt:identifier">
 				<xs:annotation>
 					<xs:documentation>~Unique identifier for a Reference Data instance.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="code" type="dt:identifier" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="code" type="dt:identifier">
 				<xs:annotation>
 					<xs:documentation>The code is used as an identifier to recognize or establish a particular person or thing. It is used to verify the identity of the bearer of an identity. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="name" type="dt:longName" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="name" type="dt:longName">
 				<xs:annotation>
 					<xs:documentation>Name assorted with the code i.e. Name - United States for Code - US.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="description" type="dt:description" minOccurs="0" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="0" name="description" type="dt:description">
 				<xs:annotation>
 					<xs:documentation>A description or the reference data item. </xs:documentation>
 				</xs:annotation>
@@ -324,7 +324,7 @@
 			<xs:documentation>Defines the different roles which a party may fulfil.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="roleCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="roleCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the different roles a party may fulfil.</xs:documentation>
 				</xs:annotation>
@@ -337,7 +337,7 @@
 			<xs:documentation>Defines the type of enhancement used to add to an offering/product (with specific parameters) which may be sold to a customer.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="serviceEnhancementCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="serviceEnhancementCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the type of enhancement used to add to an offering/product (with specific parameters) which may be sold to a customer.</xs:documentation>
 				</xs:annotation>
@@ -350,7 +350,7 @@
 			<xs:documentation>Defines the format of the Service being offered. </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="serviceFormatCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="serviceFormatCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the format of the Service being offered.</xs:documentation>
 				</xs:annotation>
@@ -363,7 +363,7 @@
 			<xs:documentation>Defines the type of offering/product (with specific parameters) which may be sold to a customer.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="serviceOfferingCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="serviceOfferingCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the type of offering/product (with specific parameters) which may be sold to a customer. </xs:documentation>
 				</xs:annotation>
@@ -376,7 +376,7 @@
 			<xs:documentation>This is used specifically for international items only and is applicable for the US, Canada, Australia, etc. </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="stateOrProvinceCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="stateOrProvinceCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>This is used specifically for international items only and is applicable for the US, Canada, Australia, etc. </xs:documentation>
 				</xs:annotation>
@@ -389,7 +389,7 @@
 			<xs:documentation>This is the state of an entity (i.e. it is active, approved, draft, inactive, etc). The sequence of states an entity passes through define the entity life history.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="statusCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="statusCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>This is the state of an entity (i.e. it is active, approved, draft, inactive, etc).  The sequence of states an entity passes through define the entity life history.</xs:documentation>
 				</xs:annotation>
@@ -402,7 +402,7 @@
 			<xs:documentation>The official RMG system name is the commonly used name for a system and will be more business oriented than a numerical identifier. An example would the Traffic and Revenue Reporting System.  </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="systemNameCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="systemNameCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>The official RMG system name is the commonly used name for a system and will be more business oriented than a numerical identifier. An example would the Traffic and Revenue Reporting System. </xs:documentation>
 				</xs:annotation>
@@ -415,7 +415,7 @@
 			<xs:documentation>Defines the different types of tax i.e. VAT, Income, Corporate etc.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="taxCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="taxCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the different types of tax i.e. VAT, Income, Corporate etc.</xs:documentation>
 				</xs:annotation>
@@ -428,7 +428,7 @@
 			<xs:documentation>Defines the prefix of a name</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="titleCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="titleCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Defines the prefix of a name</xs:documentation>
 				</xs:annotation>
@@ -441,7 +441,7 @@
 			<xs:documentation>A unitOfMeasure represents is a definite magnitude of a physical quantity, defined and adopted by convention or by law, that is used as a standard for measurement of the same physical quantity. Any other value of the physical quantity can be expressed as a simple multiple of the unit of measure. For example, length is a physical quantity. The metre is a unit of length that represents a definite predetermined length. When we say 10 metres, we actually mean 10 times the definite predetermined length called “metre”.  </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="unitOfMeasureCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="unitOfMeasureCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>A unitOfMeasure represents is a definite magnitude of a physical quantity, defined and adopted by convention or by law, that is used as a standard for measurement of the same physical quantity. Any other value of the physical quantity can be expressed as a simple multiple of the unit of measure. For example, length is a physical quantity. The metre is a unit of length that represents a definite predetermined length. When we say 10 metres, we actually mean 10 times the definite predetermined length called “metre”.  </xs:documentation>
 				</xs:annotation>
@@ -454,7 +454,7 @@
 			<xs:documentation>Working Day Type contains the set of Types of working days. </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="workingDayCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="workingDayCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Working Day Type contains the set of Types of working days. </xs:documentation>
 				</xs:annotation>
@@ -467,7 +467,7 @@
 			<xs:documentation>Specifies if the type  of Functional Location group</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="functionalLocationGroupCode" type="rd:referenceDataType" minOccurs="1" maxOccurs="1">
+			<xs:element maxOccurs="1" minOccurs="1" name="functionalLocationGroupCode" type="rd:referenceDataType">
 				<xs:annotation>
 					<xs:documentation>Specifies the Functional Location Group type</xs:documentation>
 				</xs:annotation>

@@ -6,7 +6,7 @@ if (! defined('MODULE_ROOT')) define('MODULE_ROOT', dirname(__FILE__) . '/../');
 
 // These are used to provide (fast) canned responses when developing using the supplied sample responses.
 define('STATIC_RESPONSE_DIRECTORY', MODULE_ROOT . 'reference/responses');
-define('STATIC_ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_8.wsdl');
+define('STATIC_ENDPOINT', MODULE_ROOT . 'reference/ShippingAPI_V2_0_9.wsdl');
 define('STATIC_CLIENT', '\RoyalMail\Connector\MockSoapClient');
 
 
@@ -42,8 +42,8 @@ class RoyalMail {
 
     $modes = [
       'development' => ['soap_client' => STATIC_CLIENT, 'endpoint' => STATIC_ENDPOINT, 'static_responses' => STATIC_RESPONSE_DIRECTORY],
-      'onboarding'  => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.com/shipping/onboarding']],
-      'live'        => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.com/shipping']]
+      'onboarding'  => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.net/shipping/v2']],
+      'live'        => ['endpoint' => STATIC_ENDPOINT, 'soap_client_options' => ['location' => 'https://api.royalmail.com/shipping/v2']]
     ];
 
 
