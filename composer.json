@@ -1,5 +1,5 @@
 {
-  "name": "turtledesign/royalmail-php",
+  "name": "prashles/royalmail-php",
   "description": "PHP module for interfacing with the Royal Mail shipping api : http://www.royalmail.com/corporate/services/shipping-api ",
   "license": "MIT",
   "type": "library",
@@ -26,7 +26,7 @@
 
   "require": {
     "php":             ">=5.4.0",
-    "symfony/yaml":    "~2.7|~3.0.0",
+    "symfony/yaml":    "~3.1.5",
     "vlucas/valitron": "~1.2"
   },
 
