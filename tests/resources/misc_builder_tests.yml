@@ -24,3 +24,40 @@ multiple_property_single_element:
         - banana
         - four
 
+
+weight_from_create_shipment:
+  schema:
+    properties:
+      weight:
+        grams:
+          _key: value
+          _help: >
+            Weight in grams of each item (no decimal places). If the service has a weight band, for example Special Delivery, 
+            then the upper band will be used. For example, 150 grams will use the 100 to 200 grams band. Tracked services, for 
+            example, do not have a band and therefore take the actual weight.
+          _pre_filter: Round
+          _validate:
+            Range:
+              min: 0
+              max: 99999
+        units:
+          _help: "Must be ‘g’ for grams"
+          _key: unitOfMeasure/unitOfMeasureCode/code
+          _default: "g"
+          _hidden: true
+
+  values:
+    weight:
+      grams: 100
+      unitOfMeasure:
+        unitOfMeasureCode: g
+
+
+  expect:
+    weight:
+      value: 100
+      unitOfMeasure:
+        unitOfMeasureCode:
+          code: g
+    
+

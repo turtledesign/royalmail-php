@@ -63,6 +63,17 @@ class Builder extends atoum {
   }
 
 
+  function testCreateShipmentWeight() {
+    $tests = self::getTestConfigs('misc_builder_tests');
+
+    $weight = $tests['weight_from_create_shipment'];
+    
+    $this
+      ->array(ReqBuilder::processSchema($weight['schema'], $weight['values']))
+      ->isEqualTo($weight['expect']);
+  }
+
+
 
   static function getTestConfigs($key) {
     return Yaml::parse(file_get_contents(RESOURCES_DIR . '/' . $key . '.yml'));

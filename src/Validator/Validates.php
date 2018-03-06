@@ -108,7 +108,11 @@ trait Validates {
     }
 
     if (isset($params['min']) && ($value < $params['min'])) {
-      self::fail($value, $params, ['message' => @$params['min_message'] ?: 'value should be over ' . $params['min']]);
+      self::fail($value, $params, ['message' => @$params['min_message'] ?: 'value should be over or equal to ' . $params['min']]);
+    }
+
+    if (isset($params['max']) && ($value > $params['max'])) {
+      self::fail($value, $params, ['message' => @$params['max_message'] ?: 'value should be under or equal to ' . $params['min']]);
     }
 
     return $value;

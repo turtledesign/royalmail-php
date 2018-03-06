@@ -119,4 +119,18 @@ class Validates extends atoum {
       ->exception(function () { self::constrain('EH101 4BF', 'GBPostcode', ['check_country' => 'input:country'], ['input' => ['country' => 'GB']]); })
       ->message->contains('not a valid UK postcode');
   }
+
+
+  function testRange() {
+    $this->integer(self::constrain(100, 'Range', ['min' => 10, 'max' => 9999]))->isEqualTo(100);
+    
+    $this
+      ->exception(function () { self::constrain(1, 'Range', ['min' => 10, 'max' => 9999]); })
+      ->message->contains('value should be over');
+
+    $this
+      ->exception(function () { self::constrain(10000, 'Range', ['min' => 10, 'max' => 9999]); })
+      ->message->contains('value should be under');
+        
+  }
 }

@@ -55,4 +55,11 @@ class Filters extends atoum {
       ->exception(function () use ($schema, $helper) { self::filter('foo', $schema, 'pre', $helper); })
       ->isInstanceOf('\RoyalMail\Exception\StructureSkipFieldException');
   }
+
+
+  function testRounding() {
+    $this->integer(self::doRound(100, []))->isEqualTo(100);
+    $this->integer(self::doRound(123.45, []))->isEqualTo(123);
+    $this->integer(self::doRound(123.53, []))->isEqualTo(124);
+  }
 }

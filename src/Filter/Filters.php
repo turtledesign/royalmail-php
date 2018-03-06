@@ -127,7 +127,7 @@ trait Filters {
 
 
   static function doRound($val, $settings, $helper = NULL) {
-    return round($val);
+    return (int) round($val);
   }
 
 
