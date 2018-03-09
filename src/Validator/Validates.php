@@ -150,11 +150,11 @@ trait Validates {
       self::fail($value, $params, ['message' => 'value not in a valid date format.']);
     }
     
-    if (isset($params['min']) && $value < date_create()->modify($params['min'])) { 
-      self::fail($value->format('Y-m-d'), $params, ['message' => 'date earlier than now ' . $params['min']]); // TODO: mebbe possible to display date in i18n format.
+    if (isset($params['min']) && $value < date_create()->setTime(00, 00, 01)->modify($params['min'])) { 
+      self::fail($value->format('Y-m-d'), $params, ['message' => 'date earlier than ' . date_create()->modify($params['min'])->format('Y-m-d') .  ' | now ' . $params['min']]); // TODO: mebbe possible to display date in i18n format.
     }
 
-    if (isset($params['max']) && $value > date_create()->modify($params['max'])) {
+    if (isset($params['max']) && $value > date_create()->modify($params['max'])->setTime(23, 59, 59)) {
       self::fail($value->format('Y-m-d'), $params, ['message' => 'date later than now ' . $params['max']]);
     }
 

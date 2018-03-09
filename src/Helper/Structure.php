@@ -90,7 +90,7 @@ trait Structure {
 
 
   static function addToArray($arr, $val, $key = NULL, $path = NULL) {
-    if (empty($key)) $key = key(array_slice($arr, -1, 1, TRUE)) + 1;
+    if (empty($key)) $key = (int) key(array_slice($arr, -1, 1, TRUE)) + 1;
 
     if (! empty($path)) {
 
