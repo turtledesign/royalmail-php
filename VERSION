@@ -1,4 +1,5 @@
 
+0.3.1.2       09/03/2018 Fixed errors in some test data files that YAML 4.* picks up where previous versions ignored. 
 0.3.1.1       09/03/2018 Added v4 of YAML package and latest Atoum for compatability with Laravel 5.6 and PHP 7.1 
 0.3.0.1       06/03/2018 Added some extra tests while hunting down why the weight value wasn't working.
 0.3.0.0       18/10/2016 Updated to the latest version (v2_0_9) of the API + new endpoint as per https://developer.royalmail.net/node/688#/
