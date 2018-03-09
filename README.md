@@ -10,7 +10,7 @@ This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping
 
 ## Prerequisites
 
-   - PHP 5.4 or above
+   - PHP 5.4 or above (testing requires version 5.6 or above due to the Atoum test module requirements).
    - [soap](http://php.net/manual/en/book.soap.php) & [openssl](http://php.net/manual/en/book.openssl.php) extensions must be enabled
    - [fileinfo](http://php.net/manual/en/book.fileinfo.php) required for testing.
 
