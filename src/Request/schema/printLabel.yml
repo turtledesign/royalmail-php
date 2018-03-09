@@ -47,7 +47,6 @@ properties:
 
       postTown:
         _help: "Localised Town or City. NOTE: truncated to 35 characters on labels."
-        _required: true
         _validate: 
           Length: { max: 40 }
 

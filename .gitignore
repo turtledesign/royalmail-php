@@ -5,3 +5,4 @@ composer.lock
 *.sublime-workspace
 .rules/*
 tmp.php
+tmp_*
