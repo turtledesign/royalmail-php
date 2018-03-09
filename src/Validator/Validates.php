@@ -28,9 +28,10 @@ trait Validates {
    */
   static function validate($schema, $value, $helper = NULL) {
     foreach (self::parseConstraints($schema) as $c) {  // The constraints are in a numeric array as the order matters.
-      list($constraint, $params) = each($c);           // Split to get the actual values here.
+      $constraint = key($c);
+      $params     = $c[$constraint];
 
-      if (self::isBlank($value) && ! preg_match('/require/i', $constraint)) continue; // Only *require* validators should check blank values.
+      if (self::isBlank($value) && ! preg_match('/require|notblank/i', $constraint)) continue; // Only *require* validators should check blank values.
 
       $value = self::constrain($value, $constraint, self::parseParams($params, $schema), $helper);
     }
@@ -224,7 +225,6 @@ trait Validates {
 
     return $value;
   }
-
 
 
   static function isBlank($value) { 

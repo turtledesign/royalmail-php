@@ -8,8 +8,43 @@ class Validates extends atoum {
   use \RoyalMail\Validator\Validates;
 
 
+  function testMultipleValidations() {
+    $schema = [
+      '_required' => TRUE,
+      '_validate' => [
+        ['Length' => ['max' => 100]],
+        ['Email'  => []]
+      ]
+    ];
+
+    $this
+      ->string(self::validate($schema, 'test@example.com', NULL))
+      ->isEqualTo('test@example.com');
+
+    $this
+      ->exception(function () use ($schema) { self::validate($schema, 'not.valid.email', NULL); })
+      ->message
+      ->contains('not a valid email');
+
+    // Auto added checkNotBlank due to _required on schema.
+    $this
+      ->exception(function () use ($schema) { self::validate($schema, '', NULL); })
+      ->message
+      ->contains('can not be blank');
+  }
+
 
   function testNotBlank() {
+    $this
+      ->exception(function () { self::constrain('', 'NotBlank', NULL); })
+      ->message
+      ->contains('can not be blank');
+
+    $this
+      ->exception(function () { self::constrain(NULL, 'NotBlank', NULL); })
+      ->message
+      ->contains('can not be blank');
+
     $this->string(self::constrain('not a blank value', 'NotBlank'))->isEqualTo('not a blank value');
   }
 
@@ -54,6 +89,10 @@ class Validates extends atoum {
 
 
   function testEmail() {
+    $this
+      ->string(self::constrain('test@example.com', 'Email', []))
+      ->isEqualTo('test@example.com');
+
     $this
       ->exception(function () { self::constrain('not.valid.email', 'Email', []); })
       ->message

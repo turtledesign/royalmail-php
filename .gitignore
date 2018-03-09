@@ -3,4 +3,5 @@ tests/tmp/*
 composer.lock
 *.sublime-project
 *.sublime-workspace
+.rules/*
 tmp.php
