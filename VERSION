@@ -1,4 +1,5 @@
 
+0.3.1.6       14/03/2018 Fixed createLabel ->succeeded() response and improved Symfony YAML requirement specification.
 0.3.1.4       09/03/2018 Postal town shouldn't have been required on printLabel as the address is option in its entirity. 
 0.3.1.3       09/03/2018 Removed call to each() in validation module as it's deprecated in PHP 7.2 
 0.3.1.2       09/03/2018 Fixed errors in some test data files that YAML 4.* picks up where previous versions ignored. 

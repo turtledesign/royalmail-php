@@ -1,8 +1,8 @@
 properties:
   META:
     success:
-      _extract: integrationHeader/version
-      _post_filter: { isEqual: 2 }
+      _extract: outputFormat
+      _post_filter: Bool
     
     security:
       _include: integrationHeader
