@@ -127,6 +127,8 @@ trait Filters {
 
 
   static function doRound($val, $settings, $helper = NULL) {
+    if (! empty($settings['dp'])) return (float) round($val, $settings['dp']);
+
     return (int) round($val);
   }
 

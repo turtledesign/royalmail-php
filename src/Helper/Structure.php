@@ -26,6 +26,8 @@ trait Structure {
 
 
   static function processProperty($schema, $val, $defaults = [], $helper = NULL) {
+    if (! empty($schema['_skip_blank_tree']) && empty($val)) throw new SkipException('Optional tree of features');
+    
     switch (TRUE) {
       case isset($schema['_include']):  return self::processInclude($schema, $val, $defaults, $helper);
       case isset($schema['_multiple']): return self::processMultipleProperty($schema, $val, $defaults, $helper);
@@ -35,6 +37,7 @@ trait Structure {
 
 
   static function processSingleProperty($schema, $val, $defaults = [], $helper = NULL) {
+    
     if ($nested = self::stripMeta($schema)) {
       $nest = [];
 

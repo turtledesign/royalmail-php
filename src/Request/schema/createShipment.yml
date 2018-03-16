@@ -233,3 +233,151 @@ properties:
           _key: unitOfMeasure/unitOfMeasureCode/code
           _default: "g"
           _hidden: true
+
+
+    internationalInfo:
+      _skip_blank_tree: true
+
+      parcels:
+        _multiple:
+          max: 9
+          multi_key: parcel
+
+        weight:
+          _help: "Weight of shipment in Kg"
+          _validate:
+            Range:
+              min: 0
+              max: 99999
+          _post_filter:
+            Round: { dp: 3 }
+
+        length:
+          _help: "Length dimension of shipment, in cm"
+          _validate:
+            Range:
+              min: 0
+              max: 99999
+          _post_filter:
+            Round: { dp: 0 }
+
+        width:
+          _help: "Width dimension of shipment, in cm"
+          _validate:
+            Range:
+              min: 0
+              max: 99999
+          _post_filter:
+            Round: { dp: 0 }
+
+        height:
+          _help: "Height dimension of shipment, in cm"
+          _validate:
+            Range:
+              min: 0
+              max: 99999
+          _post_filter:
+            Round: { dp: 0 }
+
+        purposeOfShipment: #change to options
+          _help: "Purpose of shipment (also known as Nature of Goods)."
+          _validate: 
+            Length: { max: 30 }
+
+
+        explanation:
+          _help: "Comments regarding the shipment"
+          _validate:
+            Length: { max: 128 }
+
+        invoiceNumber:
+          _help: "API docs don't provide info..."
+        
+        exportLicenceNumber:
+          _help: "API docs don't provide info..."
+
+        certificateNumber:
+          _help: "API docs don't provide info..."
+
+        fees:
+          _help: "API docs don't provide info..."
+
+        contentDetail:
+          _skip_blank_tree: true
+
+          countryOfManufacture:
+            _key: ~/countryCode/code
+            _help: "Country code representing the country in which the goods where manufactured. "
+            _required: true
+            _options: country_codes
+            _validate: Choice
+
+
+          manufacturersName:
+            _help: "Name of manufacturer of goods in the shipment"
+            _validate:
+              Length: { max: 35 }
+
+          description:
+            _help: "Description of goods being delivered"
+            _validate:
+              Length: { max: 14 }
+
+          unitWeight:
+            unitOfMeasure:
+              _help: "Unit of weight dimension of goods being delivered"
+              _key: ~/unitOfMeasureCode/code
+              _default: "KG"
+
+            value:
+              _help: "Value of weight dimension of goods being delivered"
+              _validate:
+                Range:
+                  min: 0
+                  max: 99999
+              _post_filter:
+                Round: { dp: 3 }
+
+          unitQuantity:
+            _help: "Quantity of content items within the shipment"
+            _post_filter: Int
+
+          unitValue:
+            _help: "Value of content items within the shipment"
+
+          currencyCode: #change to options
+            _help: "Value of content items within the shipment"
+            _key: ~/code
+            _required: true
+
+          tariffCode: #change to options
+            _help: "Tariff code for content item within the shipment This is a number – see https://www.gov.uk/tradetariff"
+            _key: ~/code
+            _validate:
+              Length: { max: 11 }
+
+          tariffDescription:
+            _help: "Description that compliments the tariff code supplied"
+            _validate:
+              Length: { max: 35 }
+
+
+        offlineShipments:
+          _skip_blank_tree: true
+          _multiple:
+            multi_key: shipment
+
+          shipmentNumber:
+            _help: "Offline 1D Linear Barcode number assigned to the shipment"
+            _validate:
+              Length: { max: 13 }
+
+          itemID:
+            _help: "Offline 2D Item ID number assigned to the shipment"
+            _validate:
+              Length: { max: 35 }
+
+          status: # change to options
+            _help: "Code for status of Offline Shipment. Valid values are ‘AllocatedOffline’ and ‘PrintedOffline’."
+            _key: ~/statusCode/code
+

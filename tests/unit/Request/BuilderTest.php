@@ -46,7 +46,7 @@ class Builder extends atoum {
       $valid = $setup['valid'];
 
       $this
-        ->array(ReqBuilder::build($req_name, $valid['request'], $helper))
+        ->array(ReqBuilder::build(preg_replace('/_\w+$/', '', $req_name), $valid['request'], $helper))
         ->isEqualTo($valid['expect']);
     }
   }
