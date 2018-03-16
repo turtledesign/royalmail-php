@@ -3,9 +3,7 @@
 [![Build Status](https://travis-ci.org/turtledesign/royalmail-php.png?branch=master)](https://travis-ci.org/turtledesign/royalmail-php)
 
 This repository contains a PHP SDK/Interface for the (UK) [Royal Mail's Shipping API](http://www.royalmail.com/corporate/services/shipping-api)
-
-> This module is in an alpha state and hasn't yet been tested against the Royal Mail's servers.  
-> It should be now be possible to use it in development mode to integrate with client systems, see the [documentation (also still being created) in the wiki](https://github.com/turtledesign/royalmail-php/wiki) 
+ 
 > This is not an official SDK, we (http://www.turtledesign.com/) are a 3rd party integrator releasing the module with an open source licence because why not.
 
 ## Prerequisites
