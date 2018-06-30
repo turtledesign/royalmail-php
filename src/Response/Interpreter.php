@@ -23,8 +23,8 @@ class Interpreter extends \ArrayObject {
     $debug_info        = NULL;
 
 
-  function __construct($key = NULL, $response = NULL) {
-    if (isset($key) && isset($response)) $this->loadResponse($key, $response);
+  function __construct($key = NULL, $response = NULL, $helper = []) {
+    if (isset($key) && isset($response)) $this->loadResponse($key, $response, $helper);
   }
 
 
