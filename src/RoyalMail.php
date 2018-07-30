@@ -86,7 +86,7 @@ class RoyalMail {
 
 
   function interpretResponse($action, $response) {
-    return new Interpreter($action, $response, $this->getDataHelper());
+    return new Interpreter($action, $response, []);
   }
 
 

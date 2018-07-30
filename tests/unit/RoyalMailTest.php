@@ -88,7 +88,9 @@ class RoyalMail extends atoum {
       ->boolean($intepreted->succeeded())
       ->isTrue()
       ->string($intepreted['status'])
-      ->isEqualTo('Cancelled');
+      ->isEqualTo('Cancelled')
+      ->array($intepreted->asArray()) // https://github.com/turtledesign/royalmail-php/issues/12 comment #4
+      ->hasKeys(['status', 'updated', 'cancelled_shipments']); 
   }
 
 
